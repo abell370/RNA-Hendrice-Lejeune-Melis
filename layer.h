@@ -15,6 +15,7 @@ public:
     ~Layer();
 
     void learn(int maxIter, double minMeanQuadraticError);
+    string getResult();
     void reset();
 
 private:

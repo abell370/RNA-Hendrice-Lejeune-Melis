@@ -3,11 +3,10 @@
 
 Layer::Layer(vector<vector<double>> dataset, int modelIndex, int amountOfNeurons, double learningRate) : dataset(dataset), learningRate(learningRate)
 {
-    int numberOfWeights = dataset[0].size() - amountOfNeurons;
     for (int i = 0; i < amountOfNeurons; i++)
     {
         LearningModel* neuron = LearningModelFactory::create(modelIndex);
-        neuron->setup(dataset, this->generateWeightVector(numberOfWeights, false), learningRate);
+        neuron->setup(dataset, this->generateWeightVector(amountOfNeurons, false), learningRate);
         this->neurons.push_back(neuron);
     }
 }
@@ -42,6 +41,18 @@ void Layer::learn(int maxIter, double minMeanQuadraticError)
         int indexOfPredictedOutput = this->dataset[0].size() - (this->neurons.size() - i);
         this->neurons[i]->learn(maxIter, minMeanQuadraticError, indexOfPredictedOutput);
     }
+}
+
+string Layer::getResult()
+{
+    string result = "";
+    for (int i = 0; i < this->neurons.size(); i++)
+    {
+        int index = i + 1; // Remove the unnecessary addition
+        // Convert integers to strings before concatenating
+        result += "\nClasse " + to_string(index) + " => Result " + this->neurons[i]->getResult();
+    }
+    return result;
 }
 
 void Layer::reset()

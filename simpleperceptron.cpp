@@ -18,7 +18,7 @@ void SimplePerceptron::setup(vector<vector<double>> dataset, vector<double> weig
 
 void SimplePerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData) {
     this->reset(); // empty iterations
-    if (minMeanQuadraticError != 0.0)
+    if (minMeanQuadraticError != NULL)
     {
         this->loopOnIterations(minMeanQuadraticError, maxIter, indexOfPredictedData);
     }
@@ -112,6 +112,11 @@ double SimplePerceptron::executeOneIteration(int indexOfPredictedData)
 
 }
 
+string SimplePerceptron::getResult()
+{
+    return "Done";
+}
+
 /*
 QVector<double> SimplePerceptron::calcGraph(uint iterationIndex, std::vector<double> x1) {
     
@@ -137,3 +142,4 @@ QVector<double> SimplePerceptron::calcGraph(uint iterationIndex, std::vector<dou
     return x2;
 }
 */
+

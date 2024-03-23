@@ -23,6 +23,7 @@ public:
 
     void setup(vector<vector<double>> dataset, vector<double> weights, double learningRate);
     void learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData);
+    string getResult();
     std::string getName() {
         return "Simple Perceptron";
     };

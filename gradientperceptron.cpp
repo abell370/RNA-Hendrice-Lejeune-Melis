@@ -9,7 +9,10 @@
 using namespace std;
 
 
-GradientPerceptron::GradientPerceptron() {};
+GradientPerceptron::GradientPerceptron() 
+{
+	this->result = { .0, .0 };
+};
 
 
 void GradientPerceptron::setup(vector<vector<double>> dataset, vector<double> weights, double learningRate)
@@ -21,7 +24,7 @@ void GradientPerceptron::setup(vector<vector<double>> dataset, vector<double> we
 
 void GradientPerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData) {
 	this->reset(); // empty iterations
-	if (minMeanQuadraticError != 0.0)
+	if (minMeanQuadraticError != NULL)
 	{
 		this->loopOnIterations(minMeanQuadraticError, maxIter, indexOfPredictedData);
 	}
@@ -35,9 +38,13 @@ void GradientPerceptron::loopOnIterations(float minErrorAccepted, int maxEpoc, i
 {
     for (int i = 1; i <= maxEpoc; i++)
     {
-        cout << "Iteration : [" << i << "]" << endl;
-        if (this->executeOneIteration(indexOfPredicted) < minErrorAccepted) break;
-        cout << "--------" << endl;
+		double eMoy = this->executeOneIteration(indexOfPredicted);
+		this->result[0] = i;
+		if (eMoy < minErrorAccepted)
+		{
+			this->result[1] = eMoy;
+			break;
+		}
     }
 }
 
@@ -45,11 +52,13 @@ void GradientPerceptron::loopWhileErrorNotNull(int maxEpoc, int indexOfPredicted
 {
     for (int i = 1; i <= maxEpoc; i++)
     {
-        cout << "Iteration : [" << i << "]" << endl;
-        this->executeOneIteration(indexOfPredicted);
-        if (this->nbErreurs == 0) break;
-        cout << "Nb errors [" << this->nbErreurs << "]" << endl;
-        cout << "--------" << endl;
+		double eMoy = this->executeOneIteration(indexOfPredicted);
+		this->result[0] = i;
+		if (this->nbErreurs == 0)
+		{
+			this->result[1] = eMoy;
+			break;
+		}
     }
 }
 
@@ -109,6 +118,11 @@ double GradientPerceptron::calculMeanQuadratic(int indexOfPredictedData)
 	}
 	double eMoy = (0.5 * E) / data.size();
 	return eMoy;
+}
+
+string GradientPerceptron::getResult()
+{
+	return "nbIter= " + to_string(this->result[0]) + " eMoy= " + to_string(this->result[1]);
 }
 
 /*

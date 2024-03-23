@@ -9,7 +9,10 @@
 using namespace std;
 
 
-AdalinePerceptron::AdalinePerceptron() {};
+AdalinePerceptron::AdalinePerceptron() 
+{
+	this->result = { .0, .0 };
+};
 
 void AdalinePerceptron::setup(vector<vector<double>> dataset, vector<double> weights, double learningRate)
 {
@@ -20,7 +23,7 @@ void AdalinePerceptron::setup(vector<vector<double>> dataset, vector<double> wei
 
 void AdalinePerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData) {
     this->reset(); // empty iterations
-	if (minMeanQuadraticError != 0.0)
+	if (minMeanQuadraticError != NULL)
 	{
 		this->loopOnIterations(minMeanQuadraticError, maxIter, indexOfPredictedData);
 	}
@@ -35,9 +38,13 @@ void AdalinePerceptron::loopOnIterations(float minErrorAccepted, int maxEpoc, in
 {
 	for (int i = 1; i <= maxEpoc; i++)
 	{
-		cout << "Iteration : [" << i << "]" << endl;
-		if (this->executeOneIteration(indexOfPredictedData) < minErrorAccepted) break;
-		cout << "--------" << endl;
+		double eMoy = this->executeOneIteration(indexOfPredictedData);
+		this->result[0] = i;
+		if (eMoy < minErrorAccepted)
+		{
+			this->result[1] = eMoy;
+			break;
+		}
 	}
 }
 
@@ -45,10 +52,13 @@ void AdalinePerceptron::loopWhileErrorNotNull(int maxEpoc, int indexOfPredictedD
 {
 	for (int i = 1; i <= maxEpoc; i++)
 	{
-		cout << "Iteration : [" << i << "]" << endl;
-		this->executeOneIteration(indexOfPredictedData);
-		if (this->nbErreurs == 0) break;
-		cout << "--------" << endl;
+		double eMoy = this->executeOneIteration(indexOfPredictedData);
+		this->result[0] = i;
+		if (this->nbErreurs == 0)
+		{
+			this->result[1] = eMoy;
+			break;
+		}
 	}
 }
 
@@ -99,6 +109,11 @@ double AdalinePerceptron::calculMeanQuadratic(int indexOfPredictedData)
 	}
 	double eMoy = (0.5 * E) / data.size();
 	return eMoy;
+}
+
+string AdalinePerceptron::getResult()
+{
+	return "nbIter= "+to_string(this->result[0])+" eMoy= "+ to_string(this->result[1]);
 }
 /*
 QVector<double> AdalinePerceptron::calcGraph(uint iterationIndex, std::vector<double> x1) {

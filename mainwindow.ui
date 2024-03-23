@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>868</width>
+    <width>866</width>
     <height>734</height>
    </rect>
   </property>
@@ -28,7 +28,7 @@
       <enum>QLayout::SetNoConstraint</enum>
      </property>
      <item>
-      <layout class="QHBoxLayout" name="options" stretch="2,2,0,1,1">
+      <layout class="QHBoxLayout" name="options" stretch="2,2,0,1,1,0">
        <item>
         <layout class="QVBoxLayout" name="learningModelLayout">
          <item>
@@ -124,6 +124,27 @@
          </item>
          <item>
           <widget class="QLineEdit" name="errorThresholdInput">
+           <property name="text">
+            <string>0</string>
+           </property>
+           <property name="placeholderText">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="errorThresholdLayout_2">
+         <item>
+          <widget class="QLabel" name="nbClassInput_label">
+           <property name="text">
+            <string>Nb class</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="nbClassInput">
            <property name="text">
             <string>0</string>
            </property>
@@ -332,7 +353,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>868</width>
+     <width>866</width>
      <height>22</height>
     </rect>
    </property>

@@ -18,7 +18,7 @@ private:
 public:
     MainController(vector<string> pathToDataSets, vector<string> learningModelsList);
 
-    void startLearning(int modelIndex, string pathToData, double learningRate, int maxIter, double errorThreshold);
+    void startLearning(int modelIndex, string pathToData, double learningRate, int maxIter, double errorThreshold, int nbClass);
     QVector<double> calcGraph(uint iterationIndex, std::vector<double> x1);
     void reset();
 
@@ -26,6 +26,8 @@ public:
     vector<string> getLearningModels();
     vector<string> getDataSets();
     DataSet getDataSet(int ds);
+
+
     /*
     Iteration getIteration(uint iter);
     bool hasIterations();
