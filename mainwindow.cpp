@@ -1,8 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "maincontroller.h"
+
 #include <QtGlobal>
 #include <QVector>
+#include <qlineseries.h>
+#include <qchartview.h>
+#include <qscatterseries.h>
+#include <qlayout.h>
 
 MainWindow::MainWindow(MainController* mainController, QWidget* parent)
     : QMainWindow(parent)
@@ -11,13 +16,28 @@ MainWindow::MainWindow(MainController* mainController, QWidget* parent)
     model = new QStandardItemModel();
 
     ui->setupUi(this);
+    this->insertChart();
 
     this->selectedIteration = 0;
     this->selectedDataSet = 0;
-    /*
-    ui->learningModelComboBox->addItems(mainController->getLearningModels());
-    ui->dataSetComboBox->addItems(mainController->getDataSets());
+    
+    QList<QString> lmNames;
+    vector<string> models = mainController->getLearningModels();
+    lmNames.reserve(models.size());
+    for (uint i = 0; i < models.size(); i++) {
+        lmNames.push_back(QString::fromStdString(models[i]));
+    }
+    ui->learningModelComboBox->addItems(lmNames);
 
+    QList<QString> dsNames;
+    vector<string> dataSets = mainController->getDataSets();
+    dsNames.reserve(dataSets.size());
+    for (uint i = 0; i < dataSets.size(); i++) {
+        dsNames.push_back(QString::fromStdString(dataSets[i]));
+    }
+    ui->dataSetComboBox->addItems(dsNames);
+
+    /*
     ui->iterationSteps->setEditTriggers(QAbstractItemView::NoEditTriggers);
     model->setHorizontalHeaderLabels({ "k","w0","w1","w2","x0","x1","x2","y","d","e" });
     
@@ -29,6 +49,38 @@ MainWindow::MainWindow(MainController* mainController, QWidget* parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::insertChart()
+{
+    QLineSeries* identitySeries = new QLineSeries();
+    for (int x = 0; x <= 10; ++x) {
+        identitySeries->append(x, x);
+    }
+    identitySeries->setName("Identity Function");
+
+    QScatterSeries* randomSeries = new QScatterSeries();
+    for (int i = 0; i < 10; ++i) {
+        QPoint point(i, rand() % 10); // Generate random points
+        randomSeries->append(point);
+    }
+    randomSeries->setName("Random Points");
+
+    QChart* chart = new QChart();
+    chart->addSeries(identitySeries);
+    chart->addSeries(randomSeries);
+    chart->setTitle("Simple Line Chart");
+    chart->createDefaultAxes();
+    QChartView* chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+    QWidget* chartWidget = ui->chart;
+
+    if (chartWidget) {
+        QVBoxLayout* chartLayout = new QVBoxLayout();
+        chartLayout->addWidget(chartView);
+        chartWidget->setLayout(chartLayout);
+    }
+
 }
 
 void MainWindow::updateDataSetPlot() {
@@ -118,22 +170,24 @@ void MainWindow::updateIterationValues() {
 
 void MainWindow::on_startBtn_clicked()
 {
-    /*
+    
     try{
         int maxIter = ui->maxIterInput->text().toInt();
         double errorThreshold = ui->errorThresholdInput->text().toDouble();
         double learningRate = ui->learningRateInput->text().toDouble();
+        int modelIndex = ui->learningModelComboBox->currentIndex();
+        QString dataset = ui->dataSetComboBox->property("currentText").toString();
 
         ui->learningModelStatus->setText("Learning...");
         ui->learningModelStatus->setStyleSheet("QLabel {color: orange;}");
 
-        mainController->startLearning(selectedLM, selectedDataSet, learningRate, maxIter, errorThreshold);
+        mainController->startLearning(modelIndex, dataset.toStdString(), learningRate, maxIter, errorThreshold);
 
         ui->learningModelStatus->setText("Ready");
         ui->learningModelStatus->setStyleSheet("QLabel {color: green;}");
 
 
-        ui->iterationMaxLabel->setText(QString("of %1").arg(mainController->iterationsSize(selectedLM) - 1));
+        //ui->iterationMaxLabel->setText(QString("of %1").arg(mainController->iterationsSize(selectedLM) - 1));
 
         selectedIteration = 0;
 
@@ -142,7 +196,7 @@ void MainWindow::on_startBtn_clicked()
         ui->learningModelStatus->setText("Error");
         ui->learningModelStatus->setStyleSheet("QLabel {color: red;}");
     }
-*/
+
 }
 
 void MainWindow::on_firstStepBtn_clicked()

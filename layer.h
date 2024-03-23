@@ -11,7 +11,7 @@ class Layer
 {
 
 public:
-    Layer(vector<vector<double>> dataset, string model, int amountOfNeurons, double learningRate);
+    Layer(vector<vector<double>> dataset, int modelIndex, int amountOfNeurons, double learningRate);
     ~Layer();
 
     void learn(int maxIter, double minMeanQuadraticError);

@@ -46,6 +46,7 @@ private:
     uint selectedDataSet;
     uint selectedLM;
 
+    void insertChart();
     void updateDataSetPlot();
     void updateLMGraph();
     void updateIterationValues();

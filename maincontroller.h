@@ -11,20 +11,22 @@ using namespace std;
 class MainController
 {
 private:
+    vector<string> pathToDataSets, learningModelsList;
     vector<DataSet> dataSets;
     Layer* neurons;
 
 public:
-    MainController(std::vector<DataSet> dataSets);
+    MainController(vector<string> pathToDataSets, vector<string> learningModelsList);
 
-    void startLearning(string learningModelName, string pathToData, double learningRate, int maxIter, double errorThreshold);
+    void startLearning(int modelIndex, string pathToData, double learningRate, int maxIter, double errorThreshold);
     QVector<double> calcGraph(uint iterationIndex, std::vector<double> x1);
     void reset();
 
-    /*
-    QList<QString> getLearningModels();
-    QList<QString> getDataSets();
+    
+    vector<string> getLearningModels();
+    vector<string> getDataSets();
     DataSet getDataSet(int ds);
+    /*
     Iteration getIteration(uint iter);
     bool hasIterations();
     unsigned int iterationsSize();

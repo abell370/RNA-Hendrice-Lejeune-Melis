@@ -11,13 +11,13 @@ class LearningModelFactory
 public:
     ~LearningModelFactory() {};
 
-    static LearningModel* create(string className)
+    static LearningModel* create(int modelIndex)
     {
-        if (className == "Adaline")
+        if (modelIndex == 0)
         {
             return new AdalinePerceptron();
         }
-        else if (className == "Gradient")
+        else if (modelIndex == 1)
         {
             return new GradientPerceptron();
         }

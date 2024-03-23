@@ -1,12 +1,12 @@
 ﻿#include "layer.h"
 #include "learningmodelfactory.h"
 
-Layer::Layer(vector<vector<double>> dataset, string model, int amountOfNeurons, double learningRate) : dataset(dataset), learningRate(learningRate)
+Layer::Layer(vector<vector<double>> dataset, int modelIndex, int amountOfNeurons, double learningRate) : dataset(dataset), learningRate(learningRate)
 {
     int numberOfWeights = dataset[0].size() - amountOfNeurons;
     for (int i = 0; i < amountOfNeurons; i++)
     {
-        LearningModel* neuron = LearningModelFactory::create(model);
+        LearningModel* neuron = LearningModelFactory::create(modelIndex);
         neuron->setup(dataset, this->generateWeightVector(numberOfWeights, false), learningRate);
         this->neurons.push_back(neuron);
     }
