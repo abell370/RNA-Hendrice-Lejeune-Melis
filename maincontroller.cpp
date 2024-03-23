@@ -22,7 +22,7 @@ void MainController::reset() {
     this->neurons->reset();
 }
 
-
+/*
 QList<QString> MainController::getLearningModels() {
     QList<QString> lmNames = { "Adaline", "Gradient", "Simple" };
     return lmNames;
@@ -37,7 +37,7 @@ QList<QString> MainController::getDataSets() {
     return dsNames;
 }
 
-DataSet MainController::getDataSet(uint ds) {
+DataSet MainController::getDataSet(int ds) {
     return dataSets[ds];
 }
 

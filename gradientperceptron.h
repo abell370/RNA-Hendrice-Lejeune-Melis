@@ -7,17 +7,14 @@ using namespace std;
 class GradientPerceptron : public LearningModel
 {
 public:
-    GradientPerceptron();
-    ~GradientPerceptron() {};
 
-    void loopOnIterations(float minErrorAccepted, int maxEpoc);
-    void loopWhileErrorNotNull(int maxEpoc);
+    GradientPerceptron();
+    ~GradientPerceptron();
 
     void setup(vector<vector<double>> dataset, vector<double> weights, double learningRate);
     void learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData);
-    QVector<double> calcGraph(uint iterationIndex, std::vector<double> x1);
     std::string getName() {
-        return "Adaline Perceptron";
+        return "Gradient Perceptron";
     };
 
 private:
@@ -26,6 +23,9 @@ private:
     vector<double> weights;
     vector<vector<double>> data; // avec entr e fictive x0 ([x0,x1,x2,d])
 
-    double executeOneIteration();
+    void loopOnIterations(float minErrorAccepted, int maxEpoc, int indexOfPredicted);
+    void loopWhileErrorNotNull(int maxEpoc, int indexOfPredicted);
+    double executeOneIteration(int indexOfPredicted);
+    double calculMeanQuadratic(int indexOfPredictedData);
 };
 

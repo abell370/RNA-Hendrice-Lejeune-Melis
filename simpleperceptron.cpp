@@ -8,9 +8,7 @@
 #include <iterator>
 using namespace std;
 
-SimplePerceptron::SimplePerceptron() {
 
-}
 void SimplePerceptron::setup(vector<vector<double>> dataset, vector<double> weights, double learningRate)
 {
     this->n = learningRate;
@@ -20,33 +18,41 @@ void SimplePerceptron::setup(vector<vector<double>> dataset, vector<double> weig
 
 void SimplePerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData) {
     this->reset(); // empty iterations
-    this->loopOnIterations(minMeanQuadraticError, maxIter);
+    if (minMeanQuadraticError != 0.0)
+    {
+        this->loopOnIterations(minMeanQuadraticError, maxIter, indexOfPredictedData);
+    }
+    else
+    {
+        this->loopWhileErrorNotNull(maxIter, indexOfPredictedData);
+    }
 }
 
-void SimplePerceptron::loopOnIterations(float minErrorAccepted, int maxEpoc)
+void SimplePerceptron::loopOnIterations(float minErrorAccepted, int maxEpoc, int indexOfPredictedData)
 {
     for (int i = 1; i <= maxEpoc; i++)
     {
         cout << "Iteration : [" << i << "]" << endl;
-        if (this->executeOneIteration() < minErrorAccepted) break;
+        if (this->executeOneIteration(indexOfPredictedData) < minErrorAccepted) break;
         cout << "--------" << endl;
     }
 }
 
-void SimplePerceptron::loopWhileErrorNotNull(int maxEpoc)
+void SimplePerceptron::loopWhileErrorNotNull(int maxEpoc, int indexOfPredictedData)
 {
     for (int i = 1; i <= maxEpoc; i++)
     {
         cout << "Iteration : [" << i << "]" << endl;
-        this->executeOneIteration();
+        this->executeOneIteration(indexOfPredictedData);
         if (this->nbErreurs == 0) break;
         cout << "Nb errors [" << this->nbErreurs << "]" << endl;
         cout << "--------" << endl;
     }
 }
 
-double SimplePerceptron::executeOneIteration()
+double SimplePerceptron::executeOneIteration(int indexOfPredictedData)
 {
+    /*
     Iteration iter = Iteration();
     double errors = 0.0;
     nbErreurs = 0;
@@ -101,11 +107,14 @@ double SimplePerceptron::executeOneIteration()
 
     this->addIteration(iter);
     return eMeanQuad;
+    */
+    return 0.0;
+
 }
 
-
+/*
 QVector<double> SimplePerceptron::calcGraph(uint iterationIndex, std::vector<double> x1) {
-    /*
+    
         To calc line equation
 
         w0*x0 + w1*x1 + x2*w2 = 0
@@ -113,7 +122,7 @@ QVector<double> SimplePerceptron::calcGraph(uint iterationIndex, std::vector<dou
         so, for each given x1 we need to find x2
 
         x2 = (-w0*x0 - w1*x1)/w2
-    */
+    
     QVector<double> x2 = QVector<double>(x1.size());
 
     if (iterationIndex < this->getIterations().size()) {
@@ -127,3 +136,4 @@ QVector<double> SimplePerceptron::calcGraph(uint iterationIndex, std::vector<dou
 
     return x2;
 }
+*/

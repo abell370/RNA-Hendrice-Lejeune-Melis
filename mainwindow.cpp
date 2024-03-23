@@ -32,7 +32,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::updateDataSetPlot() {
-    DataSet dataSet = mainController->getDataSet(selectedDataSet);
+    //DataSet dataSet = mainController->getDataSet(selectedDataSet);
     /*
     QCustomPlot *plot = ui->plot;
 

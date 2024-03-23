@@ -13,19 +13,18 @@ private:
     vector<double> weights;
     vector<vector<double>> data; // avec entr e fictive x0 ([x0,x1,x2,d])
 
-    double executeOneIteration();
+    void loopOnIterations(float minErrorAccepted, int maxEpoc, int indexOfPredictedData);
+    void loopWhileErrorNotNull(int maxEpoc, int indexOfPredictedData);
+    double executeOneIteration(int indexOfPredictedData);
 
 public:
-    SimplePerceptron();
-
-    void loopOnIterations(float minErrorAccepted, int maxEpoc);
-    void loopWhileErrorNotNull(int maxEpoc);
+    SimplePerceptron() {};
+    ~SimplePerceptron() {};
 
     void setup(vector<vector<double>> dataset, vector<double> weights, double learningRate);
     void learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData);
-    QVector<double> calcGraph(uint iterationIndex, std::vector<double> x1);
     std::string getName() {
-        return "Adaline Perceptron";
+        return "Simple Perceptron";
     };
 };
 

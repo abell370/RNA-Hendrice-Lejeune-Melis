@@ -1,17 +1,17 @@
-﻿#include "gradientPerceptron.h"
+﻿#include "gradientperceptron.h"
+
 #include <math.h>
 #include <iostream>
 #include <iterator>     // std::ostream_iterator
 #include <vector>       // std::vector
 #include <algorithm>    // std::copy
 #include <iterator>
-#include <vector>
-
 using namespace std;
 
-GradientPerceptron::GradientPerceptron() {
 
-}
+GradientPerceptron::GradientPerceptron() {};
+
+
 void GradientPerceptron::setup(vector<vector<double>> dataset, vector<double> weights, double learningRate)
 {
     this->n = learningRate;
@@ -20,96 +20,100 @@ void GradientPerceptron::setup(vector<vector<double>> dataset, vector<double> we
 }
 
 void GradientPerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData) {
-    this->reset(); // empty iterations
-    this->loopOnIterations(minMeanQuadraticError, maxIter);
+	this->reset(); // empty iterations
+	if (minMeanQuadraticError != 0.0)
+	{
+		this->loopOnIterations(minMeanQuadraticError, maxIter, indexOfPredictedData);
+	}
+	else
+	{
+		this->loopWhileErrorNotNull(maxIter, indexOfPredictedData);
+	}
 }
 
-void GradientPerceptron::loopOnIterations(float minErrorAccepted, int maxEpoc)
+void GradientPerceptron::loopOnIterations(float minErrorAccepted, int maxEpoc, int indexOfPredicted)
 {
     for (int i = 1; i <= maxEpoc; i++)
     {
         cout << "Iteration : [" << i << "]" << endl;
-        if (this->executeOneIteration() < minErrorAccepted) break;
+        if (this->executeOneIteration(indexOfPredicted) < minErrorAccepted) break;
         cout << "--------" << endl;
     }
 }
 
-void GradientPerceptron::loopWhileErrorNotNull(int maxEpoc)
+void GradientPerceptron::loopWhileErrorNotNull(int maxEpoc, int indexOfPredicted)
 {
     for (int i = 1; i <= maxEpoc; i++)
     {
         cout << "Iteration : [" << i << "]" << endl;
-        this->executeOneIteration();
+        this->executeOneIteration(indexOfPredicted);
         if (this->nbErreurs == 0) break;
         cout << "Nb errors [" << this->nbErreurs << "]" << endl;
         cout << "--------" << endl;
     }
 }
 
-double GradientPerceptron::executeOneIteration()
+double GradientPerceptron::executeOneIteration(int indexOfPredicted)
 {
-    /*
-    Iteration iter = Iteration();
-    double errors = 0.0;
-    nbErreurs = 0;
-    size_t K = this->data.size();
-    cout << "Weights used : " << endl;
-    copy(begin(this->weights), end(this->weights), ostream_iterator<float>(cout, ", "));
-    cout << "" << endl;
-    for (uint k = 0; k < K; k++) {
-        double y = 0;
-        int s = 0;
-        for (uint j = 0; j < this->weights.size(); j++) {
-            y += this->weights[j] * this->data[k][j];
-        }
-        int d = this->data[k][this->weights.size()];
-        double e = d - y;
-        // seuillage
-        s = (y >= 0) ? 1 : -1;
-        // incr�mentation du nombre d'erreur SI erreur commise
-        //if (d != s) nbErreurs++;
-        if(d != s) iter.incrementError();
-        // correction des poids wi
-        for (uint w = 0; w < this->weights.size(); w++) {
-            this->weights[w] += this->n * e * this->data[k][w];
-        }
+	Iteration iter = Iteration();
+	this->nbErreurs = 0;
+	int weightsSize = this->weights.size();
+	vector<double> wCorrections(weightsSize);
+	for (uint k = 0; k < this->data.size(); k++)
+	{
+		double y = 0.0;
+		for (int x = 0; x < weightsSize; x++)
+		{
+			y += this->weights[x] * this->data[k][x];
+		}
 
-        iter.addStep({
-            k,
-            std::vector<double>(this->weights),
-            this->data[k],
-            (double)y,
-            (double) d,
-            (double) e
-        });
-    }
-    // calcul erreur quadratique moyenne
-    for (uint k = 0; k < K; k++)
-    {
-        double y = 0.0;
-        for (uint j = 0; j < this->weights.size(); j++)
-        {
-            y += this->weights[j] * this->data[k][j];
-        }
-        float e = 0.0;
-        if (this->data[k][this->weights.size()] != y)
-        {
-            e = this->data[k][this->weights.size()] - y;
-        }
-        errors += pow(e, 2);
-    }
-    double eMeanQuad = 0.5 * (errors / K);
-    cout << "Quadratic mean error = " << eMeanQuad << endl;
+		// classification
+		int s = y >= 0 ? 1 : -1;
+		if (s != this->data[k][indexOfPredicted])
+		{
+			this->nbErreurs++;
+		}
 
-    this->addIteration(iter);
-    return eMeanQuad;
-*/
-    return 0.;
+		double e = this->data[k][indexOfPredicted] - y;
+		for (int i = 0; i < weightsSize; i++)
+		{
+			wCorrections[i] = wCorrections[i] + this->n * e * this->data[k][i];
+		}
+		iter.addStep({
+		  k,
+		  this->weights,
+		  this->data[k], y, this->data[k][indexOfPredicted], e
+		});
+	}
+
+	// correction wi
+	for (int w = 0; w < weightsSize; w++)
+	{
+		this->weights[w] = this->weights[w] + wCorrections[w];
+	}
+	this->addIteration(iter);
+	// eMoy quad
+	return this->calculMeanQuadratic(indexOfPredicted);
 }
 
 
-QVector<double> GradientPerceptron::calcGraph(uint iterationIndex, std::vector<double> x1) {
-    /*
+double GradientPerceptron::calculMeanQuadratic(int indexOfPredictedData)
+{
+	double E = 0.0;
+	for (vector<double> example : data) {
+		double y = 0.0;
+		for (int x = 0; x < this->weights.size(); x++) {
+			y += weights[x] * example[x];
+		}
+		E += pow(example[indexOfPredictedData] - y, 2);
+	}
+	double eMoy = (0.5 * E) / data.size();
+	return eMoy;
+}
+
+/*
+QVector<double> AdalinePerceptron::calcGraph(uint iterationIndex, std::vector<double> x1) {
+
         To calc line equation
 
         w0*x0 + w1*x1 + x2*w2 = 0
@@ -117,7 +121,7 @@ QVector<double> GradientPerceptron::calcGraph(uint iterationIndex, std::vector<d
         so, for each given x1 we need to find x2
 
         x2 = (-w0*x0 - w1*x1)/w2
-    */
+
     QVector<double> x2 = QVector<double>(x1.size());
 
     if (iterationIndex < this->getIterations().size()) {
@@ -131,5 +135,5 @@ QVector<double> GradientPerceptron::calcGraph(uint iterationIndex, std::vector<d
 
     return x2;
 }
-
+*/
 

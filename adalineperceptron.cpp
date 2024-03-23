@@ -20,93 +20,89 @@ void AdalinePerceptron::setup(vector<vector<double>> dataset, vector<double> wei
 
 void AdalinePerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData) {
     this->reset(); // empty iterations
-    this->loopOnIterations(minMeanQuadraticError, maxIter);
+	if (minMeanQuadraticError != 0.0)
+	{
+		this->loopOnIterations(minMeanQuadraticError, maxIter, indexOfPredictedData);
+	}
+	else
+	{
+		this->loopWhileErrorNotNull(maxIter, indexOfPredictedData);
+	}
 }
 
 
-void AdalinePerceptron::loopOnIterations(float minErrorAccepted, int maxEpoc)
+void AdalinePerceptron::loopOnIterations(float minErrorAccepted, int maxEpoc, int indexOfPredictedData)
 {
-    for (int i = 1; i <= maxEpoc; i++)
-    {
-        cout << "Iteration : [" << i << "]" << endl;
-        if (this->executeOneIteration() < minErrorAccepted) break;
-        cout << "--------" << endl;
-    }
+	for (int i = 1; i <= maxEpoc; i++)
+	{
+		cout << "Iteration : [" << i << "]" << endl;
+		if (this->executeOneIteration(indexOfPredictedData) < minErrorAccepted) break;
+		cout << "--------" << endl;
+	}
 }
 
-void AdalinePerceptron::loopWhileErrorNotNull(int maxEpoc)
+void AdalinePerceptron::loopWhileErrorNotNull(int maxEpoc, int indexOfPredictedData)
 {
-    for (int i = 1; i <= maxEpoc; i++)
-    {
-        cout << "Iteration : [" << i << "]" << endl;
-        this->executeOneIteration();
-        if (this->nbErreurs == 0) break;
-        cout << "Nb errors [" << this->nbErreurs << "]" << endl;
-        cout << "--------" << endl;
-    }
+	for (int i = 1; i <= maxEpoc; i++)
+	{
+		cout << "Iteration : [" << i << "]" << endl;
+		this->executeOneIteration(indexOfPredictedData);
+		if (this->nbErreurs == 0) break;
+		cout << "--------" << endl;
+	}
 }
 
-double AdalinePerceptron::executeOneIteration()
+double AdalinePerceptron::executeOneIteration(int indexOfPredictedData)
 {
-    Iteration iter = Iteration();
-    double errors = 0.0;
-    nbErreurs = 0;
-    size_t K = this->data.size();
-    cout << "Weights used : " << endl;
-    copy(begin(this->weights), end(this->weights), ostream_iterator<float>(cout, ", "));
-    cout << "" << endl;
-    for (uint k = 0; k < K; k++) {
-        double y = 0;
-        int s = 0;
-        for (uint j = 0; j < this->weights.size(); j++) {
-            y += this->weights[j] * this->data[k][j];
-        }
-        int d = this->data[k][this->weights.size()];
-        double e = d - y;
-        // seuillage
-        s = (y >= 0) ? 1 : -1;
-        // incrémentation du nombre d'erreur SI erreur commise
-        //if (d != s) nbErreurs++;
-        if (d != s) iter.incrementError();
-        // correction des poids wi
-        for (uint w = 0; w < this->weights.size(); w++) {
-            this->weights[w] += this->n * e * this->data[k][w];
-        }
+	Iteration iter = Iteration();
+	this->nbErreurs = 0;
+	int weightsSize  = this->weights.size();
+	for (uint k = 0; k < this->data.size(); k++)
+	{
+		double potential = 0.0;
+		for (int x = 0; x < weightsSize; x++)
+		{
+			potential += this->weights[x] * this->data[k][x];
+		}
+		int s = potential >= 0 ? 1 : -1;
+		//  example[weightsSize] = predicted
+		if (s != this->data[k][indexOfPredictedData])
+		{
+			this->nbErreurs += 1;
+		}
+		double localError = this->data[k][indexOfPredictedData] - potential;
 
-        iter.addStep({
-            k,
-            std::vector<double>(this->weights),
-            this->data[k],
-            (double)y,
-            (double)d,
-            (double)e
-            });
-    }
-    // calcul erreur quadratique moyenne
-    for (uint k = 0; k < K; k++)
-    {
-        double y = 0.0;
-        for (uint j = 0; j < this->weights.size(); j++)
-        {
-            y += this->weights[j] * this->data[k][j];
-        }
-        float e = 0.0;
-        if (this->data[k][this->weights.size()] != y)
-        {
-            e = this->data[k][this->weights.size()] - y;
-        }
-        errors += pow(e, 2);
-    }
-    double eMeanQuad = 0.5 * (errors / K);
-    cout << "Quadratic mean error = " << eMeanQuad << endl;
+		iter.addStep({
+		  k,
+		  this->weights,
+		  this->data[k], potential, this->data[k][indexOfPredictedData], localError
+		});
 
-    this->addIteration(iter);
-    return eMeanQuad;
+		for (int x = 0; x < weightsSize; x++)
+		{
+			this->weights[x] += this->n * localError * this->data[k][x];
+		}
+	}
+	this->addIteration(iter);
+	return this->calculMeanQuadratic(indexOfPredictedData);
 }
 
-
+double AdalinePerceptron::calculMeanQuadratic(int indexOfPredictedData)
+{
+	double E = 0.0;
+	for (vector<double> example : data) {
+		double y = 0.0;
+		for (int x = 0; x < this->weights.size(); x++) {
+			y += this->weights[x] * example[x];
+		}
+		E += pow(example[indexOfPredictedData] - y, 2);
+	}
+	double eMoy = (0.5 * E) / data.size();
+	return eMoy;
+}
+/*
 QVector<double> AdalinePerceptron::calcGraph(uint iterationIndex, std::vector<double> x1) {
-    /*
+    
         To calc line equation
 
         w0*x0 + w1*x1 + x2*w2 = 0
@@ -114,7 +110,7 @@ QVector<double> AdalinePerceptron::calcGraph(uint iterationIndex, std::vector<do
         so, for each given x1 we need to find x2
 
         x2 = (-w0*x0 - w1*x1)/w2
-    */
+    
     QVector<double> x2 = QVector<double>(x1.size());
 
     if (iterationIndex < this->getIterations().size()) {
@@ -128,4 +124,5 @@ QVector<double> AdalinePerceptron::calcGraph(uint iterationIndex, std::vector<do
 
     return x2;
 }
+*/
 

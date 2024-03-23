@@ -53,6 +53,9 @@
     <ClCompile Include="simpleperceptron.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="csvreader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="adalineperceptron.h">
@@ -80,6 +83,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="simpleperceptron.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="csvreader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

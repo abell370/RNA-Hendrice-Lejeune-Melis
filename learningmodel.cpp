@@ -16,6 +16,3 @@ void LearningModel::reset() {
     this->iterations.clear();
 }
 
-QVector<double> LearningModel::calcGraph(unsigned int iterationIndex, std::vector<double> x1) {
-    return QVector<double>();
-}

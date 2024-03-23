@@ -21,12 +21,14 @@ public:
     QVector<double> calcGraph(uint iterationIndex, std::vector<double> x1);
     void reset();
 
+    /*
     QList<QString> getLearningModels();
     QList<QString> getDataSets();
-    DataSet getDataSet(uint ds);
+    DataSet getDataSet(int ds);
     Iteration getIteration(uint iter);
     bool hasIterations();
     unsigned int iterationsSize();
+    */
 };
 
 #endif // MAINCONTROLLER_H
