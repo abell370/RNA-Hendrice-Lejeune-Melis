@@ -9,10 +9,7 @@
 using namespace std;
 
 
-GradientPerceptron::GradientPerceptron() 
-{
-	this->result = { .0, .0 };
-};
+GradientPerceptron::GradientPerceptron() : result({ .0, .0 }) {};
 
 
 void GradientPerceptron::setup(vector<vector<double>> dataset, vector<double> weights, double learningRate)
@@ -22,47 +19,34 @@ void GradientPerceptron::setup(vector<vector<double>> dataset, vector<double> we
     this->weights = weights;
 }
 
-void GradientPerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData) {
+void GradientPerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, ActivationFunction* activation) {
 	this->reset(); // empty iterations
-	if (minMeanQuadraticError != NULL)
+	for (int i = 0; i < maxIter; i++)
 	{
-		this->loopOnIterations(minMeanQuadraticError, maxIter, indexOfPredictedData);
-	}
-	else
-	{
-		this->loopWhileErrorNotNull(maxIter, indexOfPredictedData);
-	}
-}
-
-void GradientPerceptron::loopOnIterations(float minErrorAccepted, int maxEpoc, int indexOfPredicted)
-{
-    for (int i = 1; i <= maxEpoc; i++)
-    {
-		double eMoy = this->executeOneIteration(indexOfPredicted);
+		double eMoy = this->executeOneIteration(indexOfPredictedData,activation);
 		this->result[0] = i;
 		this->result[1] = eMoy;
-		if (eMoy < minErrorAccepted)
+
+		if (minMeanQuadraticError != NULL)
 		{
-			break;
+
+			if (eMoy < minMeanQuadraticError)
+			{
+				break;
+			}
 		}
-    }
+		else
+		{
+			if (this->nbErreurs == 0)
+			{
+				break;
+			}
+		}
+	}
+
 }
 
-void GradientPerceptron::loopWhileErrorNotNull(int maxEpoc, int indexOfPredicted)
-{
-    for (int i = 1; i <= maxEpoc; i++)
-    {
-		double eMoy = this->executeOneIteration(indexOfPredicted);
-		this->result[0] = i;
-		this->result[1] = eMoy;
-		if (this->nbErreurs == 0)
-		{
-			break;
-		}
-    }
-}
-
-double GradientPerceptron::executeOneIteration(int indexOfPredicted)
+double GradientPerceptron::executeOneIteration(int indexOfPredicted, ActivationFunction* activation)
 {
 	Iteration iter = Iteration();
 	this->nbErreurs = 0;
@@ -70,12 +54,12 @@ double GradientPerceptron::executeOneIteration(int indexOfPredicted)
 	vector<double> wCorrections(weightsSize);
 	for (uint k = 0; k < this->data.size(); k++)
 	{
-		double y = 0.0;
+		double p = 0.0;
 		for (int x = 0; x < weightsSize; x++)
 		{
-			y += this->weights[x] * this->data[k][x];
+			p += this->weights[x] * this->data[k][x];
 		}
-
+		double y = activation->compute(p);
 		// classification
 		int s = y >= 0 ? 1 : -1;
 		if (s != this->data[k][indexOfPredicted])

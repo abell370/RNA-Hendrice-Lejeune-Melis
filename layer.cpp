@@ -1,5 +1,7 @@
 ﻿#include "layer.h"
 #include "learningmodelfactory.h"
+#include "activationfunction.h"
+#include "identityactivation.h"
 
 Layer::Layer(vector<vector<double>> dataset, int modelIndex, int amountOfNeurons, double learningRate, int nbEntry) : dataset(dataset), learningRate(learningRate)
 {
@@ -18,7 +20,7 @@ vector<double> Layer::generateWeightVector(int size, bool randomised)
 }
 
 
-void Layer::learn(int maxIter, double minMeanQuadraticError)
+void Layer::learn(int maxIter, double minMeanQuadraticError, ActivationFunction* function)
 {
     for (int i = 0; i < this->neurons.size(); i++)
     {
@@ -35,7 +37,8 @@ void Layer::learn(int maxIter, double minMeanQuadraticError)
 
         */
         int indexOfPredictedOutput = this->dataset[0].size() - (this->neurons.size() - i);
-        this->neurons[i]->learn(maxIter, minMeanQuadraticError, indexOfPredictedOutput);
+        // TODO utiliser le paramètre activation
+        this->neurons[i]->learn(maxIter, minMeanQuadraticError, indexOfPredictedOutput, function);
     }
 }
 

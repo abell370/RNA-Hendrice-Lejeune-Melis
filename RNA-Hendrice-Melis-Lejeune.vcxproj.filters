@@ -59,6 +59,18 @@
     <ClCompile Include="concretlayerbuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="stochastiqueactivation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="identityactivation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="activationfunction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="deeplearning.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="adalineperceptron.h">
@@ -98,6 +110,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="concretlayerbuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="activationfunction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stochastiqueactivation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="identityactivation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="deeplearning.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

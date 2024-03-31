@@ -1,6 +1,7 @@
 #include "maincontroller.h"
 #include "csvreader.h"
 #include "layer.h"
+#include "identityactivation.h"
 
 MainController::MainController(vector<string> pathToDataSets, vector<string> learningModelsList) : pathToDataSets(pathToDataSets), learningModelsList(learningModelsList) {};
 
@@ -23,7 +24,8 @@ void MainController::startLearning(int modelIndex, string pathToData, double lea
             point.insert(point.begin(), 1);
         }
         this->neurons = new Layer(data, modelIndex, nbClass, learningRate, nbEntry);
-        this->neurons->learn(maxIter, errorThreshold == 0.0 ? NULL : errorThreshold);
+        IdentityActivation* identity = new IdentityActivation();
+        this->neurons->learn(maxIter, errorThreshold == 0.0 ? NULL : errorThreshold, identity);
         string result = this->neurons->getResult(); // debug pour voir le résultat
     }
    

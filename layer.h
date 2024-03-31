@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "learningmodel.h"
+#include "activationfunction.h"
 
 using namespace std;
 
@@ -14,7 +15,7 @@ public:
     Layer(vector<vector<double>> dataset, int modelIndex, int amountOfNeurons, double learningRate, int nbEntry);
     ~Layer();
 
-    void learn(int maxIter, double minMeanQuadraticError);
+    void learn(int maxIter, double minMeanQuadraticError, ActivationFunction* activation);
     string getResult();
     void reset();
 

@@ -5,6 +5,7 @@
 #include "dataset.h"
 #include "iteration.h"
 #include "layer.h"
+#include "identityactivation.h"
 
 using namespace std;
 

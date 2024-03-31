@@ -16,7 +16,7 @@ void SimplePerceptron::setup(vector<vector<double>> dataset, vector<double> weig
     this->weights = weights;
 }
 
-void SimplePerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData) {
+void SimplePerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, ActivationFunction* activFunction) {
     this->reset(); // empty iterations
     if (minMeanQuadraticError != NULL)
     {

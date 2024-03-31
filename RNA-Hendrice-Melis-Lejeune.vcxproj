@@ -17,11 +17,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="activationfunction.cpp" />
     <ClCompile Include="adalineperceptron.cpp" />
     <ClCompile Include="concretlayerbuilder.cpp" />
     <ClCompile Include="csvreader.cpp" />
     <ClCompile Include="dataset.cpp" />
+    <ClCompile Include="deeplearning.cpp" />
     <ClCompile Include="gradientperceptron.cpp" />
+    <ClCompile Include="identityactivation.cpp" />
     <ClCompile Include="iteration.cpp" />
     <ClCompile Include="layer.cpp" />
     <ClCompile Include="learningmodel.cpp" />
@@ -29,13 +32,18 @@
     <ClCompile Include="maincontroller.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="simpleperceptron.cpp" />
+    <ClCompile Include="stochastiqueactivation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="activationfunction.h" />
     <ClInclude Include="adalineperceptron.h" />
     <ClInclude Include="concretlayerbuilder.h" />
     <ClInclude Include="csvreader.h" />
     <ClInclude Include="dataset.h" />
+    <ClInclude Include="deeplearning.h" />
     <ClInclude Include="gradientperceptron.h" />
+    <ClInclude Include="identityactivation.h" />
+    <ClInclude Include="stochastiqueactivation.h" />
     <QtMoc Include="graphwidget.h" />
     <ClInclude Include="iteration.h" />
     <ClInclude Include="layer.h" />

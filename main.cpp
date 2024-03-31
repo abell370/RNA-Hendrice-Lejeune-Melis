@@ -6,13 +6,14 @@
 #include <fstream>
 
 #include <filesystem>
+#include "deeplearning.h"
 
 using namespace std::filesystem;
 using namespace std;
 
 int main(int argc, char* argv[])
 {
-
+    /*
     // TODO à sortir de la fonction
     path directorypath = "data/";
     vector<string> pathToData = {};
@@ -31,6 +32,15 @@ int main(int argc, char* argv[])
     w.show();
     return a.exec();
    
-    
+    */
+    vector<vector<double>> dataset = {
+      {1.,0.9,0.1,0.9}
+    };
+    vector<double> etiquets = { 0.1, 0.9, 0.9 };
+
+    DeepLearning model(dataset, etiquets, { {0.,0.1,0.15,0.05},{0., 0.12,0.18,0.08} }, { {0.,0.1,0.14},{0.,0.125,0.21},{0.,0.13,0.07} }, 1.);
+    model.learn(2, 3, 0.184);
+    return 0;
+
 }
 

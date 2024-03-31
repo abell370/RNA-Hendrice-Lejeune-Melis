@@ -12,7 +12,7 @@ public:
     ~GradientPerceptron();
 
     void setup(vector<vector<double>> dataset, vector<double> weights, double learningRate);
-    void learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData);
+    void learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, ActivationFunction* activation);
     string getResult();
     std::string getName() {
         return "Gradient Perceptron";
@@ -24,9 +24,7 @@ private:
     vector<double> weights, result;
     vector<vector<double>> data; // avec entr e fictive x0 ([x0,x1,x2,d])
 
-    void loopOnIterations(float minErrorAccepted, int maxEpoc, int indexOfPredicted);
-    void loopWhileErrorNotNull(int maxEpoc, int indexOfPredicted);
-    double executeOneIteration(int indexOfPredicted);
+    double executeOneIteration(int indexOfPredicted, ActivationFunction* activation);
     double calculMeanQuadratic(int indexOfPredictedData);
 };
 

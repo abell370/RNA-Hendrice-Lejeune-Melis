@@ -21,71 +21,58 @@ void AdalinePerceptron::setup(vector<vector<double>> dataset, vector<double> wei
         this->weights = weights;
 }
 
-void AdalinePerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData) {
+void AdalinePerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, ActivationFunction* activation) {
     this->reset(); // empty iterations
-	if (minMeanQuadraticError != NULL)
+	for (int i = 0; i < maxIter; i++)
 	{
-		this->loopOnIterations(minMeanQuadraticError, maxIter, indexOfPredictedData);
-	}
-	else
-	{
-		this->loopWhileErrorNotNull(maxIter, indexOfPredictedData);
-	}
-}
-
-
-void AdalinePerceptron::loopOnIterations(float minErrorAccepted, int maxEpoc, int indexOfPredictedData)
-{
-	for (int i = 0; i < maxEpoc; i++)
-	{
-		double eMoy = this->executeOneIteration(indexOfPredictedData);
+		double eMoy = this->executeOneIteration(indexOfPredictedData, activation);
 		this->result[0] = i;
 		this->result[1] = eMoy;
-		if (eMoy < minErrorAccepted)
+
+		if (minMeanQuadraticError != NULL)
 		{
-			break;
+
+			if (eMoy < minMeanQuadraticError)
+			{
+				break;
+			}
+		}
+		else
+		{
+			if (this->nbErreurs == 0)
+			{
+				break;
+			}
 		}
 	}
+
 }
 
-void AdalinePerceptron::loopWhileErrorNotNull(int maxEpoc, int indexOfPredictedData)
-{
-	for (int i = 0; i < maxEpoc; i++)
-	{
-		double eMoy = this->executeOneIteration(indexOfPredictedData);
-		this->result[0] = i;
-		this->result[1] = eMoy;
-		if (this->nbErreurs == 0)
-		{
-			break;
-		}
-	}
-}
-
-double AdalinePerceptron::executeOneIteration(int indexOfPredictedData)
+double AdalinePerceptron::executeOneIteration(int indexOfPredictedData, ActivationFunction* activation)
 {
 	Iteration iter = Iteration();
 	this->nbErreurs = 0;
 	int weightsSize  = this->weights.size();
 	for (uint k = 0; k < this->data.size(); k++)
 	{
-		double potential = 0.0;
+		double p = 0.0;
 		for (int x = 0; x < weightsSize; x++)
 		{
-			potential += this->weights[x] * this->data[k][x];
+			p += this->weights[x] * this->data[k][x];
 		}
-		int s = potential >= 0 ? 1 : -1;
+		double y = activation->compute(p);
+		int s = y >= 0 ? 1 : -1;
 		//  example[weightsSize] = predicted
 		if (s != this->data[k][indexOfPredictedData])
 		{
 			this->nbErreurs += 1;
 		}
-		double localError = this->data[k][indexOfPredictedData] - potential;
+		double localError = this->data[k][indexOfPredictedData] - y;
 
 		iter.addStep({
 		  k,
 		  this->weights,
-		  this->data[k], potential, this->data[k][indexOfPredictedData], localError
+		  this->data[k], y, this->data[k][indexOfPredictedData], localError
 		});
 
 		for (int x = 0; x < weightsSize; x++)
