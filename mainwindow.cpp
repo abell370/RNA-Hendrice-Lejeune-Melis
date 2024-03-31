@@ -178,11 +178,12 @@ void MainWindow::on_startBtn_clicked()
         int modelIndex = ui->learningModelComboBox->currentIndex();
         QString dataset = ui->dataSetComboBox->property("currentText").toString();
         int nbClass = ui->nbClassInput->text().toInt();
+        int nbEntries = ui->nbEntryInput->text().toInt();
 
         ui->learningModelStatus->setText("Learning...");
         ui->learningModelStatus->setStyleSheet("QLabel {color: orange;}");
 
-        mainController->startLearning(modelIndex, dataset.toStdString(), learningRate, maxIter, errorThreshold, nbClass);
+        mainController->startLearning(modelIndex, dataset.toStdString(), learningRate, maxIter, errorThreshold, nbClass, nbEntries);
 
         ui->learningModelStatus->setText("Ready");
         ui->learningModelStatus->setStyleSheet("QLabel {color: green;}");

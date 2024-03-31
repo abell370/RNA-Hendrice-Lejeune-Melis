@@ -28,7 +28,7 @@
       <enum>QLayout::SetNoConstraint</enum>
      </property>
      <item>
-      <layout class="QHBoxLayout" name="options" stretch="2,2,0,1,1,0">
+      <layout class="QHBoxLayout" name="options" stretch="2,2,0,1,1,0,0">
        <item>
         <layout class="QVBoxLayout" name="learningModelLayout">
          <item>
@@ -145,6 +145,27 @@
          </item>
          <item>
           <widget class="QLineEdit" name="nbClassInput">
+           <property name="text">
+            <string>0</string>
+           </property>
+           <property name="placeholderText">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="errorThresholdLayout_3">
+         <item>
+          <widget class="QLabel" name="nbClassInput_label_2">
+           <property name="text">
+            <string>nb entry</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="nbEntryInput">
            <property name="text">
             <string>0</string>
            </property>

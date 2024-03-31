@@ -18,6 +18,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="adalineperceptron.cpp" />
+    <ClCompile Include="concretlayerbuilder.cpp" />
     <ClCompile Include="csvreader.cpp" />
     <ClCompile Include="dataset.cpp" />
     <ClCompile Include="gradientperceptron.cpp" />
@@ -31,12 +32,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="adalineperceptron.h" />
+    <ClInclude Include="concretlayerbuilder.h" />
     <ClInclude Include="csvreader.h" />
     <ClInclude Include="dataset.h" />
     <ClInclude Include="gradientperceptron.h" />
     <QtMoc Include="graphwidget.h" />
     <ClInclude Include="iteration.h" />
     <ClInclude Include="layer.h" />
+    <ClInclude Include="layerbuilder.h" />
     <ClInclude Include="learningmodel.h" />
     <ClInclude Include="learningmodelfactory.h" />
     <ClInclude Include="maincontroller.h" />

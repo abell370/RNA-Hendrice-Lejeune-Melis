@@ -40,9 +40,9 @@ void GradientPerceptron::loopOnIterations(float minErrorAccepted, int maxEpoc, i
     {
 		double eMoy = this->executeOneIteration(indexOfPredicted);
 		this->result[0] = i;
+		this->result[1] = eMoy;
 		if (eMoy < minErrorAccepted)
 		{
-			this->result[1] = eMoy;
 			break;
 		}
     }
@@ -54,9 +54,9 @@ void GradientPerceptron::loopWhileErrorNotNull(int maxEpoc, int indexOfPredicted
     {
 		double eMoy = this->executeOneIteration(indexOfPredicted);
 		this->result[0] = i;
+		this->result[1] = eMoy;
 		if (this->nbErreurs == 0)
 		{
-			this->result[1] = eMoy;
 			break;
 		}
     }

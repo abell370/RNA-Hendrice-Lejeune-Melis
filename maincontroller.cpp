@@ -11,18 +11,18 @@ QVector<double> MainController::calcGraph(uint iterationIndex, std::vector<doubl
 */
 
 
-void MainController::startLearning(int modelIndex, string pathToData, double learningRate, int maxIter, double errorThreshold, int nbClass)
+void MainController::startLearning(int modelIndex, string pathToData, double learningRate, int maxIter, double errorThreshold, int nbClass, int nbEntry)
 {
     CSVReader reader("data/"+pathToData);
     if (reader.readCSV())
     {
         vector<vector<double>> data = reader.getData();
         // Sert à ajouter le x0 aux données => TODO aller modofier les algos pour ne pas devoir modifier les données de bases
-        reverse(data.begin(), data.end());
+        if(pathToData == "table_3_1.csv") reverse(data.begin(), data.end());
         for (auto& point : data) {
             point.insert(point.begin(), 1);
         }
-        this->neurons = new Layer(data, modelIndex, nbClass, learningRate);
+        this->neurons = new Layer(data, modelIndex, nbClass, learningRate, nbEntry);
         this->neurons->learn(maxIter, errorThreshold == 0.0 ? NULL : errorThreshold);
         string result = this->neurons->getResult(); // debug pour voir le résultat
     }

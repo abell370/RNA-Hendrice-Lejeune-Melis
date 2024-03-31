@@ -36,13 +36,13 @@ void AdalinePerceptron::learn(int maxIter, double minMeanQuadraticError, int ind
 
 void AdalinePerceptron::loopOnIterations(float minErrorAccepted, int maxEpoc, int indexOfPredictedData)
 {
-	for (int i = 1; i <= maxEpoc; i++)
+	for (int i = 0; i < maxEpoc; i++)
 	{
 		double eMoy = this->executeOneIteration(indexOfPredictedData);
 		this->result[0] = i;
+		this->result[1] = eMoy;
 		if (eMoy < minErrorAccepted)
 		{
-			this->result[1] = eMoy;
 			break;
 		}
 	}
@@ -50,13 +50,13 @@ void AdalinePerceptron::loopOnIterations(float minErrorAccepted, int maxEpoc, in
 
 void AdalinePerceptron::loopWhileErrorNotNull(int maxEpoc, int indexOfPredictedData)
 {
-	for (int i = 1; i <= maxEpoc; i++)
+	for (int i = 0; i < maxEpoc; i++)
 	{
 		double eMoy = this->executeOneIteration(indexOfPredictedData);
 		this->result[0] = i;
+		this->result[1] = eMoy;
 		if (this->nbErreurs == 0)
 		{
-			this->result[1] = eMoy;
 			break;
 		}
 	}
