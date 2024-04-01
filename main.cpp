@@ -7,6 +7,7 @@
 
 #include <filesystem>
 #include "deeplearning.h"
+#include "stochastiqueactivation.h"
 
 using namespace std::filesystem;
 using namespace std;
@@ -34,12 +35,11 @@ int main(int argc, char* argv[])
    
     */
     vector<vector<double>> dataset = {
-      {1.,0.9,0.1,0.9}
+      {1.,0.9,0.1,0.9, 0.1, 0.9, 0.9}
     };
-    vector<double> etiquets = { 0.1, 0.9, 0.9 };
 
-    DeepLearning model(dataset, etiquets, { {0.,0.1,0.15,0.05},{0., 0.12,0.18,0.08} }, { {0.,0.1,0.14},{0.,0.125,0.21},{0.,0.13,0.07} }, 1.);
-    model.learn(2, 3, 0.184);
+    DeepLearning model(dataset, { {0.,0.1,0.15,0.05},{0., 0.12,0.18,0.08} }, { {0.,0.1,0.14},{0.,0.125,0.21},{0.,0.13,0.07} }, 1.);
+    model.learn(2, 3, 0.184, 3, new StochastiqueActivation());
     return 0;
 
 }
