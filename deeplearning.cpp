@@ -1,31 +1,59 @@
 #include "deeplearning.h"
 
-DeepLearning::DeepLearning(vector<vector<double>> dataset, vector<vector<double>> weightsHidden, vector<vector<double>> weightsOutput, double learningRate)
+DeepLearning::DeepLearning(vector<vector<double>> dataset)
 {
 	this->dataset = dataset;
-	this->weightsHidden = weightsHidden;
-	this->weightsOutput = weightsOutput;
-	this->learningRate = learningRate;
 };
 
-void DeepLearning::learn(int amountOfHiddenNeuron, int amountOfNeuron, double stopError, int nbTags, ActivationFunction* aFunction)
+void DeepLearning::setup(int amountOfHiddenNeuron, int amountOfNeuron, int nbTags, double learningRate)
 {
+	
+	this->learningRate = learningRate;
+	this->amountOfHiddenNeuron = amountOfHiddenNeuron;
+	this->amountOfNeuron = amountOfNeuron;
+
+	this->weightsOutput = { {0.,0.1,0.15,0.05},{0., 0.12,0.18,0.08} };
+	this->weightsHidden = { {0.,0.1,0.14},{0.,0.125,0.21},{0.,0.13,0.07} };
+}
+
+void DeepLearning::learn(double stopError, int maxEpoc, ActivationFunction* aFunction)
+{
+	for (int i = 0; i < maxEpoc; i++)
+	{
+		if (stopError != 0.)
+		{
+			double E = executeOneEpoc(stopError, aFunction);
+			if (E < stopError)
+			{
+				break;
+			}
+		}
+		else 
+		{
+			// tant que nb erreur != 0
+		}
+	}
+}
+
+double DeepLearning::executeOneEpoc(double stopThreadshold, ActivationFunction* aFunction)
+{
+	double E = 0.0;
 	for (int k = 0; k < dataset.size(); k++)
 	{
 		// Etape 1
-		// sous vecteur contenant les données sans les étiquettes
+		// sous vecteur contenant les données sans les étiquettes (+ 1 pour prendre en compte le biais)
 		vector<double> example(dataset[k].begin(), dataset[k].begin() + nbTags + 1);
 		// Potentiel des neurones cachés
-		vector<double> kC = calculateHiddenLayerPotentials(example, amountOfHiddenNeuron);
+		vector<double> kC = calculatePotentials(example, amountOfHiddenNeuron);
 		// Sortie des neurones cachés
 		vector<double> y = calculateHiddenLayerOutputs(kC, amountOfHiddenNeuron, aFunction);
 		// Potentiel des neurones de sortie
 		vector<double> outputs = calculatePotentials(y, amountOfNeuron);
 		// Sortie des neurones de sortie
-		vector<double> zOutputs = calculateOutputs(outputs,amountOfNeuron, aFunction);
+		vector<double> zOutputs = calculateOutputs(outputs, amountOfNeuron, aFunction);
 
-		double E = calculateEMeanQuad(dataset[k], zOutputs, nbTags);
-		if (E < stopError) break;
+		E = calculateEMeanQuad(dataset[k], zOutputs, nbTags);
+		if (E < stopThreadshold) break;
 		// Etape 2a
 		// Calcul signal d'erreur couche de sortie
 		vector<double> outputSigError = caclulateOutputSigError(dataset[k], zOutputs, nbTags, amountOfNeuron);
@@ -41,30 +69,15 @@ void DeepLearning::learn(int amountOfHiddenNeuron, int amountOfNeuron, double st
 		// Etape 3b (c+1 pour ne pas prendre en compte du biais)
 		editHiddenNeuronWeights(cumulHiddenLayer, example, amountOfHiddenNeuron);
 
-		// on continue l'apprentissage
-		learn(amountOfHiddenNeuron, amountOfNeuron, stopError, nbTags, aFunction);
 	}
-}
-
-vector<double> DeepLearning::calculateHiddenLayerPotentials(vector<double> example, int amountOfHiddenNeuron)
-{
-	vector<double> kC;
-	for (int c = 0; c < amountOfHiddenNeuron; c++)
-	{
-		double kCurrent = 0.0;
-		for (int w = 0; w < weightsHidden[0].size(); w++)
-		{
-			kCurrent += weightsHidden[c][w] * example[w];
-		}
-		kC.push_back(kCurrent);
-	}
-	return kC;
+	return E;
 }
 
 vector<double> DeepLearning::calculateHiddenLayerOutputs(vector<double> potentials, int amountOfHiddenNeuron, ActivationFunction* aFunction)
 {
 	vector<double> y;
-	y.push_back(1);
+	// biais
+	y.push_back(1.);
 	for (int c = 0; c < amountOfHiddenNeuron; c++)
 	{
 		y.push_back(aFunction->compute(potentials[c]));

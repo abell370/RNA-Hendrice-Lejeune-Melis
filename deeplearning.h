@@ -6,16 +6,19 @@ using namespace std;
 class DeepLearning
 {
 public:
-	DeepLearning(vector<vector<double>> dataset, vector<vector<double>> weightsHidden, vector<vector<double>> weightsOutput, double learningRate);
+	DeepLearning(vector<vector<double>> dataset);
 	~DeepLearning() {};
 
-	void learn(int hiddenLayerSize, int outputLayerSize, double stopThreadshold, int nbTags, ActivationFunction* aFunction);
+	void setup(int hiddenLayerSize, int outputLayerSize, int nbTags, double learningRate);
+	void learn(double stopThreadshold, int maxEpoc, ActivationFunction* aFunction);
 
 private:
+	int amountOfHiddenNeuron, amountOfNeuron, nbTags;
 	vector<vector<double>> dataset, weightsHidden, weightsOutput;
 	double learningRate;
 
-	vector<double> calculateHiddenLayerPotentials(vector<double> example, int amountOfHiddenNeuron);
+	double executeOneEpoc(double stopThreadshold, ActivationFunction* aFunction);
+
 	vector<double> calculateHiddenLayerOutputs(vector<double> example, int amountOfHiddenNeuron, ActivationFunction* aFunction);
 
 	vector<double> calculatePotentials(vector<double> hLayerOutputs, int amountOfNeuron);

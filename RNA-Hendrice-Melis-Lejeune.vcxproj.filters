@@ -59,7 +59,7 @@
     <ClCompile Include="concretlayerbuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stochastiqueactivation.cpp">
+    <ClCompile Include="sigmoidactivation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="identityactivation.cpp">
@@ -115,7 +115,7 @@
     <ClInclude Include="activationfunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="stochastiqueactivation.h">
+    <ClInclude Include="sigmoidactivation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="identityactivation.h">

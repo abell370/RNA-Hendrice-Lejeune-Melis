@@ -1,11 +1,11 @@
 #pragma once
 #include "activationfunction.h"
-class StochastiqueActivation :
+class SigmoidActivation :
     public ActivationFunction
 {
 public:
-    StochastiqueActivation() {};
-    ~StochastiqueActivation() {};
+    SigmoidActivation() {};
+    ~SigmoidActivation() {};
 
     double compute(double entry) const;
 };
