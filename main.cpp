@@ -35,19 +35,13 @@ int main(int argc, char* argv[])
     return a.exec();
    
     */
+    vector<vector<double>> dataset = {
+      {0.9,0.1,0.9, 0.1, 0.9, 0.9}
+    };
 
-    CSVReader reader("data/table_4_12.csv");
-    if (reader.readCSV())
-    {
-        vector<vector<double>> dataset = reader.getData();
-        // Sert à ajouter le x0 aux données => TODO aller modofier les algos pour ne pas devoir modifier les données de bases
-        for (auto& point : dataset) {
-            point.insert(point.begin(), 1.);
-        }
-        DeepLearning model(dataset);
-        model.setup(2, 1, 1, 0.5);
-        model.learn(0.001, 2000, new SigmoidActivation());
-    }
+    DeepLearning model(dataset);
+    model.setup(2, 3, 3, 1.);
+    model.learn(0.184, 1, new SigmoidActivation());
 
   
     return 0;

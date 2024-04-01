@@ -11,9 +11,10 @@ void DeepLearning::setup(int amountOfHiddenNeuron, int amountOfNeuron, int nbTag
 	this->learningRate = learningRate;
 	this->amountOfHiddenNeuron = amountOfHiddenNeuron;
 	this->amountOfNeuron = amountOfNeuron;
+	this->nbTags = nbTags;
 
-	this->weightsOutput = { {0.,0.1,0.15,0.05},{0., 0.12,0.18,0.08} };
-	this->weightsHidden = { {0.,0.1,0.14},{0.,0.125,0.21},{0.,0.13,0.07} };
+	this->weightsHidden = { {0.,0.1,0.15,0.05},{0., 0.12,0.18,0.08} };
+	this->weightsOutput = { {0.,0.1,0.14},{0.,0.125,0.21},{0.,0.13,0.07} };
 }
 
 void DeepLearning::learn(double stopError, int maxEpoc, ActivationFunction* aFunction)
@@ -42,13 +43,16 @@ double DeepLearning::executeOneEpoc(double stopThreadshold, ActivationFunction* 
 	{
 		// Etape 1
 		// sous vecteur contenant les données sans les étiquettes (+ 1 pour prendre en compte le biais)
-		vector<double> example(dataset[k].begin(), dataset[k].begin() + nbTags + 1);
+		vector<double> example(dataset[k].begin(), dataset[k].begin() + nbTags);
 		// Potentiel des neurones cachés
-		vector<double> kC = calculatePotentials(example, amountOfHiddenNeuron);
+
+		// TODO fonction récursive
+
+		vector<double> kC = calculatePotentials(example, amountOfHiddenNeuron, weightsHidden);
 		// Sortie des neurones cachés
-		vector<double> y = calculateHiddenLayerOutputs(kC, amountOfHiddenNeuron, aFunction);
+		vector<double> y = calculateOutputs(kC, amountOfHiddenNeuron, aFunction);
 		// Potentiel des neurones de sortie
-		vector<double> outputs = calculatePotentials(y, amountOfNeuron);
+		vector<double> outputs = calculatePotentials(y, amountOfNeuron, weightsOutput);
 		// Sortie des neurones de sortie
 		vector<double> zOutputs = calculateOutputs(outputs, amountOfNeuron, aFunction);
 
@@ -59,45 +63,33 @@ double DeepLearning::executeOneEpoc(double stopThreadshold, ActivationFunction* 
 		vector<double> outputSigError = caclulateOutputSigError(dataset[k], zOutputs, nbTags, amountOfNeuron);
 		// Etape 2b
 		// Calcul signal d'erreur couche caché (biais pris en compte)
-		vector<double> hiddenOutputSigError = caclulateHiddenSigError(y, amountOfNeuron);
+		vector<double> hiddenOutputSigError = caclulateHiddenSigError(y, amountOfHiddenNeuron);
 
 		// cumulation des signaux d'erreur des neurones couche cachée de sorties qui leurs sont liés
-		vector<double> cumulHiddenLayer = cumulHiddenLayerSigError(hiddenOutputSigError, outputSigError, amountOfNeuron);
+		vector<double> cumulHiddenLayer = cumulHiddenLayerSigError(hiddenOutputSigError, outputSigError, amountOfNeuron, amountOfHiddenNeuron);
 
 		// Etape 3a
-		editNeuronWeights(outputSigError, y);
+		editWeights(outputSigError, y, weightsOutput);
 		// Etape 3b (c+1 pour ne pas prendre en compte du biais)
-		editHiddenNeuronWeights(cumulHiddenLayer, example, amountOfHiddenNeuron);
+		editWeights(cumulHiddenLayer, example, weightsHidden);
 
 	}
 	return E;
 }
 
-vector<double> DeepLearning::calculateHiddenLayerOutputs(vector<double> potentials, int amountOfHiddenNeuron, ActivationFunction* aFunction)
+vector<double> DeepLearning::calculatePotentials(vector<double> outputs, int amountOfNeuron, vector<vector<double>> weights)
 {
-	vector<double> y;
-	// biais
-	y.push_back(1.);
-	for (int c = 0; c < amountOfHiddenNeuron; c++)
-	{
-		y.push_back(aFunction->compute(potentials[c]));
-	}
-	return y;
-}
-
-vector<double> DeepLearning::calculatePotentials(vector<double> hLayerOutputs, int amountOfNeuron)
-{
-	vector<double> outputs;
+ 	vector<double> outputsTmp;
 	for (int p = 0; p < amountOfNeuron; p++)
 	{
-		double pCurrent = 0.0;
-		for (int w = 0; w < weightsOutput[0].size(); w++)
+		double pCurrent = weights[p][0]; // biais 
+		for (int w = 1; w < weights[0].size(); w++)
 		{
-			pCurrent += weightsOutput[p][w] * hLayerOutputs[w];
+			pCurrent += weights[p][w] * outputs[w - 1];
 		}
-		outputs.push_back(pCurrent);
+		outputsTmp.push_back(pCurrent);
 	}
-	return outputs;
+	return outputsTmp;
 }
 
 vector<double> DeepLearning::calculateOutputs(vector<double> outputs, int amountOfNeuron, ActivationFunction* aFunction)
@@ -144,15 +136,15 @@ vector<double> DeepLearning::caclulateHiddenSigError(vector<double> hiddenLayerO
 	}
 	return hiddenOutputSigError;
 }
-vector<double> DeepLearning::cumulHiddenLayerSigError(vector<double> hiddenOutputSigError, vector<double> outputSigError, int amountOfNeuron)
+vector<double> DeepLearning::cumulHiddenLayerSigError(vector<double> hiddenOutputSigError, vector<double> outputSigError, int amountOfNeuron, int amountOfHiddenNeuron)
 {
 	vector<double> cumulHiddenLayer;
-	for (int c = 0; c < 3; c++)
+	for (int c = 0; c < amountOfHiddenNeuron; c++)
 	{
 		double cumul = 0.0;
 		for (int s = 0; s < amountOfNeuron; s++)
 		{
-			cumul += outputSigError[s] * weightsOutput[s][c];
+			cumul += outputSigError[s] * weightsOutput[s][c + 1];
 		}
 		cumul *= hiddenOutputSigError[c];
 		cumulHiddenLayer.push_back(cumul);
@@ -160,24 +152,14 @@ vector<double> DeepLearning::cumulHiddenLayerSigError(vector<double> hiddenOutpu
 	return cumulHiddenLayer;
 }
 
-void DeepLearning::editNeuronWeights(vector<double> outputSigError, vector<double> y)
+void DeepLearning::editWeights(vector<double> sigError, vector<double> example, vector<vector<double>> weights)
 {
-	for (int s = 0; s < weightsOutput.size(); s++)
+	for (int c = 0; c < weights.size(); c++)
 	{
-		for (int c = 0; c < weightsOutput[s].size(); c++)
+		weights[c][0] += learningRate * sigError[c] * 1.;
+		for (int e = 1; e < weights[c].size(); e++)
 		{
-			weightsOutput[s][c] += learningRate * outputSigError[s] * y[c];
-		}
-	}
-}
-
-void DeepLearning::editHiddenNeuronWeights(vector<double> cumulHiddenLayerSigError, vector<double> example, int amountOfHiddenNeuron)
-{
-	for (int c = 0; c < amountOfHiddenNeuron; c++)
-	{
-		for (int e = 0; e < weightsHidden[c].size(); e++)
-		{
-			weightsHidden[c][e] += learningRate * cumulHiddenLayerSigError[c + 1] * example[e];
+			weights[c][e] += learningRate * sigError[c] * example[e - 1];
 		}
 	}
 }

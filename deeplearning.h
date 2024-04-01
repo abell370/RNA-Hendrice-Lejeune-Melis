@@ -19,19 +19,16 @@ private:
 
 	double executeOneEpoc(double stopThreadshold, ActivationFunction* aFunction);
 
-	vector<double> calculateHiddenLayerOutputs(vector<double> example, int amountOfHiddenNeuron, ActivationFunction* aFunction);
-
-	vector<double> calculatePotentials(vector<double> hLayerOutputs, int amountOfNeuron);
-	vector<double> calculateOutputs(vector<double> example, int amountOfHiddenNeuron, ActivationFunction* aFunction);
+	vector<double> calculatePotentials(vector<double> outputs, int amountOfNeuron, vector<vector<double>> weights);
+	vector<double> calculateOutputs(vector<double> example, int amountOfNeuron, ActivationFunction* aFunction);
 
 	double calculateEMeanQuad(vector<double> example, vector<double> outputs, int nbTags);
 
 	vector<double> caclulateOutputSigError(vector<double> example, vector<double> zOutputs, int nbTags, int amountOfNeuron);
 	vector<double> caclulateHiddenSigError(vector<double> hiddenLayerOutputs, int amountOfNeuron);
 
-	vector<double> cumulHiddenLayerSigError(vector<double> hiddenOutputSigError, vector<double> outputSigError, int amountOfNeuron);
+	vector<double> cumulHiddenLayerSigError(vector<double> hiddenOutputSigError, vector<double> outputSigError, int amountOfNeuron, int amountOfHiddenNeuron);
 
-	void editNeuronWeights(vector<double> outputSigError, vector<double> y);
-	void editHiddenNeuronWeights(vector<double> cumulHiddenLayerSigError, vector<double> example, int amountOfHiddenNeuron);
+	void editWeights(vector<double> sigError, vector<double> example, vector<vector<double>> weights);
 };
 
