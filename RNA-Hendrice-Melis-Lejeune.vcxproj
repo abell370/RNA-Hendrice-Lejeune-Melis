@@ -27,6 +27,7 @@
     <ClCompile Include="identityactivation.cpp" />
     <ClCompile Include="iteration.cpp" />
     <ClCompile Include="layer.cpp" />
+    <ClCompile Include="layeringmodel.cpp" />
     <ClCompile Include="learningmodel.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="maincontroller.cpp" />
@@ -43,6 +44,7 @@
     <ClInclude Include="deeplearning.h" />
     <ClInclude Include="gradientperceptron.h" />
     <ClInclude Include="identityactivation.h" />
+    <ClInclude Include="layeringmodel.h" />
     <ClInclude Include="sigmoidactivation.h" />
     <QtMoc Include="graphwidget.h" />
     <ClInclude Include="iteration.h" />

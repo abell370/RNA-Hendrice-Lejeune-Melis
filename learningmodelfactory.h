@@ -15,11 +15,11 @@ public:
     {
         if (modelIndex == 0)
         {
-            return nullptr;
+            return new AdalinePerceptron();
         }
         else if (modelIndex == 1)
         {
-            return nullptr;
+            return new GradientPerceptron();
 
         }
     }

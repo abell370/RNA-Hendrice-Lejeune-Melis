@@ -22,7 +22,7 @@ public:
     ~SimplePerceptron() {};
 
     void setup(vector<vector<double>> dataset, vector<double> weights, double learningRate);
-    void learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, ActivationFunction* activation);
+    void learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, ActivationFunction* activation, int maxClassificationError);
     string getResult();
     std::string getName() {
         return "Simple Perceptron";

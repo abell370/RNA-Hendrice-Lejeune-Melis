@@ -9,13 +9,13 @@ public:
 	DeepLearning(vector<vector<double>> dataset);
 	~DeepLearning() {};
 
-	void setup(int hiddenLayerSize, int outputLayerSize, int nbTags, double learningRate);
+	void setup(int hiddenLayerSize, int nbTags, double learningRate);
 	void learn(double stopThreadshold, int maxEpoc, ActivationFunction* aFunction);
 
 private:
-	int amountOfHiddenNeuron, amountOfNeuron, nbTags;
+	int amountOfHiddenNeuron = 0, nbTags = 0;
 	vector<vector<double>> dataset, weightsHidden, weightsOutput;
-	double learningRate;
+	double learningRate = 0.;
 
 	double executeOneEpoc(double stopThreadshold, ActivationFunction* aFunction);
 

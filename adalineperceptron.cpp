@@ -11,7 +11,7 @@ using namespace std;
 
 AdalinePerceptron::AdalinePerceptron() 
 {
-	this->result = { .0, .0 };
+	this->result = 0.;
 };
 
 void AdalinePerceptron::setup(vector<vector<double>> dataset, vector<double> weights, double learningRate)
@@ -21,15 +21,14 @@ void AdalinePerceptron::setup(vector<vector<double>> dataset, vector<double> wei
         this->weights = weights;
 }
 
-void AdalinePerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, ActivationFunction* activation) {
+void AdalinePerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, ActivationFunction* activation, int maxClassificationError) {
     this->reset(); // empty iterations
 	for (int i = 0; i < maxIter; i++)
 	{
 		double eMoy = this->executeOneIteration(indexOfPredictedData, activation);
-		this->result[0] = i;
-		this->result[1] = eMoy;
+		this->result = eMoy;
 
-		if (minMeanQuadraticError != NULL)
+		if (minMeanQuadraticError != 0.)
 		{
 
 			if (eMoy < minMeanQuadraticError)
@@ -39,7 +38,7 @@ void AdalinePerceptron::learn(int maxIter, double minMeanQuadraticError, int ind
 		}
 		else
 		{
-			if (this->nbErreurs == 0)
+			if (this->nbErreurs == maxClassificationError)
 			{
 				break;
 			}
@@ -51,80 +50,72 @@ void AdalinePerceptron::learn(int maxIter, double minMeanQuadraticError, int ind
 double AdalinePerceptron::executeOneIteration(int indexOfPredictedData, ActivationFunction* activation)
 {
 	Iteration iter = Iteration();
+	this->iterations += 1;
 	this->nbErreurs = 0;
-	int weightsSize  = this->weights.size();
+	int weightsSize = this->weights.size();
 	for (uint k = 0; k < this->data.size(); k++)
 	{
-		double p = 0.0;
-		for (int x = 0; x < weightsSize; x++)
+		double p = this->weights[0];
+		for (int x = 1; x < weightsSize; x++)
 		{
-			p += this->weights[x] * this->data[k][x];
+			p += this->weights[x] * this->data[k][x - 1];
 		}
 		double y = activation->compute(p);
-		int s = y >= 0 ? 1 : -1;
-		//  example[weightsSize] = predicted
+		// classification
+		double s = activation->performThresholding(y);
 		if (s != this->data[k][indexOfPredictedData])
 		{
-			this->nbErreurs += 1;
+			this->nbErreurs++;
 		}
-		double localError = this->data[k][indexOfPredictedData] - y;
 
+		double e = this->data[k][indexOfPredictedData] - y;
 		iter.addStep({
 		  k,
 		  this->weights,
-		  this->data[k], y, this->data[k][indexOfPredictedData], localError
+		  this->data[k], y, this->data[k][indexOfPredictedData], 
+		  e
 		});
 
-		for (int x = 0; x < weightsSize; x++)
+		weights[0] += n * e;
+		for (int c = 0; c < weights.size() - 1; c++)
 		{
-			this->weights[x] += this->n * localError * this->data[k][x];
+			weights[c + 1] += n * e * this->data[k][c];
 		}
 	}
+
 	this->addIteration(iter);
-	return this->calculMeanQuadratic(indexOfPredictedData);
+	// eMoy quad
+	return this->calculMeanQuadratic(indexOfPredictedData, activation);
 }
 
-double AdalinePerceptron::calculMeanQuadratic(int indexOfPredictedData)
+double AdalinePerceptron::calculMeanQuadratic(int indexOfPredictedData, ActivationFunction* activation)
 {
-	double E = 0.0;
-	for (vector<double> example : data) {
-		double y = 0.0;
-		for (int x = 0; x < this->weights.size(); x++) {
-			y += this->weights[x] * example[x];
+	double E = 0.;
+
+	vector<double> outputs;
+	for (int x = 0; x < data.size(); x++)
+	{
+		double p = this->weights[0];
+		for (int w = 1; w < this->weights.size(); w++)
+		{
+			p += this->weights[w] * this->data[x][w - 1];
 		}
-		E += pow(example[indexOfPredictedData] - y, 2);
+		double y = activation->compute(p);
+		outputs.push_back(y);
 	}
-	double eMoy = (0.5 * E) / data.size();
-	return eMoy;
+
+	for (int k = 0; k < data.size(); k++)
+	{
+		double error = data[k][indexOfPredictedData] - outputs[k];
+		E += pow(error, 2);
+	}
+	
+	return (.5 * E) / data.size();
 }
 
 string AdalinePerceptron::getResult()
 {
-	return "nbIter= "+to_string(this->result[0])+" eMoy= "+ to_string(this->result[1]);
+	return "nbIter= "+to_string(this->iterations)+" eMoy= "+ to_string(this->result);
 }
-/*
-QVector<double> AdalinePerceptron::calcGraph(uint iterationIndex, std::vector<double> x1) {
-    
-        To calc line equation
 
-        w0*x0 + w1*x1 + x2*w2 = 0
-
-        so, for each given x1 we need to find x2
-
-        x2 = (-w0*x0 - w1*x1)/w2
-    
-    QVector<double> x2 = QVector<double>(x1.size());
-
-    if (iterationIndex < this->getIterations().size()) {
-        Iteration iteration = this->getIterations()[iterationIndex];
-        Step lastStep = iteration.getSteps()[iteration.getSteps().size() - 1];
-
-        for (unsigned i = 0; i < x1.size(); i++) {
-            x2[i] = (-lastStep.weights[0] * 1 - lastStep.weights[1] * x1[i]) / lastStep.weights[2];
-        }
-    }
-
-    return x2;
-}
-*/
 

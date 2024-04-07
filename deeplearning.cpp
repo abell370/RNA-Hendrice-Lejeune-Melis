@@ -1,17 +1,14 @@
 #include "deeplearning.h"
 
-DeepLearning::DeepLearning(vector<vector<double>> dataset)
-{
-	this->dataset = dataset;
-};
+DeepLearning::DeepLearning(vector<vector<double>> dataset) : dataset(dataset) {};
 
-void DeepLearning::setup(int amountOfHiddenNeuron, int amountOfNeuron, int nbTags, double learningRate)
+void DeepLearning::setup(int amountOfHiddenNeuron, int nbClasses, double learningRate)
 {
 	
 	this->learningRate = learningRate;
 	this->amountOfHiddenNeuron = amountOfHiddenNeuron;
-	this->amountOfNeuron = amountOfNeuron;
-	this->nbTags = nbTags;
+	// Cas d'un apprentissage avec 2 classes => 1 neurone de sorite suffit SINON besoin de n neurones de sorties pour n classes
+	nbClasses == 2 ? this->nbTags = 1 : this->nbTags = nbClasses;
 
 	this->weightsHidden = { {0.,0.1,0.15,0.05},{0., 0.12,0.18,0.08} };
 	this->weightsOutput = { {0.,0.1,0.14},{0.,0.125,0.21},{0.,0.13,0.07} };
@@ -52,21 +49,21 @@ double DeepLearning::executeOneEpoc(double stopThreadshold, ActivationFunction* 
 		// Sortie des neurones cachés
 		vector<double> y = calculateOutputs(kC, amountOfHiddenNeuron, aFunction);
 		// Potentiel des neurones de sortie
-		vector<double> outputs = calculatePotentials(y, amountOfNeuron, weightsOutput);
+		vector<double> outputs = calculatePotentials(y, nbTags, weightsOutput);
 		// Sortie des neurones de sortie
-		vector<double> zOutputs = calculateOutputs(outputs, amountOfNeuron, aFunction);
+		vector<double> zOutputs = calculateOutputs(outputs, nbTags, aFunction);
 
 		E = calculateEMeanQuad(dataset[k], zOutputs, nbTags);
 		if (E < stopThreadshold) break;
 		// Etape 2a
 		// Calcul signal d'erreur couche de sortie
-		vector<double> outputSigError = caclulateOutputSigError(dataset[k], zOutputs, nbTags, amountOfNeuron);
+		vector<double> outputSigError = caclulateOutputSigError(dataset[k], zOutputs, nbTags, nbTags);
 		// Etape 2b
 		// Calcul signal d'erreur couche caché (biais pris en compte)
 		vector<double> hiddenOutputSigError = caclulateHiddenSigError(y, amountOfHiddenNeuron);
 
 		// cumulation des signaux d'erreur des neurones couche cachée de sorties qui leurs sont liés
-		vector<double> cumulHiddenLayer = cumulHiddenLayerSigError(hiddenOutputSigError, outputSigError, amountOfNeuron, amountOfHiddenNeuron);
+		vector<double> cumulHiddenLayer = cumulHiddenLayerSigError(hiddenOutputSigError, outputSigError, nbTags, amountOfHiddenNeuron);
 
 		// Etape 3a
 		editWeights(outputSigError, y, weightsOutput);

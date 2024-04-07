@@ -15,7 +15,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    /*
+    
     // TODO à sortir de la fonction
     path directorypath = "data/";
     vector<string> pathToData = {};
@@ -34,15 +34,16 @@ int main(int argc, char* argv[])
     w.show();
     return a.exec();
    
-    */
+    
+    /*
     vector<vector<double>> dataset = {
       {0.9,0.1,0.9, 0.1, 0.9, 0.9}
     };
 
     DeepLearning model(dataset);
-    model.setup(2, 3, 3, 1.);
+    model.setup(2, 3, 1.);
     model.learn(0.184, 1, new SigmoidActivation());
-
+    */
   
     return 0;
 

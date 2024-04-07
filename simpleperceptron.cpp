@@ -16,7 +16,9 @@ void SimplePerceptron::setup(vector<vector<double>> dataset, vector<double> weig
     this->weights = weights;
 }
 
-void SimplePerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, ActivationFunction* activFunction) {
+// TODO A MODIFIER POUR FAIRE COMME ADALINE/GRADIENT
+
+void SimplePerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, ActivationFunction* activFunction, int maxClassificationError) {
     this->reset(); // empty iterations
     if (minMeanQuadraticError != NULL)
     {
