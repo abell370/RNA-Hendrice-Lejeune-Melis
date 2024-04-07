@@ -20,10 +20,7 @@ public:
         else if (modelIndex == 1)
         {
             return new GradientPerceptron();
-        }
-        else
-        {
-            return new SimplePerceptron();
+
         }
     }
 };

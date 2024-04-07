@@ -16,6 +16,8 @@ MainWindow::MainWindow(MainController* mainController, QWidget* parent)
     model = new QStandardItemModel();
 
     ui->setupUi(this);
+    this->setWindowTitle("RNA_Hendrice_Lejeune_Melis_Juin_2024");
+    ui->scrollArea->setWidgetResizable(true);
     this->insertChart();
 
     this->selectedIteration = 0;
@@ -173,17 +175,19 @@ void MainWindow::on_startBtn_clicked()
     
     try{
         int maxIter = ui->maxIterInput->text().toInt();
-        double errorThreshold = ui->errorThresholdInput->text().toDouble();
+        double errorThreshold = ui->minErrorInput->text().toDouble();
         double learningRate = ui->learningRateInput->text().toDouble();
         int modelIndex = ui->learningModelComboBox->currentIndex();
         QString dataset = ui->dataSetComboBox->property("currentText").toString();
-        int nbClass = ui->nbClassInput->text().toInt();
-        int nbEntries = ui->nbEntryInput->text().toInt();
+        int nbClass = ui->amountOfClassesInput->text().toInt();
+        int minClassificationErrorAccepted = ui->maxClassificationErrorInput->text().toInt();
+        int activationFct = ui->activationFctComboBox->currentIndex();
 
         ui->learningModelStatus->setText("Learning...");
         ui->learningModelStatus->setStyleSheet("QLabel {color: orange;}");
 
-        mainController->startLearning(modelIndex, dataset.toStdString(), learningRate, maxIter, errorThreshold, nbClass, nbEntries);
+        mainController->setupModel(modelIndex, dataset.toStdString(), learningRate, nbClass, this->ui->multiLayerCheckButton->isChecked());
+        mainController->startTraining(maxIter, errorThreshold, minClassificationErrorAccepted, activationFct);
 
         ui->learningModelStatus->setText("Ready");
         ui->learningModelStatus->setStyleSheet("QLabel {color: green;}");

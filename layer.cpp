@@ -1,15 +1,7 @@
 ﻿#include "layer.h"
 #include "learningmodelfactory.h"
-
-Layer::Layer(vector<vector<double>> dataset, int modelIndex, int amountOfNeurons, double learningRate, int nbEntry) : dataset(dataset), learningRate(learningRate)
-{
-    for (int i = 0; i < amountOfNeurons; i++)
-    {
-        LearningModel* neuron = LearningModelFactory::create(modelIndex);
-        neuron->setup(dataset, this->generateWeightVector(nbEntry + 1, false), learningRate);
-        this->neurons.push_back(neuron);
-    }
-}
+#include "activationfunction.h"
+#include "identityactivation.h"
 
 vector<double> Layer::generateWeightVector(int size, bool randomised)
 {
@@ -17,8 +9,24 @@ vector<double> Layer::generateWeightVector(int size, bool randomised)
     return wVector;
 }
 
+void Layer::setup(vector<vector<double>> dataset, int nbTags, int modelIndex, double learningRate)
+{
+    if (nbTags == 2)
+    {
+        nbTags = 1;
+    }
+    int nbEntry = dataset[0].size() - nbTags;
+    this->dataset = dataset;
+    for (int i = 0; i < nbTags; i++)
+    {
+        LearningModel* neuron = LearningModelFactory::create(modelIndex);
+        neuron->setup(dataset, this->generateWeightVector(nbEntry + 1, false), learningRate);
+        neurons.push_back(neuron);
+    }
+}
 
-void Layer::learn(int maxIter, double minMeanQuadraticError)
+
+void Layer::train(double stopThreadshold, int maxEpoc, ActivationFunction* aFunction, int maxClassificationError)
 {
     for (int i = 0; i < this->neurons.size(); i++)
     {
@@ -28,18 +36,19 @@ void Layer::learn(int maxIter, double minMeanQuadraticError)
             S'il y a 3 �tiquettes par lignes
             Les lignes sont mises par ordre croissant (classe 1, classe 2, classe 3)
 
-                                            nb �l�ments - ( nb neurones - i )
+                                            nb elements - ( nb neurones - i )
             Neurone 1 => ligne[predictedData] = 15 - ( 3 - 0 ) = 12
             Neurone 2 => ligne[predictedData] = 15 - ( 3 - 1 ) = 13
             Neurone 3 => ligne[predictedData] = 15 - ( 3 - 2 ) = 14
 
         */
         int indexOfPredictedOutput = this->dataset[0].size() - (this->neurons.size() - i);
-        this->neurons[i]->learn(maxIter, minMeanQuadraticError, indexOfPredictedOutput);
+        // TODO utiliser le paramètre activation
+        this->neurons[i]->learn(maxEpoc, stopThreadshold, indexOfPredictedOutput, aFunction, maxClassificationError);
     }
 }
 
-string Layer::getResult()
+void Layer::getResult()
 {
     string result = "";
     for (int i = 0; i < this->neurons.size(); i++)
@@ -47,8 +56,7 @@ string Layer::getResult()
         int index = i + 1; // Remove the unnecessary addition
         // Convert integers to strings before concatenating
         result += "\nClasse " + to_string(index) + " => Result " + this->neurons[i]->getResult();
-    }
-    return result;
+    };
 }
 
 void Layer::reset()

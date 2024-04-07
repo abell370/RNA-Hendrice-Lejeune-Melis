@@ -9,10 +9,7 @@
 using namespace std;
 
 
-GradientPerceptron::GradientPerceptron() 
-{
-	this->result = { .0, .0 };
-};
+GradientPerceptron::GradientPerceptron() : result(0.) {};
 
 
 void GradientPerceptron::setup(vector<vector<double>> dataset, vector<double> weights, double learningRate)
@@ -22,71 +19,59 @@ void GradientPerceptron::setup(vector<vector<double>> dataset, vector<double> we
     this->weights = weights;
 }
 
-void GradientPerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData) {
+void GradientPerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, ActivationFunction* activation, int maxClassificationError) {
 	this->reset(); // empty iterations
-	if (minMeanQuadraticError != NULL)
+	for (int i = 0; i < maxIter; i++)
 	{
-		this->loopOnIterations(minMeanQuadraticError, maxIter, indexOfPredictedData);
-	}
-	else
-	{
-		this->loopWhileErrorNotNull(maxIter, indexOfPredictedData);
-	}
-}
+		double eMoy = this->executeOneIteration(indexOfPredictedData,activation);
+		this->result = eMoy;
 
-void GradientPerceptron::loopOnIterations(float minErrorAccepted, int maxEpoc, int indexOfPredicted)
-{
-    for (int i = 1; i <= maxEpoc; i++)
-    {
-		double eMoy = this->executeOneIteration(indexOfPredicted);
-		this->result[0] = i;
-		this->result[1] = eMoy;
-		if (eMoy < minErrorAccepted)
+		if (minMeanQuadraticError != 0.)
 		{
-			break;
-		}
-    }
-}
 
-void GradientPerceptron::loopWhileErrorNotNull(int maxEpoc, int indexOfPredicted)
-{
-    for (int i = 1; i <= maxEpoc; i++)
-    {
-		double eMoy = this->executeOneIteration(indexOfPredicted);
-		this->result[0] = i;
-		this->result[1] = eMoy;
-		if (this->nbErreurs == 0)
+			if (eMoy < minMeanQuadraticError)
+			{
+				break;
+			}
+		}
+		else
 		{
-			break;
+			if (this->nbErreurs == maxClassificationError)
+			{
+				break;
+			}
 		}
-    }
+	}
+
 }
 
-double GradientPerceptron::executeOneIteration(int indexOfPredicted)
+double GradientPerceptron::executeOneIteration(int indexOfPredicted, ActivationFunction* activation)
 {
+	this->iterations += 1;
 	Iteration iter = Iteration();
 	this->nbErreurs = 0;
 	int weightsSize = this->weights.size();
 	vector<double> wCorrections(weightsSize);
 	for (uint k = 0; k < this->data.size(); k++)
 	{
-		double y = 0.0;
-		for (int x = 0; x < weightsSize; x++)
+		double p = this->weights[0];
+		for (int x = 1; x < weightsSize; x++)
 		{
-			y += this->weights[x] * this->data[k][x];
+			p += this->weights[x] * this->data[k][x - 1];
 		}
-
+		double y = activation->compute(p);
 		// classification
-		int s = y >= 0 ? 1 : -1;
+		double s = activation->performThresholding(y);
 		if (s != this->data[k][indexOfPredicted])
 		{
 			this->nbErreurs++;
 		}
 
 		double e = this->data[k][indexOfPredicted] - y;
-		for (int i = 0; i < weightsSize; i++)
+		this->weights[0] += wCorrections[0] + this->n * e * 1.;
+		for (int i = 1; i < weightsSize; i++)
 		{
-			wCorrections[i] = wCorrections[i] + this->n * e * this->data[k][i];
+			wCorrections[i] = wCorrections[i] + this->n * e * this->data[k][i - 1];
 		}
 		iter.addStep({
 		  k,
@@ -102,27 +87,38 @@ double GradientPerceptron::executeOneIteration(int indexOfPredicted)
 	}
 	this->addIteration(iter);
 	// eMoy quad
-	return this->calculMeanQuadratic(indexOfPredicted);
+	return this->calculMeanQuadratic(indexOfPredicted, activation);
 }
 
 
-double GradientPerceptron::calculMeanQuadratic(int indexOfPredictedData)
+double GradientPerceptron::calculMeanQuadratic(int indexOfPredictedData, ActivationFunction* activation)
 {
-	double E = 0.0;
-	for (vector<double> example : data) {
-		double y = 0.0;
-		for (int x = 0; x < this->weights.size(); x++) {
-			y += weights[x] * example[x];
+	double E = 0.;
+
+	vector<double> outputs;
+	for (int x = 0; x < data.size(); x++)
+	{
+		double p = this->weights[0];
+		for (int w = 1; w < this->weights.size(); w++)
+		{
+			p += this->weights[w] * this->data[x][w - 1];
 		}
-		E += pow(example[indexOfPredictedData] - y, 2);
+		double y = activation->compute(p);
+		outputs.push_back(y);
 	}
-	double eMoy = (0.5 * E) / data.size();
-	return eMoy;
+
+	for (int k = 0; k < data.size(); k++)
+	{
+		double error = data[k][indexOfPredictedData] - outputs[k];
+		E += pow(error, 2);
+	}
+
+	return (.5 * E) / data.size();
 }
 
 string GradientPerceptron::getResult()
 {
-	return "nbIter= " + to_string(this->result[0]) + " eMoy= " + to_string(this->result[1]);
+	return "nbIter= " + to_string(this->iterations) + " eMoy= " + to_string(this->result);
 }
 
 /*

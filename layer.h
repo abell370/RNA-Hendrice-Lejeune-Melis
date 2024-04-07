@@ -4,22 +4,25 @@
 #include <vector>
 
 #include "learningmodel.h"
+#include "activationfunction.h"
+#include "layeringmodel.h"
 
 using namespace std;
 
-class Layer
+class Layer : public LayeringModel
 {
-
 public:
-    Layer(vector<vector<double>> dataset, int modelIndex, int amountOfNeurons, double learningRate, int nbEntry);
-    ~Layer();
+    Layer() {};
+    ~Layer() {};
 
-    void learn(int maxIter, double minMeanQuadraticError);
-    string getResult();
+    void setup(vector<vector<double>> dataset, int nbTags, int modelIndex, double learningRate);
+    void train(double stopThreadshold, int maxEpoc, ActivationFunction* aFunction, int maxClassificationError);
+    void getResult();
     void reset();
 
+
 private:
-    double learningRate;
+    double learningRate = 0.;
     vector<vector<double>> dataset;
     vector<LearningModel*> neurons;
 
