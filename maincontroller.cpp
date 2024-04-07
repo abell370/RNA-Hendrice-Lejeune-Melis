@@ -38,12 +38,12 @@ void MainController::setupModel(int modelIndex, string pathToData, double learni
 void MainController::startTraining(int maxIter, double errorThreshold, int maxClassificationError, int activationFct)
 {
     // TODO  ceation dans une classe separee
-    ActivationFunction aFunction = SigmoidActivation();
+    ActivationFunction* aFunction = new SigmoidActivation();
     if (activationFct == 0)
     {
-        aFunction = IdentityActivation();
+        aFunction = new IdentityActivation();
     }
-    this->model->train(errorThreshold, maxIter, &aFunction, maxClassificationError);
+    this->model->train(errorThreshold, maxIter, aFunction, maxClassificationError);
     this->model->getResult(); // debug pour voir le résultat   
 }
 
