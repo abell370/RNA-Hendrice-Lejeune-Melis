@@ -1,5 +1,14 @@
 #include "learningmodel.h"
 
+LearningModel::LearningModel(vector<vector<double>> dataset, ActivationFunction* activation, vector<double> weights, double learningRate)
+{
+    this->dataset = dataset;
+    this->activation = activation;
+    this->n = learningRate;
+    this->weights = weights;
+    this->result = 0.;
+}
+
 std::vector<Iteration> LearningModel::getIterations() {
     return std::vector<Iteration>(this->iterations);
 }
@@ -9,10 +18,10 @@ std::string LearningModel::getName() {
 }
 
 void LearningModel::addIteration(Iteration iteration) {
-    this->iterations.push_back(iteration);
+    iterationsSaved.push_back(iteration);
 }
 
 void LearningModel::reset() {
-    this->iterations.clear();
+    iterationsSaved.clear();
 }
 

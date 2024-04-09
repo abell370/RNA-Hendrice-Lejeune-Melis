@@ -9,21 +9,21 @@
 
 using namespace std;
 
-class Layer : public LayeringModel
+class MonoLayer 
+    : public LayeringModel
 {
 public:
-    Layer() {};
-    ~Layer() {};
+    using LayeringModel::LayeringModel;
 
-    void setup(vector<vector<double>> dataset, int nbTags, int modelIndex, double learningRate);
-    void train(double stopThreadshold, int maxEpoc, ActivationFunction* aFunction, int maxClassificationError);
+    void setup(int nbTags, int modelIndex, double learningRate);
+    void train(double stopThreadshold, int maxEpoc, int maxClassificationError);
+    map<string, double> checkAccuracy(vector<vector<double>> validationDataset);
     void getResult();
     void reset();
 
 
 private:
     double learningRate = 0.;
-    vector<vector<double>> dataset;
     vector<LearningModel*> neurons;
 
     vector<double> generateWeightVector(int size, bool randomised);

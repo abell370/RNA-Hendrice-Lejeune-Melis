@@ -1,26 +1,32 @@
 #pragma once
 #include <vector>
 #include "activationfunction.h"
+#include "layeringmodel.h"
+
 using namespace std;
 
-class DeepLearning
+class MultiLayer : 
+	public LayeringModel
 {
 public:
-	DeepLearning(vector<vector<double>> dataset);
-	~DeepLearning() {};
+	
+	using LayeringModel::LayeringModel;
 
 	void setup(int hiddenLayerSize, int nbTags, double learningRate);
-	void learn(double stopThreadshold, int maxEpoc, ActivationFunction* aFunction);
+	void train(double stopThreadshold, int maxEpoc, int maxClassificationError);
+	map<string, double> checkAccuracy(vector<vector<double>> validationDataset);
+	void getResult();
+	void reset();
 
 private:
-	int amountOfHiddenNeuron = 0, nbTags = 0;
-	vector<vector<double>> dataset, weightsHidden, weightsOutput;
+	int amountOfHiddenNeuron = 0, nbTags = 0, classificationErrors = 0, nbEpoc = 0;
+	vector<vector<double>> weightsHidden, weightsOutput;
 	double learningRate = 0.;
 
-	double executeOneEpoc(double stopThreadshold, ActivationFunction* aFunction);
+	double executeOneEpoc(double stopThreadshold, bool updateWeights);
 
 	vector<double> calculatePotentials(vector<double> outputs, int amountOfNeuron, vector<vector<double>> weights);
-	vector<double> calculateOutputs(vector<double> example, int amountOfNeuron, ActivationFunction* aFunction);
+	vector<double> calculateOutputs(vector<double> example, int amountOfNeuron);
 
 	double calculateEMeanQuad(vector<double> example, vector<double> outputs, int nbTags);
 

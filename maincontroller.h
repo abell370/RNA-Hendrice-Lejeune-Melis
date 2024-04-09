@@ -20,8 +20,8 @@ private:
 public:
     MainController(vector<string> pathToDataSets, vector<string> learningModelsList);
 
-    void setupModel(int modelIndex, string pathToData, double learningRate, int nbClass, bool deeplearning);
-    void startTraining(int maxIter, double errorThreshold, int maxClassificationError, int activationFct);
+    void setupModel(int modelIndex, string pathToData, double learningRate, int nbClass, bool deeplearning, int hiddenLayerSize, int activationFct);
+    void startTraining(int maxIter, double errorThreshold, int maxClassificationError);
     QVector<double> calcGraph(uint iterationIndex, std::vector<double> x1);
     void reset();
 

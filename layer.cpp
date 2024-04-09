@@ -3,30 +3,36 @@
 #include "activationfunction.h"
 #include "identityactivation.h"
 
-vector<double> Layer::generateWeightVector(int size, bool randomised)
+map<string, double> MonoLayer::checkAccuracy(vector<vector<double>> validationDataset)
+{
+    this->dataset = dataset;
+    map<string, double> results;
+    return results;
+}
+
+vector<double> MonoLayer::generateWeightVector(int size, bool randomised)
 {
     vector<double> wVector(size);
     return wVector;
 }
 
-void Layer::setup(vector<vector<double>> dataset, int nbTags, int modelIndex, double learningRate)
+void MonoLayer::setup(int nbTags, int modelIndex, double learningRate)
 {
     if (nbTags == 2)
     {
         nbTags = 1;
     }
     int nbEntry = dataset[0].size() - nbTags;
-    this->dataset = dataset;
     for (int i = 0; i < nbTags; i++)
     {
-        LearningModel* neuron = LearningModelFactory::create(modelIndex);
-        neuron->setup(dataset, this->generateWeightVector(nbEntry + 1, false), learningRate);
+        vector<double> weights = this->generateWeightVector(nbEntry + 1, false);
+        LearningModel* neuron = LearningModelFactory::create(modelIndex, dataset, weights, learningRate,aFunction);
         neurons.push_back(neuron);
     }
 }
 
 
-void Layer::train(double stopThreadshold, int maxEpoc, ActivationFunction* aFunction, int maxClassificationError)
+void MonoLayer::train(double stopThreadshold, int maxEpoc, int maxClassificationError)
 {
     for (int i = 0; i < this->neurons.size(); i++)
     {
@@ -44,11 +50,11 @@ void Layer::train(double stopThreadshold, int maxEpoc, ActivationFunction* aFunc
         */
         int indexOfPredictedOutput = this->dataset[0].size() - (this->neurons.size() - i);
         // TODO utiliser le paramètre activation
-        this->neurons[i]->learn(maxEpoc, stopThreadshold, indexOfPredictedOutput, aFunction, maxClassificationError);
+        this->neurons[i]->learn(maxEpoc, stopThreadshold, indexOfPredictedOutput, maxClassificationError);
     }
 }
 
-void Layer::getResult()
+void MonoLayer::getResult()
 {
     string result = "";
     for (int i = 0; i < this->neurons.size(); i++)
@@ -59,7 +65,7 @@ void Layer::getResult()
     };
 }
 
-void Layer::reset()
+void MonoLayer::reset()
 {
     for (LearningModel* model : this->neurons)
     {

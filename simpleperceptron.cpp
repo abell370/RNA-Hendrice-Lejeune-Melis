@@ -9,16 +9,8 @@
 using namespace std;
 
 
-void SimplePerceptron::setup(vector<vector<double>> dataset, vector<double> weights, double learningRate)
-{
-    this->n = learningRate;
-    this->data = dataset;
-    this->weights = weights;
-}
 
-// TODO A MODIFIER POUR FAIRE COMME ADALINE/GRADIENT
-
-void SimplePerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, ActivationFunction* activFunction, int maxClassificationError) {
+void SimplePerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, int maxClassificationError) {
     this->reset(); // empty iterations
     if (minMeanQuadraticError != NULL)
     {
