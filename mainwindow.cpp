@@ -182,12 +182,13 @@ void MainWindow::on_startBtn_clicked()
         int nbClass = ui->amountOfClassesInput->text().toInt();
         int minClassificationErrorAccepted = ui->maxClassificationErrorInput->text().toInt();
         int activationFct = ui->activationFctComboBox->currentIndex();
+        int hiddenLayerSize = ui->hiddenLayerSizeInput->text().toInt();
 
         ui->learningModelStatus->setText("Learning...");
         ui->learningModelStatus->setStyleSheet("QLabel {color: orange;}");
 
-        mainController->setupModel(modelIndex, dataset.toStdString(), learningRate, nbClass, this->ui->multiLayerCheckButton->isChecked());
-        mainController->startTraining(maxIter, errorThreshold, minClassificationErrorAccepted, activationFct);
+        mainController->setupModel(modelIndex, dataset.toStdString(), learningRate, nbClass, this->ui->multiLayerCheckButton->isChecked(), hiddenLayerSize, activationFct);
+        mainController->startTraining(maxIter, errorThreshold, minClassificationErrorAccepted);
 
         ui->learningModelStatus->setText("Ready");
         ui->learningModelStatus->setStyleSheet("QLabel {color: green;}");

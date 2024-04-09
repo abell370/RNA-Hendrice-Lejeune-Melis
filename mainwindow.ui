@@ -65,7 +65,7 @@
                   <bool>true</bool>
                  </property>
                  <property name="title">
-                  <string>Configuration</string>
+                  <string>Training Day</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -74,25 +74,7 @@
                   <bool>false</bool>
                  </property>
                  <layout class="QGridLayout" name="gridLayout_2">
-                  <item row="0" column="0">
-                   <layout class="QHBoxLayout" name="horizontalLayout_2">
-                    <item>
-                     <widget class="QLabel" name="dataSetLabel_2">
-                      <property name="text">
-                       <string>Data set :</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QComboBox" name="dataSetComboBox">
-                      <property name="enabled">
-                       <bool>true</bool>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item row="6" column="0">
+                  <item row="5" column="0">
                    <layout class="QVBoxLayout" name="verticalLayout_6">
                     <item>
                      <widget class="QLabel" name="label_4">
@@ -113,17 +95,42 @@
                     </item>
                    </layout>
                   </item>
-                  <item row="4" column="0">
-                   <layout class="QVBoxLayout" name="verticalLayout_4">
+                  <item row="5" column="1">
+                   <layout class="QVBoxLayout" name="verticalLayout">
                     <item>
-                     <widget class="QLabel" name="maxIterLabel_4">
+                     <widget class="QLabel" name="label_2">
                       <property name="text">
-                       <string>Amount of classes</string>
+                       <string>Activation function</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="amountOfClassesInput">
+                     <widget class="QComboBox" name="activationFctComboBox">
+                      <item>
+                       <property name="text">
+                        <string>Linear</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Sigmoïde</string>
+                       </property>
+                      </item>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item row="9" column="1">
+                   <layout class="QHBoxLayout" name="horizontalLayout_8">
+                    <item>
+                     <widget class="QLabel" name="label_3">
+                      <property name="text">
+                       <string>Hidden layer size</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLineEdit" name="hiddenLayerSizeInput">
                       <property name="text">
                        <string>0</string>
                       </property>
@@ -152,70 +159,7 @@
                     </item>
                    </layout>
                   </item>
-                  <item row="2" column="1">
-                   <layout class="QVBoxLayout" name="verticalLayout_2">
-                    <item>
-                     <widget class="QLabel" name="maxIterLabel_2">
-                      <property name="text">
-                       <string>Max Iterations :</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="maxIterInput">
-                      <property name="text">
-                       <string>0</string>
-                      </property>
-                      <property name="placeholderText">
-                       <string>5000</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item row="4" column="1">
-                   <layout class="QVBoxLayout" name="verticalLayout_5">
-                    <item>
-                     <widget class="QLabel" name="maxIterLabel_5">
-                      <property name="text">
-                       <string>Max classification error</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="maxClassificationErrorInput">
-                      <property name="text">
-                       <string>0</string>
-                      </property>
-                      <property name="placeholderText">
-                       <string>5000</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item row="10" column="1">
-                   <layout class="QHBoxLayout" name="horizontalLayout_8">
-                    <item>
-                     <widget class="QLabel" name="label_3">
-                      <property name="text">
-                       <string>PMC architecutre</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="pmcArchiInput">
-                      <property name="text">
-                       <string>0</string>
-                      </property>
-                      <property name="placeholderText">
-                       <string>5000</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item row="7" column="0" colspan="2">
+                  <item row="6" column="0" colspan="2">
                    <layout class="QHBoxLayout" name="horizontalLayout_3">
                     <item>
                      <widget class="QRadioButton" name="multiLayerCheckButton">
@@ -236,7 +180,116 @@
                     </item>
                    </layout>
                   </item>
-                  <item row="11" column="0" colspan="2">
+                  <item row="3" column="1">
+                   <layout class="QVBoxLayout" name="verticalLayout_2">
+                    <item>
+                     <widget class="QLabel" name="maxIterLabel_2">
+                      <property name="text">
+                       <string>Max Iterations :</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLineEdit" name="maxIterInput">
+                      <property name="text">
+                       <string>0</string>
+                      </property>
+                      <property name="placeholderText">
+                       <string>5000</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item row="0" column="0">
+                   <layout class="QHBoxLayout" name="horizontalLayout_2">
+                    <item>
+                     <widget class="QLabel" name="dataSetLabel_2">
+                      <property name="text">
+                       <string>Data set :</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QComboBox" name="dataSetComboBox">
+                      <property name="enabled">
+                       <bool>true</bool>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item row="2" column="1">
+                   <layout class="QVBoxLayout" name="verticalLayout_5">
+                    <item>
+                     <widget class="QLabel" name="maxIterLabel_5">
+                      <property name="text">
+                       <string>Max classification error (classification)</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLineEdit" name="maxClassificationErrorInput">
+                      <property name="text">
+                       <string>0</string>
+                      </property>
+                      <property name="placeholderText">
+                       <string>5000</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item row="1" column="0" colspan="2">
+                   <widget class="QLabel" name="label_5">
+                    <property name="text">
+                     <string>By default, classification is applied. If regression set then regression is applied</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="3" column="0">
+                   <layout class="QVBoxLayout" name="verticalLayout_4">
+                    <item>
+                     <widget class="QLabel" name="maxIterLabel_4">
+                      <property name="text">
+                       <string>Amount of classes</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLineEdit" name="amountOfClassesInput">
+                      <property name="text">
+                       <string>0</string>
+                      </property>
+                      <property name="placeholderText">
+                       <string>5000</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item row="2" column="0">
+                   <layout class="QVBoxLayout" name="verticalLayout_3">
+                    <item>
+                     <widget class="QLabel" name="maxIterLabel_3">
+                      <property name="text">
+                       <string>Minimum quadratic mean error (regression)</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLineEdit" name="minErrorInput">
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="placeholderText">
+                       <string>5000</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item row="10" column="0" colspan="2">
                    <layout class="QGridLayout" name="controlBar">
                     <item row="1" column="1">
                      <widget class="QLabel" name="learningModelStatus">
@@ -264,64 +317,38 @@
                     </item>
                    </layout>
                   </item>
-                  <item row="2" column="0">
-                   <layout class="QVBoxLayout" name="verticalLayout_3">
-                    <item>
-                     <widget class="QLabel" name="maxIterLabel_3">
-                      <property name="text">
-                       <string>Minimum quadratic mean error</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="minErrorInput">
-                      <property name="text">
-                       <string>0</string>
-                      </property>
-                      <property name="placeholderText">
-                       <string>5000</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item row="12" column="0">
-                   <spacer name="verticalSpacer">
-                    <property name="orientation">
-                     <enum>Qt::Vertical</enum>
+                  <item row="11" column="0" colspan="2">
+                   <widget class="QGroupBox" name="groupBox_2">
+                    <property name="title">
+                     <string>Validation</string>
                     </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>20</width>
-                      <height>40</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                  <item row="6" column="1">
-                   <layout class="QVBoxLayout" name="verticalLayout">
-                    <item>
-                     <widget class="QLabel" name="label_2">
-                      <property name="text">
-                       <string>Activation function</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QComboBox" name="activationFctComboBox">
-                      <item>
-                       <property name="text">
-                        <string>Linear</string>
-                       </property>
-                      </item>
-                      <item>
-                       <property name="text">
-                        <string>Sigmoïde</string>
-                       </property>
-                      </item>
-                     </widget>
-                    </item>
-                   </layout>
+                    <layout class="QGridLayout" name="gridLayout_5">
+                     <item row="0" column="0">
+                      <layout class="QVBoxLayout" name="verticalLayout_8">
+                       <item>
+                        <widget class="QLabel" name="label_6">
+                         <property name="text">
+                          <string>Dataset to use</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QComboBox" name="comboBox"/>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="pushButton">
+                         <property name="text">
+                          <string>Execute validation</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QListView" name="listView_2"/>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </widget>
                   </item>
                  </layout>
                 </widget>

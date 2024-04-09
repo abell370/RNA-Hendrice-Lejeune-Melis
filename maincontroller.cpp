@@ -3,6 +3,7 @@
 #include "layer.h"
 #include "activationfunction.h".
 #include "sigmoidactivation.h"
+#include "deeplearning.h"
 
 MainController::MainController(vector<string> pathToDataSets, vector<string> learningModelsList) : pathToDataSets(pathToDataSets), learningModelsList(learningModelsList) {};
 
@@ -13,37 +14,41 @@ QVector<double> MainController::calcGraph(uint iterationIndex, std::vector<doubl
 */
 
 
-void MainController::setupModel(int modelIndex, string pathToData, double learningRate, int nbClass, bool deeplearning)
+void MainController::setupModel(int modelIndex, string pathToData, double learningRate, int nbClass, bool deeplearning, int hiddenLayerSize, int activationFct)
 {
     CSVReader reader("data/" + pathToData);
     if (reader.readCSV())
     {
+
+        // TODO  ceation dans une classe separee
+        ActivationFunction* aFunction = new SigmoidActivation();
+        if (activationFct == 0)
+        {
+            aFunction = new IdentityActivation();
+        }
+
         vector<vector<double>> data = reader.getData();
         // Sert à ajouter le x0 aux données => TODO aller modofier les algos pour ne pas devoir modifier les données de bases
         if (pathToData == "table_3_1.csv") reverse(data.begin(), data.end());
         if (deeplearning)
         {
-
+            MultiLayer* layeringmodel = new MultiLayer(data, aFunction);
+            layeringmodel->setup(hiddenLayerSize,nbClass, learningRate);
+            this->model = layeringmodel;
         }
         else
         {
             // TODO heritage a ameliorer....
-            Layer* layer = new Layer();
-            layer->setup(data, nbClass, modelIndex, learningRate);
+            MonoLayer* layer = new MonoLayer(data, aFunction);
+            layer->setup(nbClass, modelIndex, learningRate);
             this->model = layer;
         }
     }
 }
 
-void MainController::startTraining(int maxIter, double errorThreshold, int maxClassificationError, int activationFct)
+void MainController::startTraining(int maxIter, double errorThreshold, int maxClassificationError)
 {
-    // TODO  ceation dans une classe separee
-    ActivationFunction* aFunction = new SigmoidActivation();
-    if (activationFct == 0)
-    {
-        aFunction = new IdentityActivation();
-    }
-    this->model->train(errorThreshold, maxIter, aFunction, maxClassificationError);
+    this->model->train(errorThreshold, maxIter, maxClassificationError);
     this->model->getResult(); // debug pour voir le résultat   
 }
 
