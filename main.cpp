@@ -22,12 +22,21 @@ int main(int argc, char* argv[])
     for (const auto& entry : directory_iterator(directorypath)) 
     {
         string path = entry.path().filename().u8string();
-        pathToData.push_back(path);
+        if (path.find(".csv"))
+            pathToData.push_back(path);
+    }
+
+    path directorypathValidation = "data/validation/";
+    vector<string> pathToValidationData = {};
+    for (const auto& entry : directory_iterator(directorypathValidation))
+    {
+        string path = entry.path().filename().u8string();
+        pathToValidationData.push_back(path);
     }
 
     QApplication a(argc, argv);
 
-    MainController* mainController = new MainController(pathToData, {"Adaline", "Gradient", "Simple"});
+    MainController* mainController = new MainController(pathToData, pathToValidationData,{"Adaline", "Gradient", "Simple"});
     MainWindow w(mainController);
 
 

@@ -13,22 +13,22 @@ using namespace std;
 class MainController
 {
 private:
-    vector<string> pathToDataSets, learningModelsList;
-    vector<DataSet> dataSets;
+    vector<string> pathToDataSets, learningModelsList, pathToValidationDatasets;
     LayeringModel* model;
 
 public:
-    MainController(vector<string> pathToDataSets, vector<string> learningModelsList);
+    MainController(vector<string> pathToDataSets, vector<string> pathToValidationDatasets, vector<string> learningModelsList);
 
     void setupModel(int modelIndex, string pathToData, double learningRate, int nbClass, bool deeplearning, int hiddenLayerSize, int activationFct);
     void startTraining(int maxIter, double errorThreshold, int maxClassificationError);
+    map<string, double> checkModelAccuracy(string pathToData);
     QVector<double> calcGraph(uint iterationIndex, std::vector<double> x1);
     void reset();
 
-    
+
     vector<string> getLearningModels();
     vector<string> getDataSets();
-    DataSet getDataSet(int ds);
+    vector<string> getValidationDatasets();
 
 
     /*

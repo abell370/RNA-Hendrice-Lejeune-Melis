@@ -8,6 +8,7 @@
 #include <qchartview.h>
 #include <qscatterseries.h>
 #include <qlayout.h>
+#include <QStringListModel>
 
 MainWindow::MainWindow(MainController* mainController, QWidget* parent)
     : QMainWindow(parent)
@@ -38,6 +39,14 @@ MainWindow::MainWindow(MainController* mainController, QWidget* parent)
         dsNames.push_back(QString::fromStdString(dataSets[i]));
     }
     ui->dataSetComboBox->addItems(dsNames);
+
+    QList<QString> dsValidationNames;
+    vector<string> datasetValidation = mainController->getValidationDatasets();
+    dsValidationNames.reserve(datasetValidation.size());
+    for (uint i = 0; i < datasetValidation.size(); i++) {
+        dsValidationNames.push_back(QString::fromStdString(datasetValidation[i]));
+    }
+    ui->validationDatasetCB->addItems(dsValidationNames);
 
     /*
     ui->iterationSteps->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -170,6 +179,57 @@ void MainWindow::updateIterationValues() {
 */
 }
 
+void MainWindow::on_startValidationBtn_clicked()
+{
+    try
+    {
+        QString dataset = ui->validationDatasetCB->property("currentText").toString();
+        map<string,double> result = mainController->checkModelAccuracy(dataset.toStdString());
+
+        int numRows = result.size();
+        int numCols = 2; // 2 columns for string key and double value
+        ui->validationResult->setRowCount(numRows);
+        ui->validationResult->setColumnCount(numCols);
+
+        QStringList headers;
+        headers << "Label" << "Value";
+        ui->validationResult->setHorizontalHeaderLabels(headers);
+
+        int row = 0;
+        for (const auto& pair : result) {
+            // Set key
+            QTableWidgetItem* keyItem = new QTableWidgetItem(QString::fromStdString(pair.first));
+            ui->validationResult->setItem(row, 0, keyItem);
+
+            // Set value
+            QTableWidgetItem* valueItem = new QTableWidgetItem(QString::number(pair.second));
+            /*
+            if (pair.second == 0)
+            {
+                QColor color(0, 128, 0); // Yellow background color
+                valueItem->setBackground(color);
+            } else
+            {
+                QColor color(255, 165, 0); // Orange background color
+                valueItem->setBackground(color);
+            }
+            */
+            ui->validationResult->setItem(row, 1, valueItem);
+
+            ++row;
+        }
+
+        ui->validationResult->resizeColumnsToContents();
+        ui->validationResult->horizontalHeader()->setStretchLastSection(true);
+        ui->validationResult->show();
+
+    }
+    catch (...) {
+        ui->learningModelStatus->setText("Error");
+        ui->learningModelStatus->setStyleSheet("QLabel {color: red;}");
+    }
+}
+
 void MainWindow::on_startBtn_clicked()
 {
     
@@ -195,7 +255,8 @@ void MainWindow::on_startBtn_clicked()
 
 
         //ui->iterationMaxLabel->setText(QString("of %1").arg(mainController->iterationsSize(selectedLM) - 1));
-
+        // TODO wait until end learning
+        ui->startValidationBtn->setEnabled(true);
         selectedIteration = 0;
 
         updateIteration();

@@ -10,7 +10,7 @@ public:
     using LearningModel::LearningModel;
 
     void learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, int maxClassificationError);
-    map<string, double> checkAccuracy(vector<vector<double>> validationDataset);
+    map<string, double> checkAccuracy(int tagIndex);
     string getResult() override;
     std::string getName() {
         return "Adaline Perceptron";

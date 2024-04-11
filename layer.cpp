@@ -7,6 +7,14 @@ map<string, double> MonoLayer::checkAccuracy(vector<vector<double>> validationDa
 {
     this->dataset = dataset;
     map<string, double> results;
+    for (int i = 0; i < this->neurons.size(); i++)
+    {
+        int indexOfPredictedOutput = this->dataset[0].size() - (this->neurons.size() - i);
+        // TODO utiliser le paramètre activation
+        map<string, double> result = this->neurons[i]->checkAccuracy(indexOfPredictedOutput);
+        for (const auto& [key, value] : result)
+            results.insert({ "["+to_string(i) + "] " + key, value} );
+    }
     return results;
 }
 

@@ -27,7 +27,7 @@
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>0</y>
+         <y>-209</y>
          <width>1219</width>
          <height>1218</height>
         </rect>
@@ -333,17 +333,20 @@
                         </widget>
                        </item>
                        <item>
-                        <widget class="QComboBox" name="comboBox"/>
+                        <widget class="QComboBox" name="validationDatasetCB"/>
                        </item>
                        <item>
-                        <widget class="QPushButton" name="pushButton">
+                        <widget class="QPushButton" name="startValidationBtn">
+                         <property name="enabled">
+                          <bool>false</bool>
+                         </property>
                          <property name="text">
-                          <string>Execute validation</string>
+                          <string>Execute classification validation</string>
                          </property>
                         </widget>
                        </item>
                        <item>
-                        <widget class="QListView" name="listView_2"/>
+                        <widget class="QTableWidget" name="validationResult"/>
                        </item>
                       </layout>
                      </item>

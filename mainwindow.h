@@ -25,6 +25,7 @@ private slots:
     void updateIteration();
     void on_firstStepBtn_clicked();
     void on_previousIterBtn_clicked();
+    void on_startValidationBtn_clicked();
 
     void on_nextIterBtn_clicked();
 

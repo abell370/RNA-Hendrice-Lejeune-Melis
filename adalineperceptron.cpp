@@ -10,9 +10,16 @@
 
 using namespace std;
 
-map<string, double> AdalinePerceptron::checkAccuracy(vector<vector<double>> validationDataset)
+map<string, double> AdalinePerceptron::checkAccuracy(int tagIndex)
 {
-	return {};
+	this->nbErreurs = 0;
+	this->iterations = 0;
+	double E = executeOneIteration(tagIndex, false);
+	return {
+		{"nbErreurs", this->nbErreurs},
+		{"eMoy", E},
+		{"nbIteration", this->iterations}
+	};
 }
 
 void AdalinePerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, int maxClassificationError) {

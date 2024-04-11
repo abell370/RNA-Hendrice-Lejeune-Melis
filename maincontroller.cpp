@@ -5,7 +5,7 @@
 #include "sigmoidactivation.h"
 #include "deeplearning.h"
 
-MainController::MainController(vector<string> pathToDataSets, vector<string> learningModelsList) : pathToDataSets(pathToDataSets), learningModelsList(learningModelsList) {};
+MainController::MainController(vector<string> pathToDataSets, vector<string> pathToValidationDatasets, vector<string> learningModelsList) : pathToDataSets(pathToDataSets), pathToValidationDatasets(pathToValidationDatasets), learningModelsList(learningModelsList) {};
 
 /*
 QVector<double> MainController::calcGraph(uint iterationIndex, std::vector<double> x1){
@@ -52,10 +52,26 @@ void MainController::startTraining(int maxIter, double errorThreshold, int maxCl
     this->model->getResult(); // debug pour voir le résultat   
 }
 
+map<string, double> MainController::checkModelAccuracy(string pathToData)
+{
+    map<string, double> result;
+    CSVReader reader("data/validation/" + pathToData);
+    if (reader.readCSV())
+    {
+        vector<vector<double>> data = reader.getData();
+        result = this->model->checkAccuracy(data);
+    }
+    return result;
+}
+
 void MainController::reset() {
     this->model->reset();
 }
 
+vector<string> MainController::getValidationDatasets()
+{
+    return pathToValidationDatasets;
+}
 
 vector<string> MainController::getLearningModels() 
 {
@@ -65,10 +81,6 @@ vector<string> MainController::getLearningModels()
 vector<string> MainController::getDataSets() 
 {
     return pathToDataSets;
-}
-
-DataSet MainController::getDataSet(int ds) {
-    return dataSets[ds];
 }
 
 /*

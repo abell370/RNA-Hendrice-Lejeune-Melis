@@ -10,9 +10,16 @@
 
 using namespace std;
 
-map<string, double> GradientPerceptron::checkAccuracy(vector<vector<double>> validationDataset)
+map<string, double> GradientPerceptron::checkAccuracy(int tagIndex)
 {
-	return {};
+	this->nbErreurs = 0;
+	this->iterations = 0;
+	double E = this->executeOneIteration(tagIndex, false);
+	return {
+		{"nbErreurs", this->nbErreurs},
+		{"eMoy", E},
+		{"nbIteration", this->iterations}
+	};
 }
 
 void GradientPerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, int maxClassificationError) {
