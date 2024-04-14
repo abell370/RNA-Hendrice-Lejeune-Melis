@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <QVector>
+#include <string>
 
 using namespace std;
 
