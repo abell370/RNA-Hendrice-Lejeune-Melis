@@ -1,4 +1,6 @@
 #include "utils.h"
+#include <random>
+#include <chrono>
 
 double Utils::findMax(vector<vector<double>> data, unsigned i) {
     double max = 0.0;
@@ -42,4 +44,17 @@ unordered_set<double> Utils::findClasses(vector<vector<double>> data) {
         classes.insert(line->back());
     }
     return classes;
+}
+
+
+vector<double> generateRandom(int size) {
+    vector<double> rand = vector<double>(size);
+    unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+    default_random_engine generator(seed);
+    normal_distribution<double> distribution(0.0, 1.0);
+
+    for (unsigned i = 0; i < size; i++) {
+        rand[i] = distribution(generator);
+    }
+    return rand;
 }

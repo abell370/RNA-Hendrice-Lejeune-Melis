@@ -1,4 +1,5 @@
 #include "deeplearning.h"
+#include "utils.h"
 
 void MultiLayer::setup(int amountOfHiddenNeuron, int nbClasses, double learningRate)
 {
@@ -9,7 +10,9 @@ void MultiLayer::setup(int amountOfHiddenNeuron, int nbClasses, double learningR
 	nbClasses == 2 ? this->nbTags = 1 : this->nbTags = nbClasses;
 
 	this->weightsHidden = { {0.,0.1,0.15,0.05},{0., 0.12,0.18,0.08} };
+	//this->weightsHidden = { Utils::generateRandom(4), Utils::generateRandom(4) };
 	this->weightsOutput = { {0.,0.1,0.14},{0.,0.125,0.21},{0.,0.13,0.07} };
+	//this->weightsOutput = { Utils::generateRandom(4), Utils::generateRandom(4) };
 }
 
 map<string, double> MultiLayer::checkAccuracy(vector<vector<double>> validationDataset)

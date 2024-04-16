@@ -2,8 +2,7 @@
 #include "learningmodelfactory.h"
 #include "activationfunction.h"
 #include "identityactivation.h"
-#include <random>
-#include <chrono>
+#include "utils.h"
 
 
 map<string, double> MonoLayer::checkAccuracy(vector<vector<double>> validationDataset)
@@ -26,13 +25,7 @@ vector<double> MonoLayer::generateWeightVector(int size, bool randomised)
     vector<double> wVector(size);
 
     if (randomised) {
-        unsigned seed = chrono::system_clock::now().time_since_epoch().count();
-        default_random_engine generator(seed);
-        normal_distribution<double> distribution(0.0, 1.0);
-
-        for (unsigned i = 0; i < size; i++) {
-            wVector[i] = distribution(generator);
-        }
+        wVector = Utils::generateRandom(size);
     }
 
     return wVector;
