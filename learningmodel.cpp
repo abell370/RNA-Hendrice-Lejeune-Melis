@@ -17,6 +17,10 @@ std::string LearningModel::getName() {
     return "LearningModel";
 }
 
+vector<double> LearningModel::getWeights() {
+    return this->weights;
+}
+
 void LearningModel::addIteration(Iteration iteration) {
     iterationsSaved.push_back(iteration);
 }

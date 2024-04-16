@@ -88,3 +88,13 @@ void MonoLayer::reset()
     }
 }
 
+vector<vector<double>> MonoLayer::getDecisionWeights() {
+    vector<vector<double>> weights;
+
+    for (LearningModel* neuron : neurons) {
+        weights.push_back(neuron->getWeights());
+    }
+    return weights;
+}
+
+

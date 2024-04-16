@@ -16,6 +16,7 @@ public:
 	virtual void getResult() = 0;
 	virtual map<string, double> checkAccuracy(vector<vector<double>> validationDataset) = 0;
 	virtual void reset() = 0;
+	virtual vector<vector<double>> getDecisionWeights() = 0;
 
 protected:
 	vector<vector<double>> dataset;

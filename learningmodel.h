@@ -21,6 +21,7 @@ public:
     virtual string getResult() = 0;
 
     vector<Iteration> getIterations();
+    vector<double> getWeights();
     void reset();
 
 protected:

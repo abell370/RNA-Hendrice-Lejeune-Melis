@@ -31,6 +31,7 @@ public:
     vector<string> getDataSets();
     vector<string> getValidationDatasets();
     vector<vector<double>> getData();
+    vector<vector<double>> getDecisionWeights();
 
     /*
     Iteration getIteration(uint iter);

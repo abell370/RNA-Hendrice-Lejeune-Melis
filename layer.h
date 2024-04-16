@@ -21,6 +21,7 @@ public:
     void getResult();
     void reset();
 
+    vector<vector<double>> getDecisionWeights();
 
 private:
     double learningRate = 0.;

@@ -114,6 +114,14 @@ void MainWindow::updateDataSetPlot() {
 }
 
 void MainWindow::updateLMGraph() {
+    vector<vector<double>> decisionWeights = mainController->getDecisionWeights();
+    vector<vector<double>> data = mainController->getData();
+    vector<double> x = { Utils::findMin(data, 0) - 0.5, Utils::findMax(data, 0) + 0.5 };
+    vector<vector<double>> decisionLines;
+    
+    for (vector<double> weights : decisionWeights) {
+        vector<double> line = Utils::calcDecisionLine(weights, x);
+    }
     /*QLineSeries* identitySeries = new QLineSeries();
     for (int x = 0; x <= 10; ++x) {
         identitySeries->append(x, x);

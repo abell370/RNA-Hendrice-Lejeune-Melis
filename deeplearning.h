@@ -18,6 +18,8 @@ public:
 	void getResult();
 	void reset();
 
+	vector<vector<double>> getDecisionWeights();
+
 private:
 	int amountOfHiddenNeuron = 0, nbTags = 0, classificationErrors = 0, nbEpoc = 0;
 	vector<vector<double>> weightsHidden, weightsOutput;

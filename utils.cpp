@@ -46,6 +46,14 @@ unordered_set<double> Utils::findClasses(vector<vector<double>> data) {
     return classes;
 }
 
+vector<double> Utils::calcDecisionLine(vector<double> weights, vector<double> x) {
+    vector<double> line;
+    for (double value : x) {
+        line.push_back(0);
+    }
+    return line;
+}
+
 
 vector<double> Utils::generateRandom(int size) {
     vector<double> rand = vector<double>(size);

@@ -186,6 +186,11 @@ void MultiLayer::editWeights(vector<double> sigError, vector<double> example, ve
 	}
 }
 
+
+vector<vector<double>> MultiLayer::getDecisionWeights() {
+	return this->weightsOutput;
+}
+
 // TODO
 void MultiLayer::getResult() {};
 void MultiLayer::reset() {};

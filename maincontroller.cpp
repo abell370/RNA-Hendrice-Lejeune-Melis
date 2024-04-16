@@ -87,6 +87,10 @@ vector<vector<double>> MainController::getData() {
     return data;
 }
 
+vector<vector<double>> MainController::getDecisionWeights() {
+    return model->getDecisionWeights();
+}
+
 
 /*Iteration MainController::getIteration(uint iter) {
     LayeringModel *layeringModel = this->model;
