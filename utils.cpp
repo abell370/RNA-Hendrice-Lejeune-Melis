@@ -47,7 +47,7 @@ unordered_set<double> Utils::findClasses(vector<vector<double>> data) {
 }
 
 
-vector<double> generateRandom(int size) {
+vector<double> Utils::generateRandom(int size) {
     vector<double> rand = vector<double>(size);
     unsigned seed = chrono::system_clock::now().time_since_epoch().count();
     default_random_engine generator(seed);
