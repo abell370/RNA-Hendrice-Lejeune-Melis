@@ -27,7 +27,7 @@ void MainController::setupModel(int modelIndex, string pathToData, double learni
             aFunction = new IdentityActivation();
         }
 
-        vector<vector<double>> data = reader.getData();
+        this->data = reader.getData();
         // Sert à ajouter le x0 aux données => TODO aller modofier les algos pour ne pas devoir modifier les données de bases
         if (pathToData == "table_3_1.csv") reverse(data.begin(), data.end());
         if (deeplearning)
@@ -83,9 +83,13 @@ vector<string> MainController::getDataSets()
     return pathToDataSets;
 }
 
-/*
-Iteration MainController::getIteration(uint iter){
-    LearningModel *currentLM = learningModel;
+vector<vector<double>> MainController::getData() {
+    return data;
+}
+
+
+/*Iteration MainController::getIteration(uint iter) {
+    LayeringModel *layeringModel = this->model;
     if(currentLM != nullptr && iter < currentLM->getIterations().size()){
         return currentLM->getIterations()[iter];
     }
@@ -98,6 +102,4 @@ bool MainController::hasIterations(){
 
 unsigned int MainController::iterationsSize(uint lm){
     return learningModel->getIterations().size();
-}
-
-*/
+}*/

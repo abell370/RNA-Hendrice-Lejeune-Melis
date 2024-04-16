@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <qchart.h>
+#include <qscatterseries.h>
+#include <qlineseries.h>
 #include "maincontroller.h"
 #include "dataset.h"
 #include <qstandarditemmodel.h>
@@ -43,6 +46,9 @@ private:
     Ui::MainWindow* ui;
     MainController* mainController;
     QStandardItemModel* model;
+    QChart* chart;
+    QScatterSeries dataSeries;
+    vector<QLineSeries*> modelSeries;
     uint selectedIteration;
     uint selectedDataSet;
     uint selectedLM;

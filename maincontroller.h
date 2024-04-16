@@ -15,6 +15,7 @@ class MainController
 private:
     vector<string> pathToDataSets, learningModelsList, pathToValidationDatasets;
     LayeringModel* model;
+    vector<vector<double>> data;
 
 public:
     MainController(vector<string> pathToDataSets, vector<string> pathToValidationDatasets, vector<string> learningModelsList);
@@ -29,13 +30,12 @@ public:
     vector<string> getLearningModels();
     vector<string> getDataSets();
     vector<string> getValidationDatasets();
-
+    vector<vector<double>> getData();
 
     /*
     Iteration getIteration(uint iter);
     bool hasIterations();
-    unsigned int iterationsSize();
-    */
+    unsigned int iterationsSize();*/
 };
 
 #endif // MAINCONTROLLER_H

@@ -34,6 +34,7 @@
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="simpleperceptron.cpp" />
     <ClCompile Include="sigmoidactivation.cpp" />
+    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="activationfunction.h" />
@@ -46,6 +47,7 @@
     <ClInclude Include="identityactivation.h" />
     <ClInclude Include="layeringmodel.h" />
     <ClInclude Include="sigmoidactivation.h" />
+    <ClInclude Include="utils.h" />
     <QtMoc Include="graphwidget.h" />
     <ClInclude Include="iteration.h" />
     <ClInclude Include="layer.h" />

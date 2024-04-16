@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "maincontroller.h"
+#include "utils.h"
 
 #include <QtGlobal>
 #include <QVector>
@@ -64,27 +65,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::insertChart()
 {
-    QLineSeries* identitySeries = new QLineSeries();
-    for (int x = 0; x <= 10; ++x) {
-        identitySeries->append(x, x);
-    }
-    identitySeries->setName("Identity Function");
-
-    QScatterSeries* randomSeries = new QScatterSeries();
-    for (int i = 0; i < 10; ++i) {
-        QPoint point(i, rand() % 10); // Generate random points
-        randomSeries->append(point);
-    }
-    randomSeries->setName("Random Points");
-
-    QChart* chart = new QChart();
-    chart->addSeries(identitySeries);
-    chart->addSeries(randomSeries);
-    chart->setTitle("Simple Line Chart");
-    chart->createDefaultAxes();
+    this->chart = new QChart();
+    chart->setTitle("Model Decision Line(s)");
     QChartView* chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
-    QWidget* chartWidget = ui->chart;
+
+    QWidget* chartWidget = ui->chartBox;
 
     if (chartWidget) {
         QVBoxLayout* chartLayout = new QVBoxLayout();
@@ -95,31 +81,32 @@ void MainWindow::insertChart()
 }
 
 void MainWindow::updateDataSetPlot() {
-    //DataSet dataSet = mainController->getDataSet(selectedDataSet);
-    /*
-    QCustomPlot *plot = ui->plot;
+    vector<vector<double>> data = mainController->getData();
 
-    double minX1 = dataSet.findMin(1), maxX1 = dataSet.findMax(1);
-    double minX2 = dataSet.findMin(2), maxX2 = dataSet.findMax(2);
-    plot->xAxis->setRange(minX1 - 0.5, maxX1 + 5.5);
-    plot->yAxis->setRange(minX2 - 0.5, maxX2 + 5.5);
-    plot->graph(0)->setData(dataSet.getXValues(1), dataSet.getXValues(2));
-    plot->replot();
-*/
+    dataSeries.clear();
+    
+    for (int i = 0; i < data.size(); ++i) {
+        QPoint point(data[i][0], data[i][1]);
+        dataSeries.append(point);
+    }
+    dataSeries.setName("Data Set");
+
+    chart->addSeries(&dataSeries);
+    chart->createDefaultAxes();
+    chart->axisX()->setRange(Utils::findMin(data,0) - 0.5, Utils::findMax(data,0) + 0.5 );
+    chart->axisY()->setRange(Utils::findMin(data, 1) - 0.5, Utils::findMax(data, 1) + 0.5);
+    chart->update();
 }
 
 void MainWindow::updateLMGraph() {
-    /*
-    if(ui->plot->graphCount() < 2){
-        return;
+    /*QLineSeries* identitySeries = new QLineSeries();
+    for (int x = 0; x <= 10; ++x) {
+        identitySeries->append(x, x);
     }
-    QVector<double> x1 = {-20,20};
-    QVector<double> x2 = mainController->calcGraph(selectedLM, selectedIteration, std::vector<double>(x1.begin(), x1.end()));
-    QCustomPlot *plot = ui->plot;
-
-    plot->graph(1)->setData(x1,x2);
-    plot->replot();
-*/
+    identitySeries->setName("Decision Line");
+    chart->addSeries(identitySeries);
+    chart->createDefaultAxes();
+    chart->update();*/
 }
 
 void MainWindow::updateIteration() {
@@ -259,6 +246,7 @@ void MainWindow::on_startBtn_clicked()
         ui->startValidationBtn->setEnabled(true);
         selectedIteration = 0;
 
+        updateDataSetPlot();
         updateIteration();
     }catch(...){
         ui->learningModelStatus->setText("Error");
