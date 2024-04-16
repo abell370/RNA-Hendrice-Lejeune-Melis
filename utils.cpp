@@ -31,6 +31,10 @@ double Utils::findMin(vector<vector<double>> data, unsigned i) {
 }
 
 unordered_set<double> Utils::findClasses(vector<vector<double>> data) {
+    if (data.size() > 0 && data[0].size() < 3) {
+        return unordered_set<double>({1});// si régression (pas de classe spécifiée)
+    }
+
     unordered_set<double> classes;
     vector<double>* line;
     for (int i = 0; i < data.size(); ++i) {

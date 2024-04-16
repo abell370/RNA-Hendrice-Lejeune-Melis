@@ -94,13 +94,13 @@ void MainWindow::updateDataSetPlot() {
         QScatterSeries* classSerie = new QScatterSeries();
 
         for (int i = 0; i < data.size(); ++i) {
-            if (data[i].back() == dataClass) {
+            if (dataClasses.size() == 1 || data[i].back() == dataClass) {
                 QPoint point(data[i][0], data[i][1]);
                 classSerie->append(point);
             }
         }
 
-        classSerie->setName(QString("Class %1").arg(index+1));
+        classSerie->setName(QString("%1").arg(dataClass));
         classSerie->setColor(colors[index % colors.size()]);
         chart->addSeries(classSerie);
         dataSeries.push_back(classSerie);
