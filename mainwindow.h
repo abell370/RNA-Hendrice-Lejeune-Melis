@@ -47,7 +47,7 @@ private:
     MainController* mainController;
     QStandardItemModel* model;
     QChart* chart;
-    QScatterSeries dataSeries;
+    vector<QScatterSeries*> dataSeries;
     vector<QLineSeries*> modelSeries;
     uint selectedIteration;
     uint selectedDataSet;

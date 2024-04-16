@@ -29,3 +29,13 @@ double Utils::findMin(vector<vector<double>> data, unsigned i) {
 
     return min;
 }
+
+unordered_set<double> Utils::findClasses(vector<vector<double>> data) {
+    unordered_set<double> classes;
+    vector<double>* line;
+    for (int i = 0; i < data.size(); ++i) {
+        line = &data[i];
+        classes.insert(line->back());
+    }
+    return classes;
+}

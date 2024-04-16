@@ -10,6 +10,7 @@
 #include <qscatterseries.h>
 #include <qlayout.h>
 #include <QStringListModel>
+#include <unordered_set>
 
 MainWindow::MainWindow(MainController* mainController, QWidget* parent)
     : QMainWindow(parent)
@@ -55,7 +56,7 @@ MainWindow::MainWindow(MainController* mainController, QWidget* parent)
     
     ui->iterationSteps->setModel(model);
     */
-    this->updateDataSetPlot();
+    //this->updateDataSetPlot();
 }
 
 MainWindow::~MainWindow()
@@ -82,16 +83,30 @@ void MainWindow::insertChart()
 
 void MainWindow::updateDataSetPlot() {
     vector<vector<double>> data = mainController->getData();
+    unordered_set<double> dataClasses = Utils::findClasses(data);
+    vector<QString> colors = {"blue","red","yellow","green","cyan","magenta","gray"};
+    int index = 0;
 
     dataSeries.clear();
-    
-    for (int i = 0; i < data.size(); ++i) {
-        QPoint point(data[i][0], data[i][1]);
-        dataSeries.append(point);
-    }
-    dataSeries.setName("Data Set");
+    chart->removeAllSeries();
 
-    chart->addSeries(&dataSeries);
+    for (double dataClass : dataClasses) {
+        QScatterSeries* classSerie = new QScatterSeries();
+
+        for (int i = 0; i < data.size(); ++i) {
+            if (data[i].back() == dataClass) {
+                QPoint point(data[i][0], data[i][1]);
+                classSerie->append(point);
+            }
+        }
+
+        classSerie->setName(QString("Class %1").arg(index+1));
+        classSerie->setColor(colors[index % colors.size()]);
+        chart->addSeries(classSerie);
+        dataSeries.push_back(classSerie);
+        index++;
+    }
+    
     chart->createDefaultAxes();
     chart->axisX()->setRange(Utils::findMin(data,0) - 0.5, Utils::findMax(data,0) + 0.5 );
     chart->axisY()->setRange(Utils::findMin(data, 1) - 0.5, Utils::findMax(data, 1) + 0.5);
