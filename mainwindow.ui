@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1256</width>
-    <height>698</height>
+    <width>1438</width>
+    <height>1201</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,7 +28,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1219</width>
+         <width>1401</width>
          <height>1218</height>
         </rect>
        </property>
@@ -54,6 +54,16 @@
               <widget class="QLabel" name="label">
                <property name="text">
                 <string>Results</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QWidget" name="chartBox" native="true">
+               <property name="minimumSize">
+                <size>
+                 <width>634</width>
+                 <height>500</height>
+                </size>
                </property>
               </widget>
              </item>
@@ -98,40 +108,11 @@
                   <item row="8" column="0" colspan="2">
                    <layout class="QHBoxLayout" name="horizontalLayout_3"/>
                   </item>
-                  <item row="14" column="0" colspan="2">
-                   <widget class="QGroupBox" name="groupBox_2">
-                    <property name="title">
-                     <string>Validation</string>
+                  <item row="6" column="1">
+                   <widget class="QRadioButton" name="randomWeights">
+                    <property name="text">
+                     <string>Random weights</string>
                     </property>
-                    <layout class="QGridLayout" name="gridLayout_5">
-                     <item row="0" column="0">
-                      <layout class="QVBoxLayout" name="verticalLayout_8">
-                       <item>
-                        <widget class="QLabel" name="label_6">
-                         <property name="text">
-                          <string>Dataset to use</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QComboBox" name="validationDatasetCB"/>
-                       </item>
-                       <item>
-                        <widget class="QPushButton" name="startValidationBtn">
-                         <property name="enabled">
-                          <bool>false</bool>
-                         </property>
-                         <property name="text">
-                          <string>Execute classification validation</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QTableWidget" name="validationResult"/>
-                       </item>
-                      </layout>
-                     </item>
-                    </layout>
                    </widget>
                   </item>
                   <item row="2" column="1">
@@ -194,66 +175,19 @@
                     </item>
                    </layout>
                   </item>
-                  <item row="7" column="0" colspan="2">
-                   <widget class="QGroupBox" name="groupBox_3">
-                    <property name="title">
-                     <string>Model architecture</string>
-                    </property>
-                    <layout class="QVBoxLayout" name="verticalLayout_9">
-                     <item>
-                      <widget class="QRadioButton" name="monolayerCheckButton">
-                       <property name="text">
-                        <string>Monolayer</string>
-                       </property>
-                       <property name="checked">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QRadioButton" name="multiLayerCheckButton">
-                       <property name="text">
-                        <string>Multilayer</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <layout class="QHBoxLayout" name="horizontalLayout_8">
-                       <item>
-                        <widget class="QLabel" name="label_3">
-                         <property name="text">
-                          <string>Hidden layer size</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLineEdit" name="hiddenLayerSizeInput">
-                         <property name="text">
-                          <string>0</string>
-                         </property>
-                         <property name="placeholderText">
-                          <string>5000</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </item>
-                    </layout>
-                   </widget>
-                  </item>
                   <item row="13" column="0" colspan="2">
                    <layout class="QGridLayout" name="controlBar">
-                    <item row="1" column="1">
-                     <widget class="QLabel" name="learningModelStatus">
-                      <property name="text">
-                       <string>Not ready</string>
-                      </property>
-                     </widget>
-                    </item>
                     <item row="1" column="0">
                      <widget class="QPushButton" name="startBtn">
                       <property name="text">
                        <string>Start learning</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1">
+                     <widget class="QLabel" name="learningModelStatus">
+                      <property name="text">
+                       <string>Not ready</string>
                       </property>
                      </widget>
                     </item>
@@ -264,24 +198,6 @@
                       </property>
                       <property name="text">
                        <string>Reset</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item row="0" column="1">
-                   <layout class="QHBoxLayout" name="horizontalLayout">
-                    <item>
-                     <widget class="QLabel" name="learningModelLabel_2">
-                      <property name="text">
-                       <string>Learning Model :</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QComboBox" name="learningModelComboBox">
-                      <property name="enabled">
-                       <bool>true</bool>
                       </property>
                      </widget>
                     </item>
@@ -361,27 +277,100 @@
                     </item>
                    </layout>
                   </item>
-                  <item row="6" column="1">
-                   <widget class="QRadioButton" name="randomWeights">
-                    <property name="text">
-                     <string>Random weights</string>
+                  <item row="7" column="0" colspan="2">
+                   <widget class="QGroupBox" name="groupBox_3">
+                    <property name="title">
+                     <string>Model architecture</string>
                     </property>
+                    <layout class="QGridLayout" name="gridLayout_6">
+                     <item row="0" column="3">
+                      <widget class="QComboBox" name="learningModelComboBox">
+                       <property name="enabled">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QRadioButton" name="monolayerCheckButton">
+                       <property name="text">
+                        <string>Monolayer</string>
+                       </property>
+                       <property name="checked">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="3">
+                      <layout class="QHBoxLayout" name="horizontalLayout_8">
+                       <item>
+                        <widget class="QLabel" name="label_3">
+                         <property name="text">
+                          <string>Hidden layer size</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLineEdit" name="hiddenLayerSizeInput">
+                         <property name="text">
+                          <string>0</string>
+                         </property>
+                         <property name="placeholderText">
+                          <string>5000</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QRadioButton" name="multiLayerCheckButton">
+                       <property name="text">
+                        <string>Multilayer</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
                    </widget>
                   </item>
                  </layout>
                 </widget>
                </item>
+               <item row="1" column="0">
+                <widget class="QGroupBox" name="groupBox_2">
+                 <property name="title">
+                  <string>Validation</string>
+                 </property>
+                 <layout class="QGridLayout" name="gridLayout_5">
+                  <item row="0" column="0">
+                   <layout class="QVBoxLayout" name="verticalLayout_8">
+                    <item>
+                     <widget class="QLabel" name="label_6">
+                      <property name="text">
+                       <string>Dataset to use</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QComboBox" name="validationDatasetCB"/>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="startValidationBtn">
+                      <property name="enabled">
+                       <bool>false</bool>
+                      </property>
+                      <property name="text">
+                       <string>Execute classification validation</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QTableWidget" name="validationResult"/>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
               </layout>
-             </item>
-             <item row="0" column="1">
-              <widget class="QWidget" name="chartBox" native="true">
-               <property name="minimumSize">
-                <size>
-                 <width>634</width>
-                 <height>500</height>
-                </size>
-               </property>
-              </widget>
              </item>
              <item row="1" column="1">
               <layout class="QGridLayout" name="gridLayout_4">
@@ -437,7 +426,14 @@
               </layout>
              </item>
              <item row="2" column="0" colspan="2">
-              <widget class="QListView" name="listView"/>
+              <widget class="QTableWidget" name="resultTable">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>5000</height>
+                </size>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -455,7 +451,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1256</width>
+     <width>1438</width>
      <height>22</height>
     </rect>
    </property>

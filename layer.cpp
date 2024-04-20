@@ -70,7 +70,7 @@ void MonoLayer::train(double stopThreadshold, int maxEpoc, int maxClassification
     }
 }
 
-void MonoLayer::getResult()
+vector<double> MonoLayer::getResult()
 {
     string result = "";
     for (int i = 0; i < this->neurons.size(); i++)
@@ -80,6 +80,7 @@ void MonoLayer::getResult()
         result += "\nClasse " + to_string(index) + " => Result " + this->neurons[i]->getResult();
     };
     cout << result << endl;
+    return {};
 }
 
 void MonoLayer::reset()

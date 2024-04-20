@@ -29,17 +29,13 @@ void AdalinePerceptron::learn(int maxIter, double minMeanQuadraticError, int ind
 		double eMoy = this->executeOneIteration(indexOfPredictedData, true);
 		this->result = eMoy;
 
-		if (minMeanQuadraticError != 0.)
+		if (minMeanQuadraticError != 0. && eMoy < minMeanQuadraticError)
 		{
-
-			if (eMoy < minMeanQuadraticError)
-			{
-				break;
-			}
+			break;
 		}
 		else
 		{
-			if (this->nbErreurs == maxClassificationError)
+			if (this->nbErreurs <= maxClassificationError)
 			{
 				break;
 			}

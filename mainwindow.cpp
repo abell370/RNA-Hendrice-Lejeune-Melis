@@ -258,7 +258,23 @@ void MainWindow::on_startBtn_clicked()
         ui->learningModelStatus->setStyleSheet("QLabel {color: orange;}");
 
         mainController->setupModel(modelIndex, dataset.toStdString(), learningRate, nbClass, this->ui->multiLayerCheckButton->isChecked(), hiddenLayerSize, activationFct, this->ui->randomWeights->isChecked());
-        mainController->startTraining(maxIter, errorThreshold, minClassificationErrorAccepted);
+        vector<double> eMoyEvolution = mainController->startTraining(maxIter, errorThreshold, minClassificationErrorAccepted);
+
+        int numRows = eMoyEvolution.size();
+        int numCols = 1;
+        ui->resultTable->reset();
+        ui->resultTable->setRowCount(numRows);
+        ui->resultTable->setColumnCount(numCols);
+
+        for (int row = 0; row < numRows; ++row) {
+
+            QTableWidgetItem* item = new QTableWidgetItem(QString::number(eMoyEvolution[row], 'g', 17));
+            ui->resultTable->setItem(row, 1, item);
+        }
+        if (numRows > 15) {
+            ui->resultTable->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        }
+        ui->resultTable->setHorizontalHeaderLabels({ "eMoy evolution" });
 
         ui->learningModelStatus->setText("Ready");
         ui->learningModelStatus->setStyleSheet("QLabel {color: green;}");
