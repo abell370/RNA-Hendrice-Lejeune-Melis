@@ -257,7 +257,7 @@ void MainWindow::on_startBtn_clicked()
         ui->learningModelStatus->setText("Learning...");
         ui->learningModelStatus->setStyleSheet("QLabel {color: orange;}");
 
-        mainController->setupModel(modelIndex, dataset.toStdString(), learningRate, nbClass, this->ui->multiLayerCheckButton->isChecked(), hiddenLayerSize, activationFct);
+        mainController->setupModel(modelIndex, dataset.toStdString(), learningRate, nbClass, this->ui->multiLayerCheckButton->isChecked(), hiddenLayerSize, activationFct, this->ui->randomWeights->isChecked());
         mainController->startTraining(maxIter, errorThreshold, minClassificationErrorAccepted);
 
         ui->learningModelStatus->setText("Ready");

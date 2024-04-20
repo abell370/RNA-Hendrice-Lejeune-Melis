@@ -3,16 +3,20 @@
 
 void MultiLayer::setup(int amountOfHiddenNeuron, int nbClasses, double learningRate)
 {
-	
 	this->learningRate = learningRate;
 	this->amountOfHiddenNeuron = amountOfHiddenNeuron;
 	// Cas d'un apprentissage avec 2 classes => 1 neurone de sorite suffit SINON besoin de n neurones de sorties pour n classes
 	nbClasses == 2 ? this->nbTags = 1 : this->nbTags = nbClasses;
-
-	this->weightsHidden = { {0.,0.1,0.15,0.05},{0., 0.12,0.18,0.08} };
-	//this->weightsHidden = { Utils::generateRandom(4), Utils::generateRandom(4) };
-	this->weightsOutput = { {0.,0.1,0.14},{0.,0.125,0.21},{0.,0.13,0.07} };
-	//this->weightsOutput = { Utils::generateRandom(4), Utils::generateRandom(4) };
+	int amountOfEntry = this->dataset[0].size() - this->nbTags;
+	// + 1 pour le biais
+	for (int w = 0; w < amountOfHiddenNeuron; w++)
+	{
+		this->weightsHidden.push_back(Utils::generateRandom(amountOfEntry + 1));
+	}
+	for (int y = 0; y < this->nbTags; y++)
+	{
+		this->weightsOutput.push_back(Utils::generateRandom(amountOfHiddenNeuron + 1));
+	}
 }
 
 map<string, double> MultiLayer::checkAccuracy(vector<vector<double>> validationDataset)
@@ -47,11 +51,12 @@ void MultiLayer::train(double stopError, int maxEpoc, int maxClassificationError
 double MultiLayer::executeOneEpoc(double stopThreadshold, bool updateWeights)
 {
 	double E = 0.0;
+	this->classificationErrors = 0;
 	for (int k = 0; k < dataset.size(); k++)
 	{
 		// Etape 1
 		// sous vecteur contenant les données sans les étiquettes (+ 1 pour prendre en compte le biais)
-		vector<double> example(dataset[k].begin(), dataset[k].begin() + nbTags);
+		vector<double> example(dataset[k].begin(), dataset[k].end() - nbTags);
 		// Potentiel des neurones cachés
 
 		// TODO fonction récursive
@@ -133,7 +138,7 @@ double MultiLayer::calculateEMeanQuad(vector<double> example, vector<double> out
 		double tag = example[i + (example.size() - nbTags)];
 		E += pow(tag - outputs[i], 2);
 	}
-	return E * 0.5;
+	return (.5 * E) / this->dataset.size();
 }
 
 vector<double> MultiLayer::caclulateOutputSigError(vector<double> example, vector<double> zOutputs, int nbTags, int amountOfNeuron)
@@ -192,5 +197,8 @@ vector<vector<double>> MultiLayer::getDecisionWeights() {
 }
 
 // TODO
-void MultiLayer::getResult() {};
+void MultiLayer::getResult() 
+{
+	string result = "nb epoc / nbError [" + to_string(this->nbEpoc) + " / " + to_string(this->classificationErrors) + "]";
+};
 void MultiLayer::reset() {};

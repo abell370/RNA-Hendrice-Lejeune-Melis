@@ -14,7 +14,7 @@ QVector<double> MainController::calcGraph(uint iterationIndex, std::vector<doubl
 */
 
 
-void MainController::setupModel(int modelIndex, string pathToData, double learningRate, int nbClass, bool deeplearning, int hiddenLayerSize, int activationFct)
+void MainController::setupModel(int modelIndex, string pathToData, double learningRate, int nbClass, bool deeplearning, int hiddenLayerSize, int activationFct, bool randomNormalWeights)
 {
     CSVReader reader("data/" + pathToData);
     if (reader.readCSV())
@@ -40,7 +40,7 @@ void MainController::setupModel(int modelIndex, string pathToData, double learni
         {
             // TODO heritage a ameliorer....
             MonoLayer* layer = new MonoLayer(data, aFunction);
-            layer->setup(nbClass, modelIndex, learningRate);
+            layer->setup(nbClass, modelIndex, learningRate, randomNormalWeights);
             this->model = layer;
         }
     }

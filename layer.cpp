@@ -3,6 +3,7 @@
 #include "activationfunction.h"
 #include "identityactivation.h"
 #include "utils.h"
+#include <iostream>
 
 
 map<string, double> MonoLayer::checkAccuracy(vector<vector<double>> validationDataset)
@@ -20,18 +21,18 @@ map<string, double> MonoLayer::checkAccuracy(vector<vector<double>> validationDa
     return results;
 }
 
-vector<double> MonoLayer::generateWeightVector(int size, bool randomised)
+vector<double> MonoLayer::generateWeightVector(int size, bool randomNormalWeights)
 {
     vector<double> wVector(size);
 
-    if (randomised) {
+    if (randomNormalWeights) {
         wVector = Utils::generateRandom(size);
     }
 
     return wVector;
 }
 
-void MonoLayer::setup(int nbTags, int modelIndex, double learningRate)
+void MonoLayer::setup(int nbTags, int modelIndex, double learningRate, bool randomNormalWeights)
 {
     if (nbTags == 2)
     {
@@ -40,7 +41,7 @@ void MonoLayer::setup(int nbTags, int modelIndex, double learningRate)
     int nbEntry = dataset[0].size() - nbTags;
     for (int i = 0; i < nbTags; i++)
     {
-        vector<double> weights = this->generateWeightVector(nbEntry + 1, false);
+        vector<double> weights = this->generateWeightVector(nbEntry + 1, randomNormalWeights);
         LearningModel* neuron = LearningModelFactory::create(modelIndex, dataset, weights, learningRate,aFunction);
         neurons.push_back(neuron);
     }
@@ -78,6 +79,7 @@ void MonoLayer::getResult()
         // Convert integers to strings before concatenating
         result += "\nClasse " + to_string(index) + " => Result " + this->neurons[i]->getResult();
     };
+    cout << result << endl;
 }
 
 void MonoLayer::reset()
