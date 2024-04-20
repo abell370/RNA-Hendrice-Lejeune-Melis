@@ -5,7 +5,7 @@
 #include "sigmoidactivation.h"
 #include "deeplearning.h"
 
-MainController::MainController(vector<string> pathToDataSets, vector<string> pathToValidationDatasets, vector<string> learningModelsList) : pathToDataSets(pathToDataSets), pathToValidationDatasets(pathToValidationDatasets), learningModelsList(learningModelsList) {};
+MainController::MainController(vector<string> pathToDataSets, vector<string> pathToValidationDatasets, vector<string> learningModelsList, DataSetReader* dataSetReader) : pathToDataSets(pathToDataSets), pathToValidationDatasets(pathToValidationDatasets), learningModelsList(learningModelsList), dataSetReader(dataSetReader) {};
 
 /*
 QVector<double> MainController::calcGraph(uint iterationIndex, std::vector<double> x1){
@@ -16,8 +16,14 @@ QVector<double> MainController::calcGraph(uint iterationIndex, std::vector<doubl
 
 void MainController::setupModel(int modelIndex, string pathToData, double learningRate, int nbClass, bool deeplearning, int hiddenLayerSize, int activationFct, bool randomNormalWeights)
 {
-    CSVReader reader("data/" + pathToData);
-    if (reader.readCSV())
+    string datapath = "data/" + pathToData;
+
+    delete this->data; // delete previous DataSet object
+    this->data = this->dataSetReader->read(datapath, nbClass);
+    
+    // CSVReader reader("data/" + pathToData);
+    
+    if (data != NULL)
     {
 
         // TODO  ceation dans une classe separee
@@ -27,19 +33,18 @@ void MainController::setupModel(int modelIndex, string pathToData, double learni
             aFunction = new IdentityActivation();
         }
 
-        this->data = reader.getData();
         // Sert à ajouter le x0 aux données => TODO aller modofier les algos pour ne pas devoir modifier les données de bases
-        if (pathToData == "table_3_1.csv") reverse(data.begin(), data.end());
+        if (pathToData == "table_3_1.csv") reverse(data->getEntries().begin(), data->getEntries().end());
         if (deeplearning)
         {
-            MultiLayer* layeringmodel = new MultiLayer(data, aFunction);
+            MultiLayer* layeringmodel = new MultiLayer(data->getEntries(), aFunction);
             layeringmodel->setup(hiddenLayerSize,nbClass, learningRate);
             this->model = layeringmodel;
         }
         else
         {
             // TODO heritage a ameliorer....
-            MonoLayer* layer = new MonoLayer(data, aFunction);
+            MonoLayer* layer = new MonoLayer(data->getEntries(), aFunction);
             layer->setup(nbClass, modelIndex, learningRate, randomNormalWeights);
             this->model = layer;
         }
@@ -84,6 +89,10 @@ vector<string> MainController::getDataSets()
 }
 
 vector<vector<double>> MainController::getData() {
+    return data->getEntries();
+}
+
+DataSet* MainController::getDataSet() {
     return data;
 }
 

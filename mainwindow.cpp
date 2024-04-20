@@ -82,34 +82,35 @@ void MainWindow::insertChart()
 }
 
 void MainWindow::updateDataSetPlot() {
-    vector<vector<double>> data = mainController->getData();
-    unordered_set<double> dataClasses = Utils::findClasses(data);
+    DataSet* dataSet = mainController->getDataSet();
     vector<QString> colors = {"blue","red","yellow","green","cyan","magenta","gray"};
-    int index = 0;
 
+    for (QScatterSeries* dataSerie : dataSeries) {
+        chart->removeSeries(dataSerie);
+    }
     dataSeries.clear();
-    chart->removeAllSeries();
 
-    for (double dataClass : dataClasses) {
+    // For each data class, create a scatter
+    for (int dataClass : dataSet->getDataClasses()) {
         QScatterSeries* classSerie = new QScatterSeries();
-
-        for (int i = 0; i < data.size(); ++i) {
-            if (dataClasses.size() == 1 || data[i].back() == dataClass) {
-                QPoint point(data[i][0], data[i][1]);
-                classSerie->append(point);
-            }
-        }
-
         classSerie->setName(QString("%1").arg(dataClass));
-        classSerie->setColor(colors[index % colors.size()]);
+        classSerie->setColor(colors[dataClass % colors.size()]);
+        dataSeries.push_back(new QScatterSeries());
         chart->addSeries(classSerie);
-        dataSeries.push_back(classSerie);
-        index++;
+    }
+
+    vector<vector<double>> entries = dataSet->getEntries();
+
+    // For each data entry, add a point to corresponding data class scatter
+    for (int i = 0; i < entries.size(); ++i) {
+        QPoint point(entries[i][0], entries[i][1]);
+        int dataClass = dataSet->getDataClasses()[i];
+        dataSeries[i]->append(point);
     }
     
     chart->createDefaultAxes();
-    chart->axisX()->setRange(Utils::findMin(data,0) - 0.5, Utils::findMax(data,0) + 0.5 );
-    chart->axisY()->setRange(Utils::findMin(data, 1) - 0.5, Utils::findMax(data, 1) + 0.5);
+    chart->axisX()->setRange(dataSet->findMin(0) - 0.5, dataSet->findMax(0) + 0.5);
+    chart->axisY()->setRange(dataSet->findMin(1) - 0.5, dataSet->findMax(1) + 0.5);
     chart->update();
 }
 

@@ -9,6 +9,7 @@
 #include "deeplearning.h"
 #include "sigmoidactivation.h"
 #include "csvreader.h"
+#include "DataSetReader.h"
 
 using namespace std::filesystem;
 using namespace std;
@@ -34,9 +35,10 @@ int main(int argc, char* argv[])
         pathToValidationData.push_back(path);
     }
 
+    DataSetReader* dataSetReader = new DataSetReader();
     QApplication a(argc, argv);
 
-    MainController* mainController = new MainController(pathToData, pathToValidationData,{"Adaline", "Gradient", "Simple"});
+    MainController* mainController = new MainController(pathToData, pathToValidationData,{"Adaline", "Gradient", "Simple"}, dataSetReader);
     MainWindow w(mainController);
 
 

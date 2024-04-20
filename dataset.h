@@ -11,11 +11,13 @@ class DataSet {
 private:
     string name;
     vector<vector<double>> entries;
+    vector<int> classes;
 public:
-    DataSet(string name, vector<vector<double>> entries);
+    DataSet(string name, vector<vector<double>> entries, vector<int> classes);
 
     string getName();
     vector<vector<double>> getEntries();
+    vector<int> getDataClasses();
 
     //find min/max value of xi
     double findMin(unsigned int i);

@@ -1,6 +1,6 @@
 #include "dataset.h"
 
-DataSet::DataSet(std::string name, std::vector<std::vector<double>> entries) : name(name), entries(entries) {
+DataSet::DataSet(std::string name, std::vector<std::vector<double>> entries, vector<int> classes) : name(name), entries(entries), classes(classes) {
 
 }
 
@@ -50,4 +50,8 @@ QVector<double> DataSet::getXValues(unsigned int i) {
     }
 
     return xi;
+}
+
+vector<int> DataSet::getDataClasses() {
+    return this->classes;
 }

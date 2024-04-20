@@ -7,6 +7,7 @@
 #include "layer.h"
 #include "identityactivation.h"
 #include "layeringmodel.h"
+#include "DataSetReader.h"
 
 using namespace std;
 
@@ -15,10 +16,11 @@ class MainController
 private:
     vector<string> pathToDataSets, learningModelsList, pathToValidationDatasets;
     LayeringModel* model;
-    vector<vector<double>> data;
+    DataSet* data;
+    DataSetReader* dataSetReader;
 
 public:
-    MainController(vector<string> pathToDataSets, vector<string> pathToValidationDatasets, vector<string> learningModelsList);
+    MainController(vector<string> pathToDataSets, vector<string> pathToValidationDatasets, vector<string> learningModelsList, DataSetReader* dataSetReader);
 
     void setupModel(int modelIndex, string pathToData, double learningRate, int nbClass, bool deeplearning, int hiddenLayerSize, int activationFct, bool randomNormalWeights);
     void startTraining(int maxIter, double errorThreshold, int maxClassificationError);
@@ -31,6 +33,7 @@ public:
     vector<string> getDataSets();
     vector<string> getValidationDatasets();
     vector<vector<double>> getData();
+    DataSet* getDataSet();
     vector<vector<double>> getDecisionWeights();
 
     /*

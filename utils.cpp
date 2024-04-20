@@ -39,9 +39,15 @@ unordered_set<double> Utils::findClasses(vector<vector<double>> data) {
 
     unordered_set<double> classes;
     vector<double>* line;
-    for (int i = 0; i < data.size(); ++i) {
-        line = &data[i];
-        classes.insert(line->back());
+
+    if (data[0].size() == 4) { // If only 3 columns, it means 2 for x,y & 1 for classes
+        for (int i = 0; i < data.size(); ++i) {
+            line = &data[i];
+            classes.insert(line->back());
+        }
+    }
+    else {
+
     }
     return classes;
 }

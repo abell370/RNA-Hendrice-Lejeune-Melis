@@ -22,6 +22,7 @@
     <ClCompile Include="concretlayerbuilder.cpp" />
     <ClCompile Include="csvreader.cpp" />
     <ClCompile Include="dataset.cpp" />
+    <ClCompile Include="DataSetReader.cpp" />
     <ClCompile Include="deeplearning.cpp" />
     <ClCompile Include="gradientperceptron.cpp" />
     <ClCompile Include="identityactivation.cpp" />
@@ -42,6 +43,7 @@
     <ClInclude Include="concretlayerbuilder.h" />
     <ClInclude Include="csvreader.h" />
     <ClInclude Include="dataset.h" />
+    <ClInclude Include="DataSetReader.h" />
     <ClInclude Include="deeplearning.h" />
     <ClInclude Include="gradientperceptron.h" />
     <ClInclude Include="identityactivation.h" />
