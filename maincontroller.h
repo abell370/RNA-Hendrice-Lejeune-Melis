@@ -23,7 +23,7 @@ public:
     MainController(vector<string> pathToDataSets, vector<string> pathToValidationDatasets, vector<string> learningModelsList, DataSetReader* dataSetReader);
 
     void setupModel(int modelIndex, string pathToData, double learningRate, int nbClass, bool deeplearning, int hiddenLayerSize, int activationFct, bool randomNormalWeights);
-    void startTraining(int maxIter, double errorThreshold, int maxClassificationError);
+    vector<double> startTraining(int maxIter, double errorThreshold, int maxClassificationError);
     map<string, double> checkModelAccuracy(string pathToData);
     QVector<double> calcGraph(uint iterationIndex, std::vector<double> x1);
     void reset();

@@ -8,5 +8,5 @@ double SigmoidActivation::compute(double entry) const
 
 double SigmoidActivation::performThresholding(double entry) const
 {
-	return entry >= 0.5 ? 1. : 0.;
+	return entry >= .5 ? 1. : 0.;
 }

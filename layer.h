@@ -18,7 +18,7 @@ public:
     void setup(int nbTags, int modelIndex, double learningRate, bool randomNormalWeights);
     void train(double stopThreadshold, int maxEpoc, int maxClassificationError);
     map<string, double> checkAccuracy(vector<vector<double>> validationDataset);
-    void getResult();
+    vector<double> getResult();
     void reset();
 
     vector<vector<double>> getDecisionWeights();

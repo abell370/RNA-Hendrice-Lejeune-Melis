@@ -15,7 +15,7 @@ public:
 	void setup(int hiddenLayerSize, int nbTags, double learningRate);
 	void train(double stopThreadshold, int maxEpoc, int maxClassificationError);
 	map<string, double> checkAccuracy(vector<vector<double>> validationDataset);
-	void getResult();
+	vector<double> getResult();
 	void reset();
 
 	vector<vector<double>> getDecisionWeights();
@@ -27,16 +27,16 @@ private:
 
 	double executeOneEpoc(double stopThreadshold, bool updateWeights);
 
-	vector<double> calculatePotentials(vector<double> outputs, int amountOfNeuron, vector<vector<double>> weights);
+	vector<double> calculatePotentials(vector<double> outputs, int amountOfNeuron, vector<vector<double>> *weights);
 	vector<double> calculateOutputs(vector<double> example, int amountOfNeuron);
 
-	double calculateEMeanQuad(vector<double> example, vector<double> outputs, int nbTags);
+	double calculateEQuad(vector<double> example, vector<double> outputs, int nbTags);
 
 	vector<double> caclulateOutputSigError(vector<double> example, vector<double> zOutputs, int nbTags, int amountOfNeuron);
 	vector<double> caclulateHiddenSigError(vector<double> hiddenLayerOutputs, int amountOfNeuron);
 
 	vector<double> cumulHiddenLayerSigError(vector<double> hiddenOutputSigError, vector<double> outputSigError, int amountOfNeuron, int amountOfHiddenNeuron);
 
-	void editWeights(vector<double> sigError, vector<double> example, vector<vector<double>> weights);
+	void editWeights(vector<double> sigError, vector<double> example, vector<vector<double>> *weights);
 };
 
