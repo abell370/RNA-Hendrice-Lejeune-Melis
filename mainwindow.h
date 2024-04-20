@@ -8,6 +8,7 @@
 #include "maincontroller.h"
 #include "dataset.h"
 #include <qstandarditemmodel.h>
+#include <map>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -47,7 +48,7 @@ private:
     MainController* mainController;
     QStandardItemModel* model;
     QChart* chart;
-    vector<QScatterSeries*> dataSeries;
+    map<int, QScatterSeries*> dataSeries;
     vector<QLineSeries*> modelSeries;
     uint selectedIteration;
     uint selectedDataSet;

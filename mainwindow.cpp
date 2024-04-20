@@ -84,28 +84,33 @@ void MainWindow::insertChart()
 void MainWindow::updateDataSetPlot() {
     DataSet* dataSet = mainController->getDataSet();
     vector<QString> colors = {"blue","red","yellow","green","cyan","magenta","gray"};
+    vector<int> dataClasses;
+    vector<vector<double>> entries;
 
-    for (QScatterSeries* dataSerie : dataSeries) {
-        chart->removeSeries(dataSerie);
+    for (auto dataSerie : dataSeries) {
+        chart->removeSeries(dataSerie.second);
     }
     dataSeries.clear();
 
-    // For each data class, create a scatter
-    for (int dataClass : dataSet->getDataClasses()) {
-        QScatterSeries* classSerie = new QScatterSeries();
-        classSerie->setName(QString("%1").arg(dataClass));
-        classSerie->setColor(colors[dataClass % colors.size()]);
-        dataSeries.push_back(new QScatterSeries());
-        chart->addSeries(classSerie);
-    }
-
-    vector<vector<double>> entries = dataSet->getEntries();
+    dataClasses = dataSet->getDataClasses();
+    entries = dataSet->getEntries();
 
     // For each data entry, add a point to corresponding data class scatter
     for (int i = 0; i < entries.size(); ++i) {
-        QPoint point(entries[i][0], entries[i][1]);
         int dataClass = dataSet->getDataClasses()[i];
-        dataSeries[i]->append(point);
+
+        if (dataSeries[dataClass] == NULL) {
+            QScatterSeries* classSerie = new QScatterSeries();
+            classSerie->setName(QString("%1").arg(dataClass));
+            classSerie->setColor(colors[dataClass % colors.size()]);
+            //dataSeries.emplace(dataClass, classSerie);
+            dataSeries[dataClass] = classSerie;
+            chart->addSeries(classSerie);
+        }
+
+        QPointF point(entries[i][0], entries[i][1]);
+
+        dataSeries.at(dataClass)->append(point);
     }
     
     chart->createDefaultAxes();

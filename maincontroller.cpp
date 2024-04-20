@@ -18,7 +18,7 @@ void MainController::setupModel(int modelIndex, string pathToData, double learni
 {
     string datapath = "data/" + pathToData;
 
-    delete this->data; // delete previous DataSet object
+    // delete previous DataSet object
     this->data = this->dataSetReader->read(datapath, nbClass);
     
     // CSVReader reader("data/" + pathToData);
@@ -34,7 +34,7 @@ void MainController::setupModel(int modelIndex, string pathToData, double learni
         }
 
         // Sert à ajouter le x0 aux données => TODO aller modofier les algos pour ne pas devoir modifier les données de bases
-        if (pathToData == "table_3_1.csv") reverse(data->getEntries().begin(), data->getEntries().end());
+        //if (pathToData == "table_3_1.csv") reverse(data->getEntries().begin(), data->getEntries().end());
         if (deeplearning)
         {
             MultiLayer* layeringmodel = new MultiLayer(data->getEntries(), aFunction);
