@@ -30,7 +30,7 @@ private:
 	vector<double> calculatePotentials(vector<double> outputs, int amountOfNeuron, vector<vector<double>> *weights);
 	vector<double> calculateOutputs(vector<double> example, int amountOfNeuron);
 
-	double calculateEQuad(vector<double> example, vector<double> outputs, int nbTags);
+	double calculateEQuad(const vector<vector<double>>& outputs);
 
 	vector<double> caclulateOutputSigError(vector<double> example, vector<double> zOutputs, int nbTags, int amountOfNeuron);
 	vector<double> caclulateHiddenSigError(vector<double> hiddenLayerOutputs, int amountOfNeuron);
@@ -38,5 +38,6 @@ private:
 	vector<double> cumulHiddenLayerSigError(vector<double> hiddenOutputSigError, vector<double> outputSigError, int amountOfNeuron, int amountOfHiddenNeuron);
 
 	void editWeights(vector<double> sigError, vector<double> example, vector<vector<double>> *weights);
+	void shuffleDataset();
 };
 

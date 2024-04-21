@@ -218,7 +218,7 @@ void MainWindow::on_startValidationBtn_clicked()
             ui->validationResult->setItem(row, 0, keyItem);
 
             // Set value
-            QTableWidgetItem* valueItem = new QTableWidgetItem(QString::number(pair.second));
+            QTableWidgetItem* valueItem = new QTableWidgetItem(QString::number(pair.second, 'g', 10));
             /*
             if (pair.second == 0)
             {
@@ -273,13 +273,14 @@ void MainWindow::on_startBtn_clicked()
         ui->resultTable->setColumnCount(numCols);
 
         for (int row = 0; row < numRows; ++row) {
-
-            QTableWidgetItem* item = new QTableWidgetItem(QString::number(eMoyEvolution[row], 'g', 17));
-            ui->resultTable->setItem(row, 1, item);
+            QTableWidgetItem* item = new QTableWidgetItem(QString::number(eMoyEvolution[row], 'g', 10)); // Adjust precision as needed
+            ui->resultTable->setItem(row, 0, item); // Corrected column index
         }
+
         if (numRows > 15) {
             ui->resultTable->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         }
+
         ui->resultTable->setHorizontalHeaderLabels({ "eMoy evolution" });
 
         ui->learningModelStatus->setText("Ready");

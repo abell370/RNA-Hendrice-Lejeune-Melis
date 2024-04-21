@@ -1,6 +1,7 @@
 #include "deeplearning.h"
 #include "utils.h"
 #include <iostream>
+#include <random>
 
 void MultiLayer::setup(int amountOfHiddenNeuron, int nbClasses, double learningRate)
 {
@@ -37,11 +38,15 @@ void MultiLayer::train(double stopError, int maxEpoc, int maxClassificationError
 	{
 		this->nbEpoc += 1;
 		double E = executeOneEpoc(stopError, true);
-		this->eMoyDuringTraining.push_back(E);
-		if (stopError != 0. && E < stopError)
+		if (stopError != 0.)
 		{
-			std::cout << "end of training stop reach" << endl;
-			break;
+			this->eMoyDuringTraining.push_back(E);
+			if (E < stopError) 
+			{
+				bool stopped = true;
+				std::cout << "end of training stop reach" << endl;
+				break;
+			}
 		}
 		else 
 		{
@@ -53,17 +58,16 @@ void MultiLayer::train(double stopError, int maxEpoc, int maxClassificationError
 // Adaline is used 
 double MultiLayer::executeOneEpoc(double stopThreadshold, bool updateWeights)
 {
-	double E = 0.0;
 	this->classificationErrors = 0;
+	vector<vector<double>> outputsTotal;
+	// Pour implémentation de la stratégie Stochiastique pg.86 du cours
+	shuffleDataset();
 	for (int k = 0; k < dataset.size(); k++)
 	{
 		// Etape 1
 		// sous vecteur contenant les données sans les étiquettes (+ 1 pour prendre en compte le biais)
 		vector<double> example(dataset[k].begin(), dataset[k].end() - nbTags);
 		// Potentiel des neurones cachés
-
-		// TODO fonction récursive
-
 		vector<double> kC = calculatePotentials(example, amountOfHiddenNeuron, &this->weightsHidden);
 		// Sortie des neurones cachés
 		vector<double> y = calculateOutputs(kC, amountOfHiddenNeuron);
@@ -71,19 +75,14 @@ double MultiLayer::executeOneEpoc(double stopThreadshold, bool updateWeights)
 		vector<double> outputs = calculatePotentials(y, nbTags, &this->weightsOutput);
 		// Sortie des neurones de sortie
 		vector<double> zOutputs = calculateOutputs(outputs, nbTags);
+		outputsTotal.push_back(zOutputs);
 		vector<double> tags(dataset[k].end() - nbTags, dataset[k].end());
 
-		// classification
-		for (int t = 0; t < nbTags; t++)
+		for (int x = 0; x < nbTags; x++)
 		{
-			for (double z : zOutputs)
-			{
-				double thresholded = this->aFunction->performThresholding(z);
-				if (thresholded != tags[t]) this->classificationErrors += 1;
-			}
+			double thresholdedPredicted = this->aFunction->performThresholding(zOutputs[x]);
+			if (tags[x] != thresholdedPredicted) this->classificationErrors += 1;
 		}
-
-		E += calculateEQuad(dataset[k], zOutputs, nbTags);
 
 		if (updateWeights)
 		{
@@ -93,17 +92,15 @@ double MultiLayer::executeOneEpoc(double stopThreadshold, bool updateWeights)
 			// Etape 2b
 			// Calcul signal d'erreur couche caché (biais pris en compte)
 			vector<double> hiddenOutputSigError = caclulateHiddenSigError(y, amountOfHiddenNeuron);
-
 			// cumulation des signaux d'erreur des neurones couche cachée de sorties qui leurs sont liés
 			vector<double> cumulHiddenLayer = cumulHiddenLayerSigError(hiddenOutputSigError, outputSigError, nbTags, amountOfHiddenNeuron);
-
 			// Etape 3a
 			editWeights(outputSigError, y, &this->weightsOutput);
 			// Etape 3b (c+1 pour ne pas prendre en compte du biais)
 			editWeights(cumulHiddenLayer, example, &this->weightsHidden);
 		}
 	}
-	return (0.5 * E) / this->dataset.size();
+	return calculateEQuad(outputsTotal);
 }
 
 vector<double> MultiLayer::calculatePotentials(vector<double> outputs, int amountOfNeuron, vector<vector<double>> *weights)
@@ -131,16 +128,26 @@ vector<double> MultiLayer::calculateOutputs(vector<double> outputs, int amountOf
 	return zOutputs;
 }
 
-double MultiLayer::calculateEQuad(vector<double> example, vector<double> outputs, int nbTags)
+double MultiLayer::calculateEQuad(const vector<vector<double>>& outputs)
 {
-	double E = 0.0;
-	// boucle sur les étiquettes de l'example
-	for (int i = 0; i < nbTags; i++)
+	double totalError = 0.;
+	int totalExamples = dataset.size();
+	int nbTags = outputs[0].size();
+
+	for (int i = 0; i < totalExamples; i++)
 	{
-		double tag = example[i + (example.size() - nbTags)];
-		E += pow(tag - outputs[i], 2);
+		const vector<double>& example = dataset[i];
+		const vector<double>& predictedOutputs = outputs[i];
+
+		for (int j = 0; j < nbTags; j++)
+		{
+			double tag = example[example.size() - nbTags + j]; 
+			totalError += pow(tag - predictedOutputs[j], 2);
+		}
 	}
-	return E;
+	// Calculate the mean squared error
+	double mse = totalError / (2 * totalExamples); 
+	return mse;
 }
 
 vector<double> MultiLayer::caclulateOutputSigError(vector<double> example, vector<double> zOutputs, int nbTags, int amountOfNeuron)
@@ -202,5 +209,11 @@ vector<vector<double>> MultiLayer::getDecisionWeights() {
 vector<double> MultiLayer::getResult() 
 {
 	return this->eMoyDuringTraining;
-};
+}
+
+void MultiLayer::shuffleDataset()
+{
+	// Randomly shuffle the dataset
+	shuffle(dataset.begin(), dataset.end(),default_random_engine());
+}
 void MultiLayer::reset() {};
