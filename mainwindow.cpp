@@ -121,26 +121,35 @@ void MainWindow::updateDataSetPlot() {
 void MainWindow::updateLMGraph() {
     vector<vector<double>> decisionWeights = mainController->getDecisionWeights();
     DataSet* dataSet = mainController->getDataSet();
-    vector<double> x = { dataSet->findMin(0) - 0.5, dataSet->findMax( 0) + 0.5 };
+    vector<double> x1 = { dataSet->findMin(0) - 0.5, dataSet->findMax( 0) + 0.5 };
     vector<vector<double>> decisionLines;
+
+    for (auto modelSerie : this->modelSeries) {
+        chart->removeSeries(modelSerie);
+    }
+    modelSeries.clear();
     
     for (vector<double> weights : decisionWeights) {
-        vector<double> line = this->calcDecisionLine(weights, x);
+        vector<double> x2 = this->calcDecisionLine(weights, x1);
+        QLineSeries* modelSerie = new QLineSeries();
+        
+        for (int i = 0; i < x2.size(); ++i) {
+            modelSerie->append(QPointF(x1[i], x2[i]));
+        }
+
+        chart->addSeries(modelSerie);
+        modelSeries.push_back(modelSerie);
     }
-    /*QLineSeries* identitySeries = new QLineSeries();
-    for (int x = 0; x <= 10; ++x) {
-        identitySeries->append(x, x);
-    }
-    identitySeries->setName("Decision Line");
-    chart->addSeries(identitySeries);
-    chart->createDefaultAxes();
-    chart->update();*/
+    
+    chart->update();
 }
 
 vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<double> x) {
     vector<double> line;
     for (double value : x) {
-        line.push_back(0);
+        // y = w0 + w1*x1 + w2*x2
+        // if y == 0, then x2 = - (w0 + w1*x1)/w2vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<double> x)
+        line.push_back(-(weights[0] + weights[1] * value) / weights[2]);
     }
     return line;
 }
@@ -312,7 +321,8 @@ void MainWindow::on_startBtn_clicked()
         selectedIteration = 0;
 
         updateDataSetPlot();
-        updateIteration();
+        updateLMGraph();
+        //updateIteration();
     }catch(...){
         ui->learningModelStatus->setText("Error");
         ui->learningModelStatus->setStyleSheet("QLabel {color: red;}");
