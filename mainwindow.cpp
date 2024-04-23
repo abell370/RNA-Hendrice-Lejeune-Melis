@@ -128,28 +128,31 @@ void MainWindow::updateLMGraph() {
         chart->removeSeries(modelSerie);
     }
     modelSeries.clear();
-    
-    for (vector<double> weights : decisionWeights) {
-        vector<double> x2 = this->calcDecisionLine(weights, x1);
-        QLineSeries* modelSerie = new QLineSeries();
-        
-        for (int i = 0; i < x2.size(); ++i) {
-            modelSerie->append(QPointF(x1[i], x2[i]));
+
+    if (decisionWeights.size() > 0 && decisionWeights[0].size() > 2) {
+
+        for (vector<double> weights : decisionWeights) {
+            vector<double> x2 = this->calcDecisionLine(weights, x1);
+            QLineSeries* modelSerie = new QLineSeries();
+
+            for (int i = 0; i < x2.size(); ++i) {
+                modelSerie->append(QPointF(x1[i], x2[i]));
+            }
+
+            chart->addSeries(modelSerie);
+            modelSeries.push_back(modelSerie);
         }
 
-        chart->addSeries(modelSerie);
-        modelSeries.push_back(modelSerie);
+        chart->update();
     }
-    
-    chart->update();
 }
 
-vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<double> x) {
+vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<double> x1) {
     vector<double> line;
-    for (double value : x) {
+    for (double x1_i : x1) {
         // y = w0 + w1*x1 + w2*x2
         // if y == 0, then x2 = - (w0 + w1*x1)/w2vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<double> x)
-        line.push_back(-(weights[0] + weights[1] * value) / weights[2]);
+        line.push_back(-(weights[0] + weights[1] * x1_i) / weights[2]);
     }
     return line;
 }
