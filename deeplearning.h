@@ -2,6 +2,7 @@
 #include <vector>
 #include "activationfunction.h"
 #include "layeringmodel.h"
+#include "history.h"
 
 using namespace std;
 
@@ -13,7 +14,7 @@ public:
 	using LayeringModel::LayeringModel;
 
 	void setup(int hiddenLayerSize, int nbTags, double learningRate);
-	void train(double stopThreadshold, int maxEpoc, int maxClassificationError);
+	History* train(double stopThreadshold, int maxEpoc, int maxClassificationError);
 	map<string, double> checkAccuracy(vector<vector<double>> validationDataset);
 	vector<double> getResult();
 	void reset();
@@ -30,7 +31,7 @@ private:
 	vector<double> calculatePotentials(vector<double> outputs, int amountOfNeuron, vector<vector<double>> *weights);
 	vector<double> calculateOutputs(vector<double> example, int amountOfNeuron);
 
-	double calculateEQuad(vector<double> example, vector<double> outputs, int nbTags);
+	double calculateEQuad(const vector<vector<double>>& outputs);
 
 	vector<double> caclulateOutputSigError(vector<double> example, vector<double> zOutputs, int nbTags, int amountOfNeuron);
 	vector<double> caclulateHiddenSigError(vector<double> hiddenLayerOutputs, int amountOfNeuron);
@@ -38,5 +39,6 @@ private:
 	vector<double> cumulHiddenLayerSigError(vector<double> hiddenOutputSigError, vector<double> outputSigError, int amountOfNeuron, int amountOfHiddenNeuron);
 
 	void editWeights(vector<double> sigError, vector<double> example, vector<vector<double>> *weights);
+	void shuffleDataset();
 };
 

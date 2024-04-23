@@ -3,6 +3,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include "history.h"
 
 using namespace std;
 
@@ -12,7 +13,7 @@ public:
 
 	LayeringModel(vector<vector<double>> dataset, ActivationFunction* activation);
 
-	virtual void train(double stopThreadshold, int maxEpoc, int maxClassificationError) = 0;
+	virtual History* train(double stopThreadshold, int maxEpoc, int maxClassificationError) = 0;
 	virtual vector<double> getResult() = 0;
 	virtual map<string, double> checkAccuracy(vector<vector<double>> validationDataset) = 0;
 	virtual void reset() = 0;

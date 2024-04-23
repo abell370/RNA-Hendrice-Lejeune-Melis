@@ -51,10 +51,9 @@ void MainController::setupModel(int modelIndex, string pathToData, double learni
     }
 }
 
-vector<double> MainController::startTraining(int maxIter, double errorThreshold, int maxClassificationError)
+History* MainController::startTraining(int maxIter, double errorThreshold, int maxClassificationError)
 {
-    this->model->train(errorThreshold, maxIter, maxClassificationError);
-    return this->model->getResult(); // debug pour voir le résultat   
+    return this->model->train(errorThreshold, maxIter, maxClassificationError);
 }
 
 map<string, double> MainController::checkModelAccuracy(string pathToData)

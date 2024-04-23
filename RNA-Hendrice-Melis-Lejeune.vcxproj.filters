@@ -32,9 +32,6 @@
     <ClCompile Include="gradientperceptron.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="iteration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="layer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -80,6 +77,12 @@
     <ClCompile Include="DataSetReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="simpleactivation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="history.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="adalineperceptron.h">
@@ -89,9 +92,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gradientperceptron.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="iteration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="layer.h">
@@ -140,6 +140,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DataSetReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="simpleactivation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="history.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="iteration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

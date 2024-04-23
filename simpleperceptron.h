@@ -5,24 +5,21 @@
 
 using namespace std;
 
-class SimplePerceptron : public LearningModel
+class SimplePerceptron : 
+    public LearningModel
 {
-private:
-
-    void loopOnIterations(float minErrorAccepted, int maxEpoc, int indexOfPredictedData);
-    void loopWhileErrorNotNull(int maxEpoc, int indexOfPredictedData);
-    double executeOneIteration(int indexOfPredictedData);
-
 public:
-    
     using LearningModel::LearningModel;
 
-    void learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, int maxClassificationError);
-    map<string, double> checkAccuracy() {};
-    string getResult();
+    map<string, double> checkAccuracy(int tagIndex);
+    string getResult() override;
     std::string getName() {
         return "Simple Perceptron";
     };
+
+private:
+    double executeOneIteration(int indexOfPredictedData, bool updateWeights);
+    double calculMeanQuadratic(int indexOfPredictedData);
 };
 
 #endif // SIMPLEPERCEPTRON_H

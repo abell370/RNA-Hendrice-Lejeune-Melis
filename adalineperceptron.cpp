@@ -22,35 +22,12 @@ map<string, double> AdalinePerceptron::checkAccuracy(int tagIndex)
 	};
 }
 
-void AdalinePerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, int maxClassificationError) {
-    this->reset(); // empty iterations
-	for (int i = 0; i < maxIter; i++)
-	{
-		double eMoy = this->executeOneIteration(indexOfPredictedData, true);
-		this->result = eMoy;
-
-		if (minMeanQuadraticError != 0. && eMoy < minMeanQuadraticError)
-		{
-			break;
-		}
-		else
-		{
-			if (this->nbErreurs <= maxClassificationError)
-			{
-				break;
-			}
-		}
-	}
-
-}
-
 double AdalinePerceptron::executeOneIteration(int indexOfPredictedData, bool updateWeights)
 {
-	Iteration iter = Iteration();
 	this->iterations += 1;
 	this->nbErreurs = 0;
 	int weightsSize = this->weights.size();
-	for (uint k = 0; k < this->dataset.size(); k++)
+	for (int k = 0; k < this->dataset.size(); k++)
 	{
 		double p = this->weights[0];
 		for (int x = 1; x < weightsSize; x++)
@@ -66,12 +43,6 @@ double AdalinePerceptron::executeOneIteration(int indexOfPredictedData, bool upd
 		}
 
 		double e = this->dataset[k][indexOfPredictedData] - y;
-		iter.addStep({
-		  k,
-		  this->weights,
-		  this->dataset[k], y, this->dataset[k][indexOfPredictedData],
-		  e
-		});
 		if (updateWeights)
 		{
 			weights[0] += n * e;
@@ -81,10 +52,9 @@ double AdalinePerceptron::executeOneIteration(int indexOfPredictedData, bool upd
 			}
 		}
 	}
-
-	this->addIteration(iter);
+	double mse = this->calculMeanQuadratic(indexOfPredictedData);
 	// eMoy quad
-	return this->calculMeanQuadratic(indexOfPredictedData);
+	return mse;
 }
 
 double AdalinePerceptron::calculMeanQuadratic(int indexOfPredictedData)
