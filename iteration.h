@@ -19,8 +19,10 @@ public:
         this->eMoy = eMoy;
     };
 
-    map<string, double> getData();
-    void setLabel(string label);
+    inline string getLabel() { return this->label; };
+    inline double getMSE() { return this->eMoy; }
+    inline int getClassificationE() { return this->classificationError; };
+    inline void setLabel(string label) { this->label = label; };
 
 };
 

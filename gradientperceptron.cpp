@@ -59,8 +59,6 @@ double GradientPerceptron::executeOneIteration(int indexOfPredicted, bool update
 		}
 	}
 	double mse = this->calculMeanQuadratic(indexOfPredicted);
-	Iteration* iter = new Iteration(this->nbErreurs, mse);
-	this->addIteration(iter);
 	// eMoy quad
 	return mse;
 }

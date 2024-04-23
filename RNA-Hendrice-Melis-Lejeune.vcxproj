@@ -27,7 +27,6 @@
     <ClCompile Include="gradientperceptron.cpp" />
     <ClCompile Include="history.cpp" />
     <ClCompile Include="identityactivation.cpp" />
-    <ClCompile Include="iteration.cpp" />
     <ClCompile Include="layer.cpp" />
     <ClCompile Include="layeringmodel.cpp" />
     <ClCompile Include="learningmodel.cpp" />

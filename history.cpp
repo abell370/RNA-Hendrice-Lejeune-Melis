@@ -17,3 +17,25 @@ vector<Iteration*> History::getHistory()
 {
 	return this->history;
 }
+
+int History::size()
+{
+	return this->history.size();
+}
+
+double History::getMSE(int epoc)
+{
+	return this->history[epoc]->getMSE();
+}
+
+int History::getClassification(int epoc)
+{
+	return this->history[epoc]->getClassificationE();
+
+}
+
+string History::getLabel(int epoc)
+{
+	return this->history[epoc]->getLabel();
+
+}

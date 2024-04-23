@@ -15,7 +15,8 @@ void LearningModel::learn(int maxIter, double minMeanQuadraticError, int indexOf
 	{
 		double eMoy = this->executeOneIteration(indexOfPredictedData, true);
 		this->result = eMoy;
-
+		Iteration* iter = new Iteration(Iteration(this->nbErreurs, eMoy));
+		addIteration(iter);
 		if (minMeanQuadraticError != 0. && eMoy < minMeanQuadraticError)
 		{
 			break;
@@ -32,7 +33,7 @@ void LearningModel::learn(int maxIter, double minMeanQuadraticError, int indexOf
 }
 
 std::vector<Iteration*> LearningModel::getIterations() {
-    return std::vector<Iteration*>(this->iterations);
+    return this->iterationsSaved;
 }
 
 std::string LearningModel::getName() {

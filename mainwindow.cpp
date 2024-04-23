@@ -266,24 +266,34 @@ void MainWindow::on_startBtn_clicked()
         mainController->setupModel(modelIndex, dataset.toStdString(), learningRate, nbClass, this->ui->multiLayerCheckButton->isChecked(), hiddenLayerSize, activationFct, this->ui->randomWeights->isChecked());
         History* history = mainController->startTraining(maxIter, errorThreshold, minClassificationErrorAccepted);
 
-        /*
-        int numRows = eMoyEvolution.size();
-        int numCols = 1;
+        int numRows = history->size();
+        int numCols = 2;
         ui->resultTable->reset();
         ui->resultTable->setRowCount(numRows);
         ui->resultTable->setColumnCount(numCols);
 
+        string label = "";
+        QColor color;
         for (int row = 0; row < numRows; ++row) {
-            QTableWidgetItem* item = new QTableWidgetItem(QString::number(eMoyEvolution[row], 'g', 10)); // Adjust precision as needed
+            QTableWidgetItem* item = new QTableWidgetItem(QString::number(history->getMSE(row), 'g', 10)); // Adjust precision as needed
             ui->resultTable->setItem(row, 0, item); // Corrected column index
+            QTableWidgetItem* item2 = new QTableWidgetItem(QString::number(history->getClassification(row), 'g', 10)); // Adjust precision as needed
+            ui->resultTable->setItem(row, 1, item2); // Corrected column index
+            if (label != history->getLabel(row))
+            {
+                label = history->getLabel(row);
+                color = QColor(rand() % 256, rand() % 256, rand() % 256);
+            }
+            item->setBackground(color);
+            item2->setBackground(color);
         }
 
         if (numRows > 15) {
             ui->resultTable->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         }
 
-        ui->resultTable->setHorizontalHeaderLabels({ "eMoy evolution" });
-        */
+        ui->resultTable->setHorizontalHeaderLabels({ "eMoy evolution","classification error"});
+        
         ui->learningModelStatus->setText("Ready");
         ui->learningModelStatus->setStyleSheet("QLabel {color: green;}");
 

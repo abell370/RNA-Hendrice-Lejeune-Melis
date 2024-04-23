@@ -53,8 +53,6 @@ double AdalinePerceptron::executeOneIteration(int indexOfPredictedData, bool upd
 		}
 	}
 	double mse = this->calculMeanQuadratic(indexOfPredictedData);
-	Iteration* iter = new Iteration(Iteration(this->nbErreurs, mse));
-	this->addIteration(iter);
 	// eMoy quad
 	return mse;
 }
