@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "maincontroller.h"
-#include "utils.h"
 
 #include <QtGlobal>
 #include <QVector>
@@ -126,7 +125,7 @@ void MainWindow::updateLMGraph() {
     vector<vector<double>> decisionLines;
     
     for (vector<double> weights : decisionWeights) {
-        vector<double> line = Utils::calcDecisionLine(weights, x);
+        vector<double> line = this->calcDecisionLine(weights, x);
     }
     /*QLineSeries* identitySeries = new QLineSeries();
     for (int x = 0; x <= 10; ++x) {
@@ -137,6 +136,15 @@ void MainWindow::updateLMGraph() {
     chart->createDefaultAxes();
     chart->update();*/
 }
+
+vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<double> x) {
+    vector<double> line;
+    for (double value : x) {
+        line.push_back(0);
+    }
+    return line;
+}
+
 
 void MainWindow::updateIteration() {
     /*

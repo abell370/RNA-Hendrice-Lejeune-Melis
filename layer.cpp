@@ -2,7 +2,6 @@
 #include "learningmodelfactory.h"
 #include "activationfunction.h"
 #include "identityactivation.h"
-#include "utils.h"
 #include <iostream>
 
 
@@ -26,7 +25,7 @@ vector<double> MonoLayer::generateWeightVector(int size, bool randomNormalWeight
     vector<double> wVector(size);
 
     if (randomNormalWeights) {
-        wVector = Utils::generateRandom(size);
+        wVector = this->generateRandom(size);
     }
 
     return wVector;

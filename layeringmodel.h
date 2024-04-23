@@ -23,5 +23,7 @@ protected:
 	vector<vector<double>> dataset;
 	vector<double> eMoyDuringTraining;
 	ActivationFunction* aFunction;
+
+	vector<double> generateRandom(int size);
 };
 

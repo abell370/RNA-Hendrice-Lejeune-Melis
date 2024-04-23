@@ -1,5 +1,4 @@
 #include "deeplearning.h"
-#include "utils.h"
 #include <iostream>
 #include <random>
 #include "iteration.h"
@@ -15,11 +14,11 @@ void MultiLayer::setup(int amountOfHiddenNeuron, int nbClasses, double learningR
 	// + 1 pour le biais
 	for (int w = 0; w < amountOfHiddenNeuron; w++)
 	{
-		this->weightsHidden.push_back(Utils::generateRandom(amountOfEntry + 1));
+		this->weightsHidden.push_back(this->generateRandom(amountOfEntry + 1));
 	}
 	for (int y = 0; y < this->nbTags; y++)
 	{
-		this->weightsOutput.push_back(Utils::generateRandom(amountOfHiddenNeuron + 1));
+		this->weightsOutput.push_back(this->generateRandom(amountOfHiddenNeuron + 1));
 	}
 }
 
