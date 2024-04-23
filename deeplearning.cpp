@@ -2,6 +2,7 @@
 #include "utils.h"
 #include <iostream>
 #include <random>
+#include "iteration.h"
 
 void MultiLayer::setup(int amountOfHiddenNeuron, int nbClasses, double learningRate)
 {
@@ -32,19 +33,20 @@ map<string, double> MultiLayer::checkAccuracy(vector<vector<double>> validationD
 	};
 };
 
-void MultiLayer::train(double stopError, int maxEpoc, int maxClassificationError)
+History* MultiLayer::train(double stopError, int maxEpoc, int maxClassificationError)
 {
+	History* history = new History();
 	for (int i = 0; i < maxEpoc; i++)
 	{
 		this->nbEpoc += 1;
 		double E = executeOneEpoc(stopError, true);
+		Iteration* iter= new Iteration(this->classificationErrors, E);
+		history->addEpoc(iter);
 		if (stopError != 0.)
 		{
 			this->eMoyDuringTraining.push_back(E);
 			if (E < stopError) 
 			{
-				bool stopped = true;
-				std::cout << "end of training stop reach" << endl;
 				break;
 			}
 		}
@@ -53,6 +55,7 @@ void MultiLayer::train(double stopError, int maxEpoc, int maxClassificationError
 			if (this->classificationErrors <= maxClassificationError) break;
 		}
 	}
+	return history;
 }
 
 // Adaline is used 

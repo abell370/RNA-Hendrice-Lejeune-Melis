@@ -2,6 +2,7 @@
 #include <vector>
 #include "activationfunction.h"
 #include "layeringmodel.h"
+#include "history.h"
 
 using namespace std;
 
@@ -13,7 +14,7 @@ public:
 	using LayeringModel::LayeringModel;
 
 	void setup(int hiddenLayerSize, int nbTags, double learningRate);
-	void train(double stopThreadshold, int maxEpoc, int maxClassificationError);
+	History* train(double stopThreadshold, int maxEpoc, int maxClassificationError);
 	map<string, double> checkAccuracy(vector<vector<double>> validationDataset);
 	vector<double> getResult();
 	void reset();

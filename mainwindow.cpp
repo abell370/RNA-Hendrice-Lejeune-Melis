@@ -264,8 +264,9 @@ void MainWindow::on_startBtn_clicked()
         ui->learningModelStatus->setStyleSheet("QLabel {color: orange;}");
 
         mainController->setupModel(modelIndex, dataset.toStdString(), learningRate, nbClass, this->ui->multiLayerCheckButton->isChecked(), hiddenLayerSize, activationFct, this->ui->randomWeights->isChecked());
-        vector<double> eMoyEvolution = mainController->startTraining(maxIter, errorThreshold, minClassificationErrorAccepted);
+        History* history = mainController->startTraining(maxIter, errorThreshold, minClassificationErrorAccepted);
 
+        /*
         int numRows = eMoyEvolution.size();
         int numCols = 1;
         ui->resultTable->reset();
@@ -282,7 +283,7 @@ void MainWindow::on_startBtn_clicked()
         }
 
         ui->resultTable->setHorizontalHeaderLabels({ "eMoy evolution" });
-
+        */
         ui->learningModelStatus->setText("Ready");
         ui->learningModelStatus->setStyleSheet("QLabel {color: green;}");
 

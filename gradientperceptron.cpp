@@ -22,40 +22,13 @@ map<string, double> GradientPerceptron::checkAccuracy(int tagIndex)
 	};
 }
 
-void GradientPerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, int maxClassificationError) {
-	this->reset(); // empty iterations
-	for (int i = 0; i < maxIter; i++)
-	{
-		double eMoy = this->executeOneIteration(indexOfPredictedData, true);
-		this->result = eMoy;
-
-		if (minMeanQuadraticError != 0.)
-		{
-
-			if (eMoy < minMeanQuadraticError)
-			{
-				break;
-			}
-		}
-		else
-		{
-			if (this->nbErreurs == maxClassificationError)
-			{
-				break;
-			}
-		}
-	}
-
-}
-
 double GradientPerceptron::executeOneIteration(int indexOfPredicted, bool updateWeights)
 {
 	this->iterations += 1;
-	Iteration iter = Iteration();
 	this->nbErreurs = 0;
 	int weightsSize = this->weights.size();
 	vector<double> wCorrections(weightsSize);
-	for (uint k = 0; k < this->dataset.size(); k++)
+	for (int k = 0; k < this->dataset.size(); k++)
 	{
 		double p = this->weights[0];
 		for (int x = 1; x < weightsSize; x++)
@@ -76,11 +49,6 @@ double GradientPerceptron::executeOneIteration(int indexOfPredicted, bool update
 		{
 			wCorrections[i] = wCorrections[i] + this->n * e * this->dataset[k][i - 1];
 		}
-		iter.addStep({
-		  k,
-		  this->weights,
-		  this->dataset[k], y, this->dataset[k][indexOfPredicted], e
-		});
 	}
 	if (updateWeights)
 	{
@@ -90,9 +58,11 @@ double GradientPerceptron::executeOneIteration(int indexOfPredicted, bool update
 			this->weights[w] = this->weights[w] + wCorrections[w];
 		}
 	}
+	double mse = this->calculMeanQuadratic(indexOfPredicted);
+	Iteration* iter = new Iteration(this->nbErreurs, mse);
 	this->addIteration(iter);
 	// eMoy quad
-	return this->calculMeanQuadratic(indexOfPredicted);
+	return mse;
 }
 
 

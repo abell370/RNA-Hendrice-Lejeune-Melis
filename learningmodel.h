@@ -15,12 +15,12 @@ public:
 
     LearningModel(vector<vector<double>> dataset, ActivationFunction* activation, vector<double> weights, double learningRate);
 
-    virtual void learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, int maxClassificationError) = 0;
+    void learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, int maxClassificationError);
     virtual map<string, double> checkAccuracy(int tagIndex) = 0;
     virtual string getName() = 0;
     virtual string getResult() = 0;
 
-    vector<Iteration> getIterations();
+    vector<Iteration*> getIterations();
     vector<double> getWeights();
     void reset();
 
@@ -31,10 +31,12 @@ protected:
     int nbErreurs = 0, iterations = 0;
     double n, result = 0.;
 
-    void addIteration(Iteration iteration);
+    void addIteration(Iteration* iteration);
+    virtual double executeOneIteration(int indexOfPredictedData, bool updateWeights) = 0;
+
 
 private:
-    vector<Iteration> iterationsSaved;
+    vector<Iteration*> iterationsSaved;
 };
 
 
