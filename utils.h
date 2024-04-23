@@ -8,9 +8,6 @@ using namespace std;
 class Utils
 {
 public:
-	static double findMax(vector<vector<double>> data, unsigned i);
-	static double findMin(vector<vector<double>> data, unsigned i);
-	static unordered_set<double> findClasses(vector<vector<double>> data);
 	static vector<double> generateRandom(int size);
 	static vector<double> calcDecisionLine(vector<double> weights, vector<double> x);
 };

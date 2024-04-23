@@ -121,8 +121,8 @@ void MainWindow::updateDataSetPlot() {
 
 void MainWindow::updateLMGraph() {
     vector<vector<double>> decisionWeights = mainController->getDecisionWeights();
-    vector<vector<double>> data = mainController->getData();
-    vector<double> x = { Utils::findMin(data, 0) - 0.5, Utils::findMax(data, 0) + 0.5 };
+    DataSet* dataSet = mainController->getDataSet();
+    vector<double> x = { dataSet->findMin(0) - 0.5, dataSet->findMax( 0) + 0.5 };
     vector<vector<double>> decisionLines;
     
     for (vector<double> weights : decisionWeights) {
