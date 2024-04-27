@@ -279,6 +279,11 @@
                       </item>
                       <item>
                        <property name="text">
+                        <string>Simple</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
                         <string>Sigmoïde</string>
                        </property>
                       </item>

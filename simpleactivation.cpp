@@ -3,10 +3,10 @@
 
 double SimpleActivation::compute(double entry) const
 {
-	return entry >= 0. ? 1. : 0.;;
+	return entry;
 }
 
 double SimpleActivation::performThresholding(double entry) const
 {
-	return entry;
+	return entry >= 0. ? 1. : 0.;
 }

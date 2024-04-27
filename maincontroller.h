@@ -6,6 +6,7 @@
 #include "iteration.h"
 #include "layer.h"
 #include "identityactivation.h"
+#include "simpleactivation.h"
 #include "layeringmodel.h"
 #include "DataSetReader.h"
 

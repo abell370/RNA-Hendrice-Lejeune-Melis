@@ -20,7 +20,10 @@ public:
         else if (modelIndex == 1)
         {
             return new GradientPerceptron(dataset, aFunction, weights, learningRate);
-
+        }
+        else if (modelIndex == 2)
+        {
+            return new SimplePerceptron(dataset, aFunction, weights, learningRate);
         }
     }
 };

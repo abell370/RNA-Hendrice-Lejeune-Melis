@@ -32,6 +32,11 @@ void MainController::setupModel(int modelIndex, string pathToData, double learni
         {
             aFunction = new IdentityActivation();
         }
+        else if (activationFct == 1)
+        {
+            aFunction = new SimpleActivation();
+        }
+
 
         // Sert à ajouter le x0 aux données => TODO aller modofier les algos pour ne pas devoir modifier les données de bases
         //if (pathToData == "table_3_1.csv") reverse(data->getEntries().begin(), data->getEntries().end());
