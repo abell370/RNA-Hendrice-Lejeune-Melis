@@ -1,29 +1,28 @@
-#ifndef ITERATION_H
-#define ITERATION_H
+#pragma once
 
 #include <vector>
-#include <QVector>
+#include <map>
+#include <string>
 
-struct Step {
-    uint k;
-    std::vector<double> weights;
-    std::vector<double> entries;
-    double y, d, e;
-};
+using namespace std;
+
 
 class Iteration
 {
 private:
-    unsigned int errorNb;
-    std::vector<Step> steps;
+    unsigned int classificationError = 0;
+    double eMoy = 0.;
+    string label = "";
 public:
-    Iteration() : errorNb(0) {};
+    Iteration(int classificationE, double eMoy) {
+        this->classificationError = classificationE;
+        this->eMoy = eMoy;
+    };
 
-    int getErrorNb() { return this->errorNb; }
-    std::vector<Step> getSteps() { return std::vector<Step>(this->steps); }
+    inline string getLabel() { return this->label; };
+    inline double getMSE() { return this->eMoy; }
+    inline int getClassificationE() { return this->classificationError; };
+    inline void setLabel(string label) { this->label = label; };
 
-    void addStep(Step step) { this->steps.push_back(step); };
-    void incrementError() { this->errorNb++; }
 };
 
-#endif // ITERATION_H

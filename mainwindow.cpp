@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "maincontroller.h"
-#include "utils.h"
 
 #include <QtGlobal>
 #include <QVector>
@@ -121,22 +120,43 @@ void MainWindow::updateDataSetPlot() {
 
 void MainWindow::updateLMGraph() {
     vector<vector<double>> decisionWeights = mainController->getDecisionWeights();
-    vector<vector<double>> data = mainController->getData();
-    vector<double> x = { Utils::findMin(data, 0) - 0.5, Utils::findMax(data, 0) + 0.5 };
+    DataSet* dataSet = mainController->getDataSet();
+    vector<double> x1 = { dataSet->findMin(0) - 0.5, dataSet->findMax( 0) + 0.5 };
     vector<vector<double>> decisionLines;
-    
-    for (vector<double> weights : decisionWeights) {
-        vector<double> line = Utils::calcDecisionLine(weights, x);
+
+    for (auto modelSerie : this->modelSeries) {
+        chart->removeSeries(modelSerie);
     }
-    /*QLineSeries* identitySeries = new QLineSeries();
-    for (int x = 0; x <= 10; ++x) {
-        identitySeries->append(x, x);
+    modelSeries.clear();
+
+    if (decisionWeights.size() > 0 && decisionWeights[0].size() > 2) {
+
+        for (vector<double> weights : decisionWeights) {
+            vector<double> x2 = this->calcDecisionLine(weights, x1);
+            QLineSeries* modelSerie = new QLineSeries();
+
+            for (int i = 0; i < x2.size(); ++i) {
+                modelSerie->append(QPointF(x1[i], x2[i]));
+            }
+
+            chart->addSeries(modelSerie);
+            modelSeries.push_back(modelSerie);
+        }
+
+        chart->update();
     }
-    identitySeries->setName("Decision Line");
-    chart->addSeries(identitySeries);
-    chart->createDefaultAxes();
-    chart->update();*/
 }
+
+vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<double> x1) {
+    vector<double> line;
+    for (double x1_i : x1) {
+        // y = w0 + w1*x1 + w2*x2
+        // if y == 0, then x2 = - (w0 + w1*x1)/w2vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<double> x)
+        line.push_back(-(weights[0] + weights[1] * x1_i) / weights[2]);
+    }
+    return line;
+}
+
 
 void MainWindow::updateIteration() {
     /*
@@ -264,25 +284,36 @@ void MainWindow::on_startBtn_clicked()
         ui->learningModelStatus->setStyleSheet("QLabel {color: orange;}");
 
         mainController->setupModel(modelIndex, dataset.toStdString(), learningRate, nbClass, this->ui->multiLayerCheckButton->isChecked(), hiddenLayerSize, activationFct, this->ui->randomWeights->isChecked());
-        vector<double> eMoyEvolution = mainController->startTraining(maxIter, errorThreshold, minClassificationErrorAccepted);
+        History* history = mainController->startTraining(maxIter, errorThreshold, minClassificationErrorAccepted);
 
-        int numRows = eMoyEvolution.size();
-        int numCols = 1;
+        int numRows = history->size();
+        int numCols = 2;
         ui->resultTable->reset();
         ui->resultTable->setRowCount(numRows);
         ui->resultTable->setColumnCount(numCols);
 
+        string label = "";
+        QColor color;
         for (int row = 0; row < numRows; ++row) {
-            QTableWidgetItem* item = new QTableWidgetItem(QString::number(eMoyEvolution[row], 'g', 10)); // Adjust precision as needed
+            QTableWidgetItem* item = new QTableWidgetItem(QString::number(history->getMSE(row), 'g', 10)); // Adjust precision as needed
             ui->resultTable->setItem(row, 0, item); // Corrected column index
+            QTableWidgetItem* item2 = new QTableWidgetItem(QString::number(history->getClassification(row), 'g', 10)); // Adjust precision as needed
+            ui->resultTable->setItem(row, 1, item2); // Corrected column index
+            if (label != history->getLabel(row))
+            {
+                label = history->getLabel(row);
+                color = QColor(rand() % 256, rand() % 256, rand() % 256);
+            }
+            item->setBackground(color);
+            item2->setBackground(color);
         }
 
         if (numRows > 15) {
             ui->resultTable->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         }
 
-        ui->resultTable->setHorizontalHeaderLabels({ "eMoy evolution" });
-
+        ui->resultTable->setHorizontalHeaderLabels({ "eMoy evolution","classification error"});
+        
         ui->learningModelStatus->setText("Ready");
         ui->learningModelStatus->setStyleSheet("QLabel {color: green;}");
 
@@ -293,7 +324,8 @@ void MainWindow::on_startBtn_clicked()
         selectedIteration = 0;
 
         updateDataSetPlot();
-        updateIteration();
+        updateLMGraph();
+        //updateIteration();
     }catch(...){
         ui->learningModelStatus->setText("Error");
         ui->learningModelStatus->setStyleSheet("QLabel {color: red;}");

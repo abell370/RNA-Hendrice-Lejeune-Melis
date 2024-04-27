@@ -2,7 +2,6 @@
 #include "learningmodelfactory.h"
 #include "activationfunction.h"
 #include "identityactivation.h"
-#include "utils.h"
 #include <iostream>
 
 
@@ -26,7 +25,7 @@ vector<double> MonoLayer::generateWeightVector(int size, bool randomNormalWeight
     vector<double> wVector(size);
 
     if (randomNormalWeights) {
-        wVector = Utils::generateRandom(size);
+        wVector = this->generateRandom(size);
     }
 
     return wVector;
@@ -48,8 +47,9 @@ void MonoLayer::setup(int nbTags, int modelIndex, double learningRate, bool rand
 }
 
 
-void MonoLayer::train(double stopThreadshold, int maxEpoc, int maxClassificationError)
+History* MonoLayer::train(double stopThreadshold, int maxEpoc, int maxClassificationError)
 {
+    History* history = new History();
     for (int i = 0; i < this->neurons.size(); i++)
     {
         /*
@@ -67,7 +67,12 @@ void MonoLayer::train(double stopThreadshold, int maxEpoc, int maxClassification
         int indexOfPredictedOutput = this->dataset[0].size() - (this->neurons.size() - i);
         // TODO utiliser le paramètre activation
         this->neurons[i]->learn(maxEpoc, stopThreadshold, indexOfPredictedOutput, maxClassificationError);
+        vector<Iteration*> epocsHitory = this->neurons[i]->getIterations();
+        for (Iteration* iter : epocsHitory)
+            iter->setLabel("neuron_" + to_string(i));
+        history->addEpocs(epocsHitory);
     }
+    return history;
 }
 
 vector<double> MonoLayer::getResult()

@@ -25,8 +25,8 @@
     <ClCompile Include="DataSetReader.cpp" />
     <ClCompile Include="deeplearning.cpp" />
     <ClCompile Include="gradientperceptron.cpp" />
+    <ClCompile Include="history.cpp" />
     <ClCompile Include="identityactivation.cpp" />
-    <ClCompile Include="iteration.cpp" />
     <ClCompile Include="layer.cpp" />
     <ClCompile Include="layeringmodel.cpp" />
     <ClCompile Include="learningmodel.cpp" />
@@ -36,7 +36,6 @@
     <ClCompile Include="simpleactivation.cpp" />
     <ClCompile Include="simpleperceptron.cpp" />
     <ClCompile Include="sigmoidactivation.cpp" />
-    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="activationfunction.h" />
@@ -47,13 +46,14 @@
     <ClInclude Include="DataSetReader.h" />
     <ClInclude Include="deeplearning.h" />
     <ClInclude Include="gradientperceptron.h" />
+    <ClInclude Include="history.h" />
     <ClInclude Include="identityactivation.h" />
+    <ClInclude Include="iteration.h" />
     <ClInclude Include="layeringmodel.h" />
     <ClInclude Include="sigmoidactivation.h" />
     <ClInclude Include="simpleactivation.h" />
     <ClInclude Include="utils.h" />
     <QtMoc Include="graphwidget.h" />
-    <ClInclude Include="iteration.h" />
     <ClInclude Include="layer.h" />
     <ClInclude Include="layerbuilder.h" />
     <ClInclude Include="learningmodel.h" />

@@ -60,5 +60,6 @@ private:
     void updateIterationValues();
     void resetWindow();
     QVector<double> calcLinePoints(Iteration iteration);
+    vector<double> calcDecisionLine(vector<double> weights, vector<double> x);
 };
 #endif // MAINWINDOW_H

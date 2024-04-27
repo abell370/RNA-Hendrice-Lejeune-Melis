@@ -1,7 +1,7 @@
 #include "deeplearning.h"
-#include "utils.h"
 #include <iostream>
 #include <random>
+#include "iteration.h"
 
 void MultiLayer::setup(int amountOfHiddenNeuron, int nbClasses, double learningRate)
 {
@@ -14,11 +14,11 @@ void MultiLayer::setup(int amountOfHiddenNeuron, int nbClasses, double learningR
 	// + 1 pour le biais
 	for (int w = 0; w < amountOfHiddenNeuron; w++)
 	{
-		this->weightsHidden.push_back(Utils::generateRandom(amountOfEntry + 1));
+		this->weightsHidden.push_back(this->generateRandom(amountOfEntry + 1));
 	}
 	for (int y = 0; y < this->nbTags; y++)
 	{
-		this->weightsOutput.push_back(Utils::generateRandom(amountOfHiddenNeuron + 1));
+		this->weightsOutput.push_back(this->generateRandom(amountOfHiddenNeuron + 1));
 	}
 }
 
@@ -32,19 +32,20 @@ map<string, double> MultiLayer::checkAccuracy(vector<vector<double>> validationD
 	};
 };
 
-void MultiLayer::train(double stopError, int maxEpoc, int maxClassificationError)
+History* MultiLayer::train(double stopError, int maxEpoc, int maxClassificationError)
 {
+	History* history = new History();
 	for (int i = 0; i < maxEpoc; i++)
 	{
 		this->nbEpoc += 1;
 		double E = executeOneEpoc(stopError, true);
+		Iteration* iter= new Iteration(this->classificationErrors, E);
+		history->addEpoc(iter);
 		if (stopError != 0.)
 		{
 			this->eMoyDuringTraining.push_back(E);
 			if (E < stopError) 
 			{
-				bool stopped = true;
-				std::cout << "end of training stop reach" << endl;
 				break;
 			}
 		}
@@ -53,6 +54,7 @@ void MultiLayer::train(double stopError, int maxEpoc, int maxClassificationError
 			if (this->classificationErrors <= maxClassificationError) break;
 		}
 	}
+	return history;
 }
 
 // Adaline is used 
