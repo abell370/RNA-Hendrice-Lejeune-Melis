@@ -1,7 +1,7 @@
 #include "maincontroller.h"
 #include "csvreader.h"
 #include "layer.h"
-#include "activationfunction.h".
+#include "activationfunction.h"
 #include "sigmoidactivation.h"
 #include "deeplearning.h"
 

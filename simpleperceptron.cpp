@@ -33,7 +33,7 @@ void SimplePerceptron::loopWhileErrorNotNull(int indexOfPredictedData)
     {
         i++;
         cout << "Iteration : [" << i << "]" << endl;
-        this->executeOneIteration(indexOfPredictedData, true); //true ?
+        this->executeOneIteration(indexOfPredictedData, false);
         cout << "Nb errors [" << this->nbErreurs << "]" << endl;
         cout << "--------" << endl;
     } 
@@ -44,12 +44,12 @@ void SimplePerceptron::loopWhileErrorNotNull(int indexOfPredictedData)
     this->iterations = i;
 }
 
-int SimplePerceptron::executeOneIteration(int indexOfPredicted, bool updateWeights)
+double SimplePerceptron::executeOneIteration(int indexOfPredicted, bool updateWeight)
 {
     //initialisation nbErreurs
 	this->nbErreurs = 0;
     //pour chaque exemple
-    for (uint k = 0; k < this->dataset.size(); k++)
+    for (int k = 0; k < this->dataset.size(); k++)
     {
         int p = this->weights[0]; // multiplié par 1
         for (int x = 1; x < this->weights.size(); x++)
@@ -70,10 +70,10 @@ int SimplePerceptron::executeOneIteration(int indexOfPredicted, bool updateWeigh
         //  k [+1]
         if (e != 0)
         {
-            this->weights[0] += weights[0] + this->n * e * 1.;
+            this->weights[0] += this->n * e * 1.;
             for (int i = 1; i < this->weights.size(); i++)
             {
-                this->weights[i] = this->weights[i] + this->n * e * this->dataset[k][i - 1];
+                this->weights[i] += this->n * e * this->dataset[k][i - 1];
             }
             this->nbErreurs++;
         }

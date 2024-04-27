@@ -8,11 +8,6 @@ using namespace std;
 class SimplePerceptron : 
     public LearningModel
 {
-private:
-
-    void loopWhileErrorNotNull(int indexOfPredicted);
-    int executeOneIteration(int indexOfPredicted, bool updateWeights);
-
 public:
     using LearningModel::LearningModel;
 
@@ -22,10 +17,10 @@ public:
     std::string getName() {
         return "Simple Perceptron";
     };
-
 private:
-    double executeOneIteration(int indexOfPredictedData, bool updateWeights);
-    double calculMeanQuadratic(int indexOfPredictedData);
+
+    void loopWhileErrorNotNull(int indexOfPredicted);
+    double executeOneIteration(int indexOfPredicted, bool updateWeight);
 };
 
 #endif // SIMPLEPERCEPTRON_H
