@@ -74,19 +74,6 @@ History* MonoLayer::train(double stopThreadshold, int maxEpoc, int maxClassifica
     return history;
 }
 
-vector<double> MonoLayer::getResult()
-{
-    string result = "";
-    for (int i = 0; i < this->neurons.size(); i++)
-    {
-        int index = i + 1; // Remove the unnecessary addition
-        // Convert integers to strings before concatenating
-        result += "\nClasse " + to_string(index) + " => Result " + this->neurons[i]->getResult();
-    };
-    cout << result << endl;
-    return {};
-}
-
 void MonoLayer::reset()
 {
     for (LearningModel* model : this->neurons)

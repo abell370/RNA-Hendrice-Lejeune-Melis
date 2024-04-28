@@ -44,10 +44,10 @@ double GradientPerceptron::executeOneIteration(int indexOfPredicted, bool update
 		}
 
 		double e = this->dataset[k][indexOfPredicted] - y;
-		this->weights[0] += wCorrections[0] + this->n * e * 1.;
+		wCorrections[0] += this->n * e * 1.;
 		for (int i = 1; i < weightsSize; i++)
 		{
-			wCorrections[i] = wCorrections[i] + this->n * e * this->dataset[k][i - 1];
+			wCorrections[i] += this->n * e * this->dataset[k][i - 1];
 		}
 	}
 	if (updateWeights)
@@ -55,7 +55,7 @@ double GradientPerceptron::executeOneIteration(int indexOfPredicted, bool update
 		// correction wi
 		for (int w = 0; w < weightsSize; w++)
 		{
-			this->weights[w] = this->weights[w] + wCorrections[w];
+			this->weights[w] += wCorrections[w];
 		}
 	}
 	double mse = this->calculMeanQuadratic(indexOfPredicted);
@@ -88,35 +88,3 @@ double GradientPerceptron::calculMeanQuadratic(int indexOfPredictedData)
 
 	return (.5 * E) / dataset.size();
 }
-
-string GradientPerceptron::getResult()
-{
-	return "nbIter= " + to_string(this->iterations) + " eMoy= " + to_string(this->result);
-}
-
-/*
-QVector<double> AdalinePerceptron::calcGraph(uint iterationIndex, std::vector<double> x1) {
-
-        To calc line equation
-
-        w0*x0 + w1*x1 + x2*w2 = 0
-
-        so, for each given x1 we need to find x2
-
-        x2 = (-w0*x0 - w1*x1)/w2
-
-    QVector<double> x2 = QVector<double>(x1.size());
-
-    if (iterationIndex < this->getIterations().size()) {
-        Iteration iteration = this->getIterations()[iterationIndex];
-        Step lastStep = iteration.getSteps()[iteration.getSteps().size() - 1];
-
-        for (unsigned i = 0; i < x1.size(); i++) {
-            x2[i] = (-lastStep.weights[0] * 1 - lastStep.weights[1] * x1[i]) / lastStep.weights[2];
-        }
-    }
-
-    return x2;
-}
-*/
-

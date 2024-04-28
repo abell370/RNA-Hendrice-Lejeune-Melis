@@ -18,7 +18,6 @@ public:
     virtual void learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, int maxClassificationError);
     virtual map<string, double> checkAccuracy(int tagIndex) = 0;
     virtual string getName() = 0;
-    virtual string getResult() = 0;
 
     vector<Iteration*> getIterations();
     vector<double> getWeights();
@@ -29,7 +28,7 @@ protected:
     ActivationFunction* activation;
     vector<double> weights;
     int nbErreurs = 0, iterations = 0;
-    double n, result = 0.;
+    double n;
 
     void addIteration(Iteration* iteration);
     virtual double executeOneIteration(int indexOfPredictedData, bool updateWeights) = 0;

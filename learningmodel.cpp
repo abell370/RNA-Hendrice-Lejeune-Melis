@@ -6,30 +6,18 @@ LearningModel::LearningModel(vector<vector<double>> dataset, ActivationFunction*
     this->activation = activation;
     this->n = learningRate;
     this->weights = weights;
-    this->result = 0.;
 }
 
 void LearningModel::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, int maxClassificationError) {
 	this->reset(); // empty iterations
-	for (int i = 0; i < maxIter; i++)
-	{
+	int i = 0;
+	bool thresholdReached = false;
+	do {
 		double eMoy = this->executeOneIteration(indexOfPredictedData, true);
-		this->result = eMoy;
-		Iteration* iter = new Iteration(Iteration(this->nbErreurs, eMoy));
-		addIteration(iter);
-		if (minMeanQuadraticError != 0. && eMoy < minMeanQuadraticError)
-		{
-			break;
-		}
-		else
-		{
-			if (this->nbErreurs <= maxClassificationError)
-			{
-				break;
-			}
-		}
-	}
-
+		addIteration(new Iteration(Iteration(this->nbErreurs, eMoy)));
+		if (eMoy < minMeanQuadraticError) thresholdReached = true;
+		i += 1;
+	} while (!thresholdReached && i < maxIter && this->nbErreurs > maxClassificationError);
 }
 
 std::vector<Iteration*> LearningModel::getIterations() {

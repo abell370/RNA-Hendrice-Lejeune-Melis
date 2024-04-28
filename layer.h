@@ -18,7 +18,6 @@ public:
     void setup(int nbTags, int modelIndex, double learningRate, bool randomNormalWeights);
     History* train(double stopThreadshold, int maxEpoc, int maxClassificationError);
     map<string, double> checkAccuracy(vector<vector<double>> validationDataset);
-    vector<double> getResult();
     void reset();
 
     vector<vector<double>> getDecisionWeights();

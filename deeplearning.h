@@ -16,7 +16,6 @@ public:
 	void setup(int hiddenLayerSize, int nbTags, double learningRate);
 	History* train(double stopThreadshold, int maxEpoc, int maxClassificationError);
 	map<string, double> checkAccuracy(vector<vector<double>> validationDataset);
-	vector<double> getResult();
 	void reset();
 
 	vector<vector<double>> getDecisionWeights();

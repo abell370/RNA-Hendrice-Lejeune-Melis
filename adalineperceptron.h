@@ -10,7 +10,6 @@ public:
     using LearningModel::LearningModel;
 
     map<string, double> checkAccuracy(int tagIndex);
-    string getResult() override;
     std::string getName() {
         return "Adaline Perceptron";
     };

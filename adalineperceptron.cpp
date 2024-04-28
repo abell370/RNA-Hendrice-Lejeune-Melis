@@ -81,10 +81,3 @@ double AdalinePerceptron::calculMeanQuadratic(int indexOfPredictedData)
 	
 	return (.5 * E) / dataset.size();
 }
-
-string AdalinePerceptron::getResult()
-{
-	return "nbIter= "+to_string(this->iterations)+" eMoy= "+ to_string(this->result);
-}
-
-

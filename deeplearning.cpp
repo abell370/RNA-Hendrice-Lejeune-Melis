@@ -35,25 +35,16 @@ map<string, double> MultiLayer::checkAccuracy(vector<vector<double>> validationD
 History* MultiLayer::train(double stopError, int maxEpoc, int maxClassificationError)
 {
 	History* history = new History();
-	for (int i = 0; i < maxEpoc; i++)
-	{
-		this->nbEpoc += 1;
-		double E = executeOneEpoc(stopError, true);
-		Iteration* iter= new Iteration(this->classificationErrors, E);
+	int i = 0;
+	bool thresholdReached = false;
+	do {
+		double mse = executeOneEpoc(stopError, true);
+		Iteration* iter = new Iteration(this->classificationErrors, mse);
+		iter->setLabel("deepL");
 		history->addEpoc(iter);
-		if (stopError != 0.)
-		{
-			this->eMoyDuringTraining.push_back(E);
-			if (E < stopError) 
-			{
-				break;
-			}
-		}
-		else 
-		{
-			if (this->classificationErrors <= maxClassificationError) break;
-		}
-	}
+		if (mse < stopError) thresholdReached = true;
+		i += 1;
+	} while (!thresholdReached && i < maxEpoc && this->classificationErrors > maxClassificationError);
 	return history;
 }
 
@@ -202,15 +193,8 @@ void MultiLayer::editWeights(vector<double> sigError, vector<double> example, ve
 	}
 }
 
-
 vector<vector<double>> MultiLayer::getDecisionWeights() {
 	return this->weightsOutput;
-}
-
-// TODO
-vector<double> MultiLayer::getResult() 
-{
-	return this->eMoyDuringTraining;
 }
 
 void MultiLayer::shuffleDataset()

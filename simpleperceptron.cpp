@@ -69,8 +69,3 @@ double SimplePerceptron::executeOneIteration(int indexOfPredicted, bool updateWe
     }
     return 0;
 }
-
-string SimplePerceptron::getResult()
-{
-    return "nbIter= " + to_string(this->iterations);
-}

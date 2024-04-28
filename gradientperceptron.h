@@ -11,7 +11,6 @@ public:
     using LearningModel::LearningModel;
 
     map<string, double> checkAccuracy(int tagIndex);
-    string getResult();
     std::string getName() {
         return "Gradient Perceptron";
     };
