@@ -11,15 +11,13 @@ class SimplePerceptron :
 public:
     using LearningModel::LearningModel;
 
-    void learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, int maxClassificationError);
+    void learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, int maxClassificationError) override;
     map<string, double> checkAccuracy(int tagIndex);
     string getResult();
     std::string getName() {
         return "Simple Perceptron";
     };
 private:
-
-    void loopWhileErrorNotNull(int indexOfPredicted);
     double executeOneIteration(int indexOfPredicted, bool updateWeight);
 };
 

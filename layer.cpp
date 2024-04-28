@@ -65,7 +65,6 @@ History* MonoLayer::train(double stopThreadshold, int maxEpoc, int maxClassifica
 
         */
         int indexOfPredictedOutput = this->dataset[0].size() - (this->neurons.size() - i);
-        // TODO utiliser le paramètre activation
         this->neurons[i]->learn(maxEpoc, stopThreadshold, indexOfPredictedOutput, maxClassificationError);
         vector<Iteration*> epocsHitory = this->neurons[i]->getIterations();
         for (Iteration* iter : epocsHitory)

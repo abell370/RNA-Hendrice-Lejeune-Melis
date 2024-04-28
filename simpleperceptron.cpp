@@ -21,27 +21,16 @@ map<string, double> SimplePerceptron::checkAccuracy(int tagIndex)
 }
 
 void SimplePerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, int maxClassificationError) {
-    {
-        this->loopWhileErrorNotNull(indexOfPredictedData);
-    }
-}
-
-void SimplePerceptron::loopWhileErrorNotNull(int indexOfPredictedData)
-{
-    int i = 0;
     do
     {
-        i++;
-        cout << "Iteration : [" << i << "]" << endl;
-        this->executeOneIteration(indexOfPredictedData, false);
-        cout << "Nb errors [" << this->nbErreurs << "]" << endl;
-        cout << "--------" << endl;
-    } 
+        this->executeOneIteration(indexOfPredictedData, true);
+        Iteration* iter = new Iteration(Iteration(this->nbErreurs, 0.));
+        addIteration(iter);
+    }
     // nbErreur = 0 ?
     // si oui, fin apprentissage
     // si non, on recommence
     while (nbErreurs != 0);
-    this->iterations = i;
 }
 
 double SimplePerceptron::executeOneIteration(int indexOfPredicted, bool updateWeight)
@@ -68,7 +57,7 @@ double SimplePerceptron::executeOneIteration(int indexOfPredicted, bool updateWe
         // si non
         //  correction des poids + nbErreur++ 
         //  k [+1]
-        if (e != 0)
+        if (e != 0 && updateWeight)
         {
             this->weights[0] += this->n * e * 1.;
             for (int i = 1; i < this->weights.size(); i++)

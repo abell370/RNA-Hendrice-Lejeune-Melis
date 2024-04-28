@@ -15,7 +15,7 @@ public:
 
     LearningModel(vector<vector<double>> dataset, ActivationFunction* activation, vector<double> weights, double learningRate);
 
-    void learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, int maxClassificationError);
+    virtual void learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, int maxClassificationError);
     virtual map<string, double> checkAccuracy(int tagIndex) = 0;
     virtual string getName() = 0;
     virtual string getResult() = 0;
