@@ -4,6 +4,7 @@
 #include "activationfunction.h"
 #include "sigmoidactivation.h"
 #include "deeplearning.h"
+#include "tanhactivation.h"
 
 MainController::MainController(vector<string> pathToDataSets, vector<string> pathToValidationDatasets, vector<string> learningModelsList, DataSetReader* dataSetReader) : pathToDataSets(pathToDataSets), pathToValidationDatasets(pathToValidationDatasets), learningModelsList(learningModelsList), dataSetReader(dataSetReader) {};
 
@@ -26,17 +27,22 @@ void MainController::setupModel(int modelIndex, string pathToData, double learni
     if (data != NULL)
     {
 
-        // TODO  ceation dans une classe separee
-        ActivationFunction* aFunction = new SigmoidActivation();
-        if (activationFct == 0)
-        {
-            aFunction = new IdentityActivation();
-        }
-        else if (activationFct == 1)
-        {
-            aFunction = new SimpleActivation();
-        }
+        ActivationFunction* aFunction;
 
+        switch (activationFct) {
+        case 0:
+            aFunction = new IdentityActivation();
+            break;
+        case 1:
+            aFunction = new SimpleActivation();
+            break;
+        case 2:
+            aFunction = new TanHActivation();
+            break;
+        default:
+            aFunction = new SigmoidActivation();
+            break;
+        }
 
         // Sert à ajouter le x0 aux données => TODO aller modofier les algos pour ne pas devoir modifier les données de bases
         //if (pathToData == "table_3_1.csv") reverse(data->getEntries().begin(), data->getEntries().end());

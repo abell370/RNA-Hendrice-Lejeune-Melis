@@ -71,9 +71,6 @@
     <ClCompile Include="layeringmodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="utils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DataSetReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -81,6 +78,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="history.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tanhactivation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -149,6 +149,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="iteration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tanhactivation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

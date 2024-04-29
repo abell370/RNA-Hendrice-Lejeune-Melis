@@ -22,17 +22,20 @@ int main(int argc, char* argv[])
     vector<string> pathToData = {};
     for (const auto& entry : directory_iterator(directorypath)) 
     {
-        string path = entry.path().filename().u8string();
-        if (path.find(".csv"))
-            pathToData.push_back(path);
+        if (entry.is_regular_file() && entry.path().extension() == ".csv") {
+            string filename = entry.path().filename().u8string();
+            pathToData.push_back(filename);
+        }
     }
 
     path directorypathValidation = "data/validation/";
     vector<string> pathToValidationData = {};
     for (const auto& entry : directory_iterator(directorypathValidation))
     {
-        string path = entry.path().filename().u8string();
-        pathToValidationData.push_back(path);
+        if (entry.is_regular_file() && entry.path().extension() == ".csv") {
+            string path = entry.path().filename().u8string();
+            pathToValidationData.push_back(path);
+        }
     }
 
     DataSetReader* dataSetReader = new DataSetReader();
@@ -45,17 +48,6 @@ int main(int argc, char* argv[])
     w.show();
     return a.exec();
    
-    
-    /*
-    vector<vector<double>> dataset = {
-      {0.9,0.1,0.9, 0.1, 0.9, 0.9}
-    };
-
-    DeepLearning model(dataset);
-    model.setup(2, 3, 1.);
-    model.learn(0.184, 1, new SigmoidActivation());
-    */
-  
     return 0;
 
 }

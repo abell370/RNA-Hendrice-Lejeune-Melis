@@ -36,6 +36,7 @@
     <ClCompile Include="simpleactivation.cpp" />
     <ClCompile Include="simpleperceptron.cpp" />
     <ClCompile Include="sigmoidactivation.cpp" />
+    <ClCompile Include="tanhactivation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="activationfunction.h" />
@@ -52,6 +53,7 @@
     <ClInclude Include="layeringmodel.h" />
     <ClInclude Include="sigmoidactivation.h" />
     <ClInclude Include="simpleactivation.h" />
+    <ClInclude Include="tanhactivation.h" />
     <ClInclude Include="utils.h" />
     <QtMoc Include="graphwidget.h" />
     <ClInclude Include="layer.h" />

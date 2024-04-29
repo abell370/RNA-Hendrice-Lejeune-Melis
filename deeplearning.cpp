@@ -34,6 +34,7 @@ map<string, double> MultiLayer::checkAccuracy(vector<vector<double>> validationD
 
 History* MultiLayer::train(double stopError, int maxEpoc, int maxClassificationError)
 {
+	if (stopError != 0.) maxClassificationError = -1.; // -1 pour que cette condition dans le while ne soit jamais à true
 	History* history = new History();
 	int i = 0;
 	bool thresholdReached = false;
@@ -44,7 +45,7 @@ History* MultiLayer::train(double stopError, int maxEpoc, int maxClassificationE
 		history->addEpoc(iter);
 		if (mse < stopError) thresholdReached = true;
 		i += 1;
-	} while (!thresholdReached && i < maxEpoc && this->classificationErrors > maxClassificationError);
+	} while (!thresholdReached && i < maxEpoc && this->classificationErrors != maxClassificationError);
 	return history;
 }
 
