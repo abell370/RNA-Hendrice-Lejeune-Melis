@@ -135,38 +135,25 @@
                   <bool>false</bool>
                  </property>
                  <layout class="QGridLayout" name="gridLayout_2">
-                  <item row="3" column="0">
-                   <layout class="QVBoxLayout" name="verticalLayout_4">
+                  <item row="0" column="0">
+                   <layout class="QHBoxLayout" name="horizontalLayout_2">
                     <item>
-                     <widget class="QLabel" name="maxIterLabel_4">
+                     <widget class="QLabel" name="dataSetLabel_2">
                       <property name="text">
-                       <string>Amount of classes</string>
+                       <string>Data set :</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="amountOfClassesInput">
-                      <property name="text">
-                       <string>0</string>
-                      </property>
-                      <property name="placeholderText">
-                       <string>5000</string>
+                     <widget class="QComboBox" name="dataSetComboBox">
+                      <property name="enabled">
+                       <bool>true</bool>
                       </property>
                      </widget>
                     </item>
                    </layout>
                   </item>
-                  <item row="8" column="0" colspan="2">
-                   <layout class="QHBoxLayout" name="horizontalLayout_3"/>
-                  </item>
-                  <item row="6" column="1">
-                   <widget class="QRadioButton" name="randomWeights">
-                    <property name="text">
-                     <string>Random weights</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="1">
+                  <item row="1" column="1">
                    <layout class="QVBoxLayout" name="verticalLayout_5">
                     <item>
                      <widget class="QLabel" name="maxIterLabel_5">
@@ -178,7 +165,7 @@
                     <item>
                      <widget class="QLineEdit" name="maxClassificationErrorInput">
                       <property name="text">
-                       <string>0</string>
+                       <string/>
                       </property>
                       <property name="placeholderText">
                        <string>5000</string>
@@ -187,7 +174,172 @@
                     </item>
                    </layout>
                   </item>
-                  <item row="3" column="1">
+                  <item row="6" column="0" colspan="2">
+                   <widget class="QGroupBox" name="groupBox_3">
+                    <property name="title">
+                     <string>Model architecture</string>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_6">
+                     <item row="4" column="1" colspan="2">
+                      <layout class="QVBoxLayout" name="verticalLayout_10">
+                       <item>
+                        <widget class="QLabel" name="label_7">
+                         <property name="text">
+                          <string>Activation function hidden layer</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QComboBox" name="activationFctHLayer">
+                         <item>
+                          <property name="text">
+                           <string>Identité [R]</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Marche {0,1}</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Tangente hyperbolique [-1;1]</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Sigmoïde [0;1]</string>
+                          </property>
+                         </item>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QRadioButton" name="monolayerCheckButton">
+                       <property name="text">
+                        <string>Monolayer</string>
+                       </property>
+                       <property name="checked">
+                        <bool>true</bool>
+                       </property>
+                       <property name="autoRepeat">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="3">
+                      <layout class="QHBoxLayout" name="horizontalLayout_8">
+                       <item>
+                        <widget class="QLabel" name="label_3">
+                         <property name="text">
+                          <string>Hidden layer size</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLineEdit" name="hiddenLayerSizeInput">
+                         <property name="text">
+                          <string>0</string>
+                         </property>
+                         <property name="placeholderText">
+                          <string>5000</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item row="2" column="3">
+                      <layout class="QVBoxLayout" name="verticalLayout_13">
+                       <item>
+                        <widget class="QLabel" name="label_9">
+                         <property name="text">
+                          <string>Activation function</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QComboBox" name="activationFctGlobal">
+                         <item>
+                          <property name="text">
+                           <string>Identité [R]</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Marche {0,1}</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Tangente hyperbolique [-1;1]</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Sigmoïde [0;1]</string>
+                          </property>
+                         </item>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item row="1" column="3">
+                      <widget class="QComboBox" name="learningModelComboBox">
+                       <property name="enabled">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="3">
+                      <layout class="QVBoxLayout" name="verticalLayout_12">
+                       <item>
+                        <widget class="QLabel" name="label_8">
+                         <property name="text">
+                          <string>Activation function output layer</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QComboBox" name="activationFctOLayer">
+                         <item>
+                          <property name="text">
+                           <string>Identité [R]</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Marche {0,1}</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Tangente hyperbolique [-1;1]</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Sigmoïde [0;1]</string>
+                          </property>
+                         </item>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item row="3" column="1">
+                      <widget class="QRadioButton" name="multiLayerCheckButton">
+                       <property name="text">
+                        <string>Multilayer</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item row="7" column="0" colspan="2">
+                   <layout class="QHBoxLayout" name="horizontalLayout_3"/>
+                  </item>
+                  <item row="2" column="1">
                    <layout class="QVBoxLayout" name="verticalLayout_2">
                     <item>
                      <widget class="QLabel" name="maxIterLabel_2">
@@ -208,25 +360,28 @@
                     </item>
                    </layout>
                   </item>
-                  <item row="0" column="0">
-                   <layout class="QHBoxLayout" name="horizontalLayout_2">
+                  <item row="1" column="0">
+                   <layout class="QVBoxLayout" name="verticalLayout_3">
                     <item>
-                     <widget class="QLabel" name="dataSetLabel_2">
+                     <widget class="QLabel" name="maxIterLabel_3">
                       <property name="text">
-                       <string>Data set :</string>
+                       <string>Minimum quadratic mean error</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QComboBox" name="dataSetComboBox">
-                      <property name="enabled">
-                       <bool>true</bool>
+                     <widget class="QLineEdit" name="minErrorInput">
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="placeholderText">
+                       <string>5000</string>
                       </property>
                      </widget>
                     </item>
                    </layout>
                   </item>
-                  <item row="13" column="0" colspan="2">
+                  <item row="12" column="0" colspan="2">
                    <layout class="QGridLayout" name="controlBar">
                     <item row="1" column="0">
                      <widget class="QPushButton" name="startBtn">
@@ -254,70 +409,7 @@
                     </item>
                    </layout>
                   </item>
-                  <item row="1" column="0" colspan="2">
-                   <widget class="QLabel" name="label_5">
-                    <property name="text">
-                     <string>By default, classification is applied. If regression set then regression is applied</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="5" column="1">
-                   <layout class="QVBoxLayout" name="verticalLayout">
-                    <item>
-                     <widget class="QLabel" name="label_2">
-                      <property name="text">
-                       <string>Activation function</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QComboBox" name="activationFctComboBox">
-                      <item>
-                       <property name="text">
-                        <string>Identité [R]</string>
-                       </property>
-                      </item>
-                      <item>
-                       <property name="text">
-                        <string>Marche {0,1}</string>
-                       </property>
-                      </item>
-                      <item>
-                       <property name="text">
-                        <string>Tangente hyperbolique [-1;1]</string>
-                       </property>
-                      </item>
-                      <item>
-                       <property name="text">
-                        <string>Sigmoïde [0;1]</string>
-                       </property>
-                      </item>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item row="2" column="0">
-                   <layout class="QVBoxLayout" name="verticalLayout_3">
-                    <item>
-                     <widget class="QLabel" name="maxIterLabel_3">
-                      <property name="text">
-                       <string>Minimum quadratic mean error</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="minErrorInput">
-                      <property name="text">
-                       <string/>
-                      </property>
-                      <property name="placeholderText">
-                       <string>5000</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item row="5" column="0">
+                  <item row="4" column="0">
                    <layout class="QVBoxLayout" name="verticalLayout_6">
                     <item>
                      <widget class="QLabel" name="label_4">
@@ -338,58 +430,32 @@
                     </item>
                    </layout>
                   </item>
-                  <item row="7" column="0" colspan="2">
-                   <widget class="QGroupBox" name="groupBox_3">
-                    <property name="title">
-                     <string>Model architecture</string>
+                  <item row="2" column="0">
+                   <layout class="QVBoxLayout" name="verticalLayout_4">
+                    <item>
+                     <widget class="QLabel" name="maxIterLabel_4">
+                      <property name="text">
+                       <string>Amount of classes</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLineEdit" name="amountOfClassesInput">
+                      <property name="text">
+                       <string>0</string>
+                      </property>
+                      <property name="placeholderText">
+                       <string>5000</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item row="4" column="1">
+                   <widget class="QRadioButton" name="randomWeights">
+                    <property name="text">
+                     <string>Random weights</string>
                     </property>
-                    <layout class="QGridLayout" name="gridLayout_6">
-                     <item row="0" column="3">
-                      <widget class="QComboBox" name="learningModelComboBox">
-                       <property name="enabled">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="1">
-                      <widget class="QRadioButton" name="monolayerCheckButton">
-                       <property name="text">
-                        <string>Monolayer</string>
-                       </property>
-                       <property name="checked">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="3">
-                      <layout class="QHBoxLayout" name="horizontalLayout_8">
-                       <item>
-                        <widget class="QLabel" name="label_3">
-                         <property name="text">
-                          <string>Hidden layer size</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLineEdit" name="hiddenLayerSizeInput">
-                         <property name="text">
-                          <string>0</string>
-                         </property>
-                         <property name="placeholderText">
-                          <string>5000</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </item>
-                     <item row="1" column="1">
-                      <widget class="QRadioButton" name="multiLayerCheckButton">
-                       <property name="text">
-                        <string>Multilayer</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
                    </widget>
                   </item>
                  </layout>

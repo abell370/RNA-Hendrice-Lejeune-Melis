@@ -64,17 +64,17 @@ double MultiLayer::executeOneEpoc(double stopThreadshold, bool updateWeights)
 		// Potentiel des neurones cachés
 		vector<double> kC = calculatePotentials(example, amountOfHiddenNeuron, &this->weightsHidden);
 		// Sortie des neurones cachés
-		vector<double> y = calculateOutputs(kC, amountOfHiddenNeuron);
+		vector<double> y = calculateOutputs(kC, amountOfHiddenNeuron, this->aFunction[0]);
 		// Potentiel des neurones de sortie
 		vector<double> outputs = calculatePotentials(y, nbTags, &this->weightsOutput);
 		// Sortie des neurones de sortie
-		vector<double> zOutputs = calculateOutputs(outputs, nbTags);
+		vector<double> zOutputs = calculateOutputs(outputs, nbTags, this->aFunction[1]);
 		outputsTotal.push_back(zOutputs);
 		vector<double> tags(dataset[k].end() - nbTags, dataset[k].end());
 
 		for (int x = 0; x < nbTags; x++)
 		{
-			double thresholdedPredicted = this->aFunction->performThresholding(zOutputs[x]);
+			double thresholdedPredicted = this->aFunction[1]->performThresholding(zOutputs[x]);
 			if (tags[x] != thresholdedPredicted) this->classificationErrors += 1;
 		}
 
@@ -112,12 +112,12 @@ vector<double> MultiLayer::calculatePotentials(vector<double> outputs, int amoun
 	return outputsTmp;
 }
 
-vector<double> MultiLayer::calculateOutputs(vector<double> outputs, int amountOfNeuron)
+vector<double> MultiLayer::calculateOutputs(vector<double> outputs, int amountOfNeuron, ActivationFunction* aFunction)
 {
 	vector<double> zOutputs;
 	for (int z = 0; z < amountOfNeuron; z++)
 	{
-		zOutputs.push_back(this->aFunction->compute(outputs[z]));
+		zOutputs.push_back(aFunction->compute(outputs[z]));
 	}
 	return zOutputs;
 }

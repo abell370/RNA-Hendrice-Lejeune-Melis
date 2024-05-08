@@ -3,10 +3,10 @@
 #include <math.h>
 #include <chrono>
 
-LayeringModel::LayeringModel(vector<vector<double>> dataset, ActivationFunction* activation)
+LayeringModel::LayeringModel(vector<vector<double>> dataset, vector<ActivationFunction*> activation)
 {
 	this->dataset = dataset;
-	this->aFunction = activation;
+    this->aFunction = activation;
 }
 
 

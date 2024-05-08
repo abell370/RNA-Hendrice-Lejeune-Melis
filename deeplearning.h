@@ -28,7 +28,7 @@ private:
 	double executeOneEpoc(double stopThreadshold, bool updateWeights);
 
 	vector<double> calculatePotentials(vector<double> outputs, int amountOfNeuron, vector<vector<double>> *weights);
-	vector<double> calculateOutputs(vector<double> example, int amountOfNeuron);
+	vector<double> calculateOutputs(vector<double> example, int amountOfNeuron, ActivationFunction* aFunction);
 
 	double calculateEQuad(const vector<vector<double>>& outputs);
 

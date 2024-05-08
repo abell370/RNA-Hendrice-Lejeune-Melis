@@ -15,47 +15,47 @@ QVector<double> MainController::calcGraph(uint iterationIndex, std::vector<doubl
 */
 
 
-void MainController::setupModel(int modelIndex, string pathToData, double learningRate, int nbClass, bool deeplearning, int hiddenLayerSize, int activationFct, bool randomNormalWeights)
+void MainController::setupModel(int modelIndex, string pathToData, double learningRate, int nbClass, bool deeplearning, int hiddenLayerSize, vector<int> activationFct, bool randomNormalWeights)
 {
     string datapath = "data/" + pathToData;
 
     // delete previous DataSet object
     this->data = this->dataSetReader->read(datapath, nbClass);
-    
-    // CSVReader reader("data/" + pathToData);
-    
+     
     if (data != NULL)
     {
+        vector<ActivationFunction*> aFunctions = {};
 
-        ActivationFunction* aFunction;
-
-        switch (activationFct) {
-        case 0:
-            aFunction = new IdentityActivation();
-            break;
-        case 1:
-            aFunction = new SimpleActivation();
-            break;
-        case 2:
-            aFunction = new TanHActivation();
-            break;
-        default:
-            aFunction = new SigmoidActivation();
-            break;
+        for (int i: activationFct)
+        {
+            switch (i) {
+            case 0:
+                aFunctions.push_back(new IdentityActivation());
+                break;
+            case 1:
+                aFunctions.push_back(new SimpleActivation());
+                break;
+            case 2:
+                aFunctions.push_back(new TanHActivation());
+                break;
+            default:
+                aFunctions.push_back(new SigmoidActivation());
+                break;
+            }
         }
 
         // Sert à ajouter le x0 aux données => TODO aller modofier les algos pour ne pas devoir modifier les données de bases
         //if (pathToData == "table_3_1.csv") reverse(data->getEntries().begin(), data->getEntries().end());
         if (deeplearning)
         {
-            MultiLayer* layeringmodel = new MultiLayer(data->getEntries(), aFunction);
+            MultiLayer* layeringmodel = new MultiLayer(data->getEntries(), aFunctions);
             layeringmodel->setup(hiddenLayerSize,nbClass, learningRate);
             this->model = layeringmodel;
         }
         else
         {
             // TODO heritage a ameliorer....
-            MonoLayer* layer = new MonoLayer(data->getEntries(), aFunction);
+            MonoLayer* layer = new MonoLayer(data->getEntries(), aFunctions);
             layer->setup(nbClass, modelIndex, learningRate, randomNormalWeights);
             this->model = layer;
         }

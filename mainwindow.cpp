@@ -49,6 +49,11 @@ MainWindow::MainWindow(MainController* mainController, QWidget* parent)
     }
     ui->validationDatasetCB->addItems(dsValidationNames);
 
+    disbaleMultilayer(true);
+    connect(ui->monolayerCheckButton, &QRadioButton::toggled, this, &MainWindow::disbaleMultilayer);
+    connect(ui->minErrorInput, &QLineEdit::textChanged, this, &MainWindow::disableClassification);
+    connect(ui->maxClassificationErrorInput, &QLineEdit::textChanged, this, &MainWindow::disableEMoy);
+
     /*
     ui->iterationSteps->setEditTriggers(QAbstractItemView::NoEditTriggers);
     model->setHorizontalHeaderLabels({ "k","w0","w1","w2","x0","x1","x2","y","d","e" });
@@ -61,6 +66,28 @@ MainWindow::MainWindow(MainController* mainController, QWidget* parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::disableClassification(const QString& text)
+{
+    ui->maxClassificationErrorInput->setEnabled(text.isEmpty());
+
+}
+
+void MainWindow::disableEMoy(const QString& text)
+{
+    ui->minErrorInput->setEnabled(text.isEmpty());
+
+}
+
+void MainWindow::disbaleMultilayer(bool checked)
+{
+    ui->activationFctHLayer->setEnabled(!checked);
+    ui->activationFctOLayer->setEnabled(!checked);
+    ui->hiddenLayerSizeInput->setEnabled(!checked);
+
+    ui->activationFctGlobal->setEnabled(checked);
+    ui->learningModelComboBox->setEnabled(checked);
 }
 
 void MainWindow::insertChart()
@@ -277,13 +304,21 @@ void MainWindow::on_startBtn_clicked()
         QString dataset = ui->dataSetComboBox->property("currentText").toString();
         int nbClass = ui->amountOfClassesInput->text().toInt();
         int minClassificationErrorAccepted = ui->maxClassificationErrorInput->text().toInt();
-        int activationFct = ui->activationFctComboBox->currentIndex();
         int hiddenLayerSize = ui->hiddenLayerSizeInput->text().toInt();
 
         ui->learningModelStatus->setText("Learning...");
         ui->learningModelStatus->setStyleSheet("QLabel {color: orange;}");
-
-        mainController->setupModel(modelIndex, dataset.toStdString(), learningRate, nbClass, this->ui->multiLayerCheckButton->isChecked(), hiddenLayerSize, activationFct, this->ui->randomWeights->isChecked());
+        vector<int> aFunctions = {};
+        if (this->ui->multiLayerCheckButton->isChecked() )
+        {
+            aFunctions.push_back(ui->activationFctHLayer->currentIndex());
+            aFunctions.push_back(ui->activationFctOLayer->currentIndex());
+        }
+        else
+        {
+            aFunctions.push_back(ui->activationFctGlobal->currentIndex());
+        }
+        mainController->setupModel(modelIndex, dataset.toStdString(), learningRate, nbClass, this->ui->multiLayerCheckButton->isChecked(), hiddenLayerSize, aFunctions, this->ui->randomWeights->isChecked());
         History* history = mainController->startTraining(maxIter, errorThreshold, minClassificationErrorAccepted);
 
         int numRows = history->size();

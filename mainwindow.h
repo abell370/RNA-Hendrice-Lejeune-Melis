@@ -55,6 +55,9 @@ private:
     uint selectedLM;
 
     void insertChart();
+    void disbaleMultilayer(bool checked);
+    void disableClassification(const QString& text);
+    void disableEMoy(const QString& text);
     void updateDataSetPlot();
     void updateLMGraph();
     void updateIterationValues();

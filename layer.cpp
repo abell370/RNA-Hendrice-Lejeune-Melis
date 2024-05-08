@@ -41,7 +41,7 @@ void MonoLayer::setup(int nbTags, int modelIndex, double learningRate, bool rand
     for (int i = 0; i < nbTags; i++)
     {
         vector<double> weights = this->generateWeightVector(nbEntry + 1, randomNormalWeights);
-        LearningModel* neuron = LearningModelFactory::create(modelIndex, dataset, weights, learningRate,aFunction);
+        LearningModel* neuron = LearningModelFactory::create(modelIndex, dataset, weights, learningRate,aFunction[0]);
         neurons.push_back(neuron);
     }
 }

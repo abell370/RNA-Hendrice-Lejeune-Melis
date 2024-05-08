@@ -11,7 +11,7 @@ class LayeringModel
 {
 public:
 
-	LayeringModel(vector<vector<double>> dataset, ActivationFunction* activation);
+	LayeringModel(vector<vector<double>> dataset, vector<ActivationFunction*> activation);
 
 	virtual History* train(double stopThreadshold, int maxEpoc, int maxClassificationError) = 0;
 	virtual map<string, double> checkAccuracy(vector<vector<double>> validationDataset) = 0;
@@ -21,7 +21,7 @@ public:
 protected:
 	vector<vector<double>> dataset;
 	vector<double> eMoyDuringTraining;
-	ActivationFunction* aFunction;
+	vector<ActivationFunction*> aFunction;
 
 	vector<double> generateRandom(int size);
 };

@@ -9,6 +9,7 @@ LearningModel::LearningModel(vector<vector<double>> dataset, ActivationFunction*
 }
 
 void LearningModel::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, int maxClassificationError) {
+	if (minMeanQuadraticError != 0.) maxClassificationError = -1;
 	this->reset(); // empty iterations
 	int i = 0;
 	bool thresholdReached = false;
