@@ -156,7 +156,7 @@ void MainWindow::updateLMGraph() {
     }
     modelSeries.clear();
 
-    if (decisionWeights.size() > 0 && decisionWeights[0].size() > 2) {
+    if (decisionWeights.size() > 0) {
 
         for (vector<double> weights : decisionWeights) {
             vector<double> x2 = this->calcDecisionLine(weights, x1);
@@ -177,9 +177,16 @@ void MainWindow::updateLMGraph() {
 vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<double> x1) {
     vector<double> line;
     for (double x1_i : x1) {
-        // y = w0 + w1*x1 + w2*x2
-        // if y == 0, then x2 = - (w0 + w1*x1)/w2vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<double> x)
-        line.push_back(-(weights[0] + weights[1] * x1_i) / weights[2]);
+        switch (weights.size()) {
+            case 2://regression
+                line.push_back(-(weights[0] * x1_i) / weights[1]);
+                break;
+            case 3://classification
+                line.push_back(-(weights[0] + weights[1] * x1_i) / weights[2]);
+                break;
+            default:
+                break;
+        }
     }
     return line;
 }
