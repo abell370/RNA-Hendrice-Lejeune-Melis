@@ -15,7 +15,7 @@ void LearningModel::learn(int maxIter, double minMeanQuadraticError, int indexOf
 	bool thresholdReached = false;
 	do {
 		double eMoy = this->executeOneIteration(indexOfPredictedData, true);
-		addIteration(new Iteration(Iteration(this->nbErreurs, eMoy)));
+		addIteration(new Iteration(Iteration(this->nbErreurs, eMoy, { this->weights })));
 		if (eMoy < minMeanQuadraticError) thresholdReached = true;
 		i += 1;
 	} while (!thresholdReached && i < maxIter && this->nbErreurs > maxClassificationError);

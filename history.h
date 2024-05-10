@@ -16,7 +16,7 @@ public:
 	double getMSE(int epoc);
 	int getClassification(int epoc);
 	string getLabel(int epoc);
-
+	vector<vector<double>> getWeights(int epoc);
 private:
 	std::vector<Iteration*> history;
 };

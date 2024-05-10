@@ -146,7 +146,7 @@ void MainWindow::updateDataSetPlot() {
 }
 
 void MainWindow::updateLMGraph() {
-    vector<vector<double>> decisionWeights = mainController->getDecisionWeights();
+    vector<vector<double>> decisionWeights = mainController->getDecisionWeights(selectedIteration);
     DataSet* dataSet = mainController->getDataSet();
     vector<double> x1 = { dataSet->findMin(0) - 0.5, dataSet->findMax( 0) + 0.5 };
     vector<vector<double>> decisionLines;
@@ -193,13 +193,12 @@ vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<doubl
 
 
 void MainWindow::updateIteration() {
-    /*
-    if(mainController->hasIterations(selectedLM)){
+    unsigned iterCount = mainController->getIterationCount();
+    if(0 < iterCount && (0 < selectedIteration && selectedIteration < iterCount)){
         ui->iterationInput->setText(QString::number(selectedIteration));
         this->updateLMGraph();
         this->updateIterationValues();
     }
-*/
 }
 
 void MainWindow::updateIterationValues() {
@@ -360,7 +359,7 @@ void MainWindow::on_startBtn_clicked()
         ui->learningModelStatus->setStyleSheet("QLabel {color: green;}");
 
 
-        //ui->iterationMaxLabel->setText(QString("of %1").arg(mainController->iterationsSize(selectedLM) - 1));
+        ui->iterationMaxLabel->setText(QString("of %1").arg(mainController->getIterationCount() - 1));
         // TODO wait until end learning
         ui->startValidationBtn->setEnabled(true);
         selectedIteration = 0;
@@ -393,23 +392,21 @@ void MainWindow::on_previousIterBtn_clicked()
 
 void MainWindow::on_nextIterBtn_clicked()
 {
-    /*
-    if(selectedIteration < mainController->iterationsSize(selectedLM) - 1){
+    if(selectedIteration < mainController->getIterationCount() - 1) {
         selectedIteration++;
     }
     updateIteration();
-*/
 }
 
 
 void MainWindow::on_lastIterBtn_clicked()
 {
-    /*
-    if(mainController->iterationsSize(selectedLM) > 0){
-        selectedIteration = mainController->iterationsSize(selectedLM) - 1;
+    unsigned iterCount = mainController->getIterationCount();
+    if(iterCount > 0){
+        selectedIteration = iterCount - 1;
     }
     updateIteration();
-*/
+
 }
 
 

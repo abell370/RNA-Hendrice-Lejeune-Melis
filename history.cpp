@@ -39,3 +39,7 @@ string History::getLabel(int epoc)
 	return this->history[epoc]->getLabel();
 
 }
+
+vector<vector<double>> History::getWeights(int epoc) {
+	return this->history[epoc]->getWeights();
+}

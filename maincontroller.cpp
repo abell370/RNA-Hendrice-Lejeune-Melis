@@ -64,7 +64,8 @@ void MainController::setupModel(int modelIndex, string pathToData, double learni
 
 History* MainController::startTraining(int maxIter, double errorThreshold, int maxClassificationError)
 {
-    return this->model->train(errorThreshold, maxIter, maxClassificationError);
+    this->history = model->train(errorThreshold, maxIter, maxClassificationError);
+    return this->history;
 }
 
 map<string, double> MainController::checkModelAccuracy(string pathToData)
@@ -106,10 +107,18 @@ DataSet* MainController::getDataSet() {
     return data;
 }
 
-vector<vector<double>> MainController::getDecisionWeights() {
-    return model->getDecisionWeights();
+vector<vector<double>> MainController::getDecisionWeights(int epoc) {
+    if (0 < epoc && epoc < history->getHistory().size()) {
+        return this->history->getWeights(epoc);
+    }
+    else {
+        return { {} };
+    }
 }
 
+unsigned int MainController::getIterationCount() {
+    return this->history->getHistory().size();
+}
 
 /*Iteration MainController::getIteration(uint iter) {
     LayeringModel *layeringModel = this->model;

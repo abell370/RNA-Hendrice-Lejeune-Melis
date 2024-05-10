@@ -24,7 +24,7 @@ void SimplePerceptron::learn(int maxIter, double minMeanQuadraticError, int inde
     do
     {
         this->executeOneIteration(indexOfPredictedData, true);
-        Iteration* iter = new Iteration(Iteration(this->nbErreurs, 0.));
+        Iteration* iter = new Iteration(Iteration(this->nbErreurs, 0., { this->weights }));
         addIteration(iter);
     }
     // nbErreur = 0 ?

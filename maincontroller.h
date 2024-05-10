@@ -19,6 +19,7 @@ private:
     LayeringModel* model;
     DataSet* data;
     DataSetReader* dataSetReader;
+    History* history;
 
 public:
     MainController(vector<string> pathToDataSets, vector<string> pathToValidationDatasets, vector<string> learningModelsList, DataSetReader* dataSetReader);
@@ -29,13 +30,14 @@ public:
     QVector<double> calcGraph(uint iterationIndex, std::vector<double> x1);
     void reset();
 
-
     vector<string> getLearningModels();
     vector<string> getDataSets();
     vector<string> getValidationDatasets();
     vector<vector<double>> getData();
     DataSet* getDataSet();
-    vector<vector<double>> getDecisionWeights();
+    vector<vector<double>> getDecisionWeights(int epoc);
+    unsigned int getIterationCount();
+
 
     /*
     Iteration getIteration(uint iter);
