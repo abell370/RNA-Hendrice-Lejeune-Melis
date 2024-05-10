@@ -30,7 +30,7 @@ void SimplePerceptron::learn(int maxIter, double minMeanQuadraticError, int inde
     // nbErreur = 0 ?
     // si oui, fin apprentissage
     // si non, on recommence
-    while (nbErreurs != 0);
+    while (nbErreurs != 0 && this->getIterations().size() < maxIter);
 }
 
 double SimplePerceptron::executeOneIteration(int indexOfPredicted, bool updateWeight)
