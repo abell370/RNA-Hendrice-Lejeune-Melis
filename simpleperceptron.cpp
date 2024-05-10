@@ -21,6 +21,9 @@ map<string, double> SimplePerceptron::checkAccuracy(int tagIndex)
 }
 
 void SimplePerceptron::learn(int maxIter, double minMeanQuadraticError, int indexOfPredictedData, int maxClassificationError) {
+    if (!isBinary()) {
+        throw std::runtime_error("Dataset not binary");
+    }
     do
     {
         this->executeOneIteration(indexOfPredictedData, true);
@@ -68,4 +71,19 @@ double SimplePerceptron::executeOneIteration(int indexOfPredicted, bool updateWe
         }
     }
     return 0;
+}
+
+bool SimplePerceptron::isBinary(){
+    for (int k = 0; k < this->dataset.size(); k++) 
+    {
+        for (int x = 1; x < this->weights.size(); x++)
+        {
+            auto data = this->dataset[k][x - 1];
+            if (data !=0 && data != 1)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
 }

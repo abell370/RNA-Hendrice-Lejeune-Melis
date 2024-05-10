@@ -18,6 +18,7 @@ public:
     };
 private:
     double executeOneIteration(int indexOfPredicted, bool updateWeight);
+    bool isBinary();
 };
 
 #endif // SIMPLEPERCEPTRON_H
