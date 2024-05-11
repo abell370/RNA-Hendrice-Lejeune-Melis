@@ -194,7 +194,7 @@ vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<doubl
 
 void MainWindow::updateIteration() {
     unsigned iterCount = mainController->getIterationCount();
-    if(0 < iterCount && (0 < selectedIteration && selectedIteration < iterCount)){
+    if(0 < iterCount && (0 <= selectedIteration && selectedIteration < iterCount)){
         ui->iterationInput->setText(QString::number(selectedIteration));
         this->updateLMGraph();
         this->updateIterationValues();
