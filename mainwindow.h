@@ -41,20 +41,22 @@ private:
     Ui::MainWindow* ui;
     MainController* mainController;
     QStandardItemModel* model;
-    QChart* chart;
+    QChart* modelChart;
+    QChart* lossChart;
     map<int, QScatterSeries*> dataSeries;
     vector<QLineSeries*> modelSeries;
+    QLineSeries* lossSeries;
     uint selectedIteration;
     uint selectedDataSet;
     uint selectedLM;
 
-    void insertChart();
+    QChart* insertChart(QString title, QWidget* target);
     void disbaleMultilayer(bool checked);
     void disableClassification(const QString& text);
     void disableEMoy(const QString& text);
     void updateDataSetPlot();
     void updateLMGraph();
-    void resetWindow();
+    void updateLossGraph();
     vector<double> calcDecisionLine(vector<double> weights, vector<double> x);
 };
 #endif // MAINWINDOW_H

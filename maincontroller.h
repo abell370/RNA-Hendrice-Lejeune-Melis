@@ -36,6 +36,7 @@ public:
     vector<vector<double>> getData();
     DataSet* getDataSet();
     vector<vector<double>> getDecisionWeights(int epoc);
+    vector<double> getLoss();
     unsigned int getIterationCount();
 
 

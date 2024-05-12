@@ -20,7 +20,8 @@ MainWindow::MainWindow(MainController* mainController, QWidget* parent)
     ui->setupUi(this);
     this->setWindowTitle("RNA_Hendrice_Lejeune_Melis_Juin_2024");
     ui->scrollArea->setWidgetResizable(true);
-    this->insertChart();
+    modelChart = this->insertChart("Model Decision Line(s)", ui->modelChart);
+    lossChart = this->insertChart("Loss Diagram", ui->lossChart);
 
     this->selectedIteration = 0;
     this->selectedDataSet = 0;
@@ -90,14 +91,14 @@ void MainWindow::disbaleMultilayer(bool checked)
     ui->learningModelComboBox->setEnabled(checked);
 }
 
-void MainWindow::insertChart()
+QChart* MainWindow::insertChart(QString title, QWidget* target)
 {
-    this->chart = new QChart();
-    chart->setTitle("Model Decision Line(s)");
+    QChart* chart = new QChart();
+    chart->setTitle(title);
     QChartView* chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
 
-    QWidget* chartWidget = ui->chartBox;
+    QWidget* chartWidget = target;
 
     if (chartWidget) {
         QVBoxLayout* chartLayout = new QVBoxLayout();
@@ -105,16 +106,16 @@ void MainWindow::insertChart()
         chartWidget->setLayout(chartLayout);
     }
 
+    return chart;
 }
 
 void MainWindow::updateDataSetPlot() {
     DataSet* dataSet = mainController->getDataSet();
-    vector<QString> colors = {"blue","red","yellow","green","cyan","magenta","gray"};
     vector<int> dataClasses;
     vector<vector<double>> entries;
 
     for (auto dataSerie : dataSeries) {
-        chart->removeSeries(dataSerie.second);
+        modelChart->removeSeries(dataSerie.second);
     }
     dataSeries.clear();
 
@@ -128,9 +129,8 @@ void MainWindow::updateDataSetPlot() {
         if (dataSeries[dataClass] == NULL) {
             QScatterSeries* classSerie = new QScatterSeries();
             classSerie->setName(QString("%1").arg(dataClass));
-            classSerie->setColor(colors[dataClass % colors.size()]);
             dataSeries[dataClass] = classSerie;
-            chart->addSeries(classSerie);
+            modelChart->addSeries(classSerie);
         }
 
         QPointF point(entries[i][0], entries[i][1]);
@@ -138,10 +138,10 @@ void MainWindow::updateDataSetPlot() {
         dataSeries.at(dataClass)->append(point);
     }
     
-    chart->createDefaultAxes();
-    chart->axisX()->setRange(dataSet->findMin(0) - 0.5, dataSet->findMax(0) + 0.5);
-    chart->axisY()->setRange(dataSet->findMin(1) - 0.5, dataSet->findMax(1) + 0.5);
-    chart->update();
+    modelChart->createDefaultAxes();
+    modelChart->axisX()->setRange(dataSet->findMin(0) - 0.5, dataSet->findMax(0) + 0.5);
+    modelChart->axisY()->setRange(dataSet->findMin(1) - 0.5, dataSet->findMax(1) + 0.5);
+    modelChart->update();
 }
 
 void MainWindow::updateLMGraph() {
@@ -150,7 +150,7 @@ void MainWindow::updateLMGraph() {
     vector<double> x1 = { dataSet->findMin(0) - 0.5, dataSet->findMax( 0) + 0.5 };
 
     for (auto modelSerie : this->modelSeries) {
-        chart->removeSeries(modelSerie);
+        modelChart->removeSeries(modelSerie);
     }
     modelSeries.clear();
 
@@ -165,14 +165,14 @@ void MainWindow::updateLMGraph() {
                 //QPoint point = QPoint(x1[j], x2[j]);
                 modelSerie->append(x1[j],x2[j]);
             }
-            chart->addSeries(modelSerie);
+            modelChart->addSeries(modelSerie);
             modelSeries.push_back(modelSerie);
         }
     }
-    chart->createDefaultAxes();
-    chart->axisX()->setRange(dataSet->findMin(0) - 0.5, dataSet->findMax(0) + 0.5);
-    chart->axisY()->setRange(dataSet->findMin(1) - 0.5, dataSet->findMax(1) + 0.5);
-    chart->update();
+    modelChart->createDefaultAxes();
+    modelChart->axisX()->setRange(dataSet->findMin(0) - 0.5, dataSet->findMax(0) + 0.5);
+    modelChart->axisY()->setRange(dataSet->findMin(1) - 0.5, dataSet->findMax(1) + 0.5);
+    modelChart->update();
 }
 
 vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<double> x1) {
@@ -193,6 +193,25 @@ vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<doubl
         }
     }
     return line;
+}
+
+void MainWindow::updateLossGraph(){
+    vector<double> loss = mainController->getLoss();
+
+    if(lossSeries != NULL){
+        lossChart->removeSeries(lossSeries);
+    }
+
+    lossSeries = new QLineSeries();
+
+    for (int i = 0; i < loss.size(); ++i) {
+        lossSeries->append(i, loss[i]);
+    }
+
+    lossChart->addSeries(lossSeries);
+
+    lossChart->createDefaultAxes();
+    lossChart->update();
 }
 
 
@@ -321,6 +340,7 @@ void MainWindow::on_startBtn_clicked()
 
         updateDataSetPlot();
         on_firstStepBtn_clicked();
+        updateLossGraph();
     }catch(...){
         ui->learningModelStatus->setText("Error");
         ui->learningModelStatus->setStyleSheet("QLabel {color: red;}");

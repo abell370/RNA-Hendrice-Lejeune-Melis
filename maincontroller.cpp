@@ -120,18 +120,6 @@ unsigned int MainController::getIterationCount() {
     return this->history->getIterationCount();
 }
 
-/*Iteration MainController::getIteration(uint iter) {
-    LayeringModel *layeringModel = this->model;
-    if(currentLM != nullptr && iter < currentLM->getIterations().size()){
-        return currentLM->getIterations()[iter];
-    }
-    return Iteration();
+vector<double> MainController::getLoss() {
+    return this->history->getMSEEvolution();
 }
-
-bool MainController::hasIterations(){
-    return !learningModel->getIterations().empty();
-}
-
-unsigned int MainController::iterationsSize(uint lm){
-    return learningModel->getIterations().size();
-}*/

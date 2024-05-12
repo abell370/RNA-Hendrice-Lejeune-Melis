@@ -14,11 +14,15 @@ public:
 	std::vector<Iteration*> getHistory();
 	int size();
 	double getMSE(int epoc);
+	vector<double> getMSEEvolution();
 	int getClassification(int epoc);
 	string getLabel(int epoc);
 	vector<vector<double>> getWeights(int epoc);
 	unsigned int getIterationCount();
 private:
 	std::vector<Iteration*> history;
+
+	unsigned int getAbsoluteIterNb(int startindex, int epoc);
+	vector<int> getNeuronsStart();
 };
 
