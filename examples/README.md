@@ -20,7 +20,7 @@ Learning Rate : 0.5
 Nb classe : 2
 Monolayer - Gradient ou Adaline / Sigmoide [0,1]
 
-![Gradient 2.1](image.png)
+![Gradient 2.1](2-1gradient.png)
 
 ### Données linéairement séparables (2.9)
 
