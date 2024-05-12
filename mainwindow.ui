@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1543</width>
+    <width>1359</width>
     <height>963</height>
    </rect>
   </property>
@@ -28,7 +28,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1523</width>
+         <width>1339</width>
          <height>900</height>
         </rect>
        </property>
@@ -519,7 +519,7 @@
                <item row="1" column="3">
                 <widget class="QLineEdit" name="iterationInput">
                  <property name="text">
-                  <string>0</string>
+                  <string/>
                  </property>
                 </widget>
                </item>
@@ -541,7 +541,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1543</width>
+     <width>1359</width>
      <height>22</height>
     </rect>
    </property>

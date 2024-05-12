@@ -180,8 +180,8 @@ vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<doubl
     double x2_i;
     for (double x1_i : x1) {
         switch (weights.size()) {
-            case 2://regression
-                x2_i = -(weights[0] * x1_i) / weights[1];
+            case 2://regression => y = ax + b <=> y = w1 * x1 + w0
+                x2_i = weights[1] * x1_i + weights[0];
                 line.push_back(x2_i);
                 break;
             case 3://classification
@@ -215,11 +215,10 @@ void MainWindow::updateLossGraph(){
 }
 
 
-void MainWindow::updateIteration() {
+void MainWindow::updateSelectedIteration() {
     unsigned iterCount = mainController->getIterationCount();
     if(0 < iterCount && (0 <= selectedIteration && selectedIteration < iterCount)){
         ui->iterationInput->setText(QString::number(selectedIteration));
-        this->updateLMGraph();
     }
 }
 
@@ -339,8 +338,9 @@ void MainWindow::on_startBtn_clicked()
         ui->startValidationBtn->setEnabled(true);
 
         updateDataSetPlot();
-        on_firstStepBtn_clicked();
         updateLossGraph();
+        on_firstStepBtn_clicked();
+        updateLMGraph();
     }catch(...){
         ui->learningModelStatus->setText("Error");
         ui->learningModelStatus->setStyleSheet("QLabel {color: red;}");
@@ -351,7 +351,7 @@ void MainWindow::on_startBtn_clicked()
 void MainWindow::on_firstStepBtn_clicked()
 {
     selectedIteration = 0;
-    updateIteration();
+    updateSelectedIteration();
 }
 
 
@@ -360,7 +360,7 @@ void MainWindow::on_previousIterBtn_clicked()
     if (selectedIteration > 0) {
         selectedIteration--;
     }
-    updateIteration();
+    updateSelectedIteration();
 }
 
 
@@ -369,7 +369,7 @@ void MainWindow::on_nextIterBtn_clicked()
     if(selectedIteration < mainController->getIterationCount() - 1) {
         selectedIteration++;
     }
-    updateIteration();
+    updateSelectedIteration();
 }
 
 
@@ -379,7 +379,7 @@ void MainWindow::on_lastIterBtn_clicked()
     if(iterCount > 0){
         selectedIteration = iterCount - 1;
     }
-    updateIteration();
+    updateSelectedIteration();
 
 }
 
@@ -392,5 +392,5 @@ void MainWindow::on_iterationInput_textChanged(const QString& arg1)
     catch (...) {
 
     }
-    updateIteration();
+    this->updateLMGraph();
 }
