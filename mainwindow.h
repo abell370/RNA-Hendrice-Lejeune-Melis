@@ -37,12 +37,6 @@ private slots:
 
     void on_iterationInput_textChanged(const QString& arg1);
 
-    void on_dataSetComboBox_currentIndexChanged(int index);
-
-    void on_learningModelComboBox_currentIndexChanged(int index);
-
-    void on_resetBtn_clicked();
-
 private:
     Ui::MainWindow* ui;
     MainController* mainController;
@@ -60,7 +54,6 @@ private:
     void disableEMoy(const QString& text);
     void updateDataSetPlot();
     void updateLMGraph();
-    void updateIterationValues();
     void resetWindow();
     vector<double> calcDecisionLine(vector<double> weights, vector<double> x);
 };

@@ -167,7 +167,7 @@
                       <item>
                        <widget class="QLineEdit" name="minErrorInput">
                         <property name="text">
-                         <string>0.125</string>
+                         <string>0.0125</string>
                         </property>
                         <property name="placeholderText">
                          <string>5000</string>
@@ -209,7 +209,7 @@
                       <item>
                        <widget class="QLineEdit" name="maxIterInput">
                         <property name="text">
-                         <string>0</string>
+                         <string>200</string>
                         </property>
                         <property name="placeholderText">
                          <string>5000</string>

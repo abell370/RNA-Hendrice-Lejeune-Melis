@@ -108,7 +108,7 @@ DataSet* MainController::getDataSet() {
 }
 
 vector<vector<double>> MainController::getDecisionWeights(int epoc) {
-    if (0 < epoc && epoc < history->getHistory().size()) {
+    if (0 <= epoc && epoc < history->getHistory().size()) {
         return this->history->getWeights(epoc);
     }
     else {
@@ -117,7 +117,7 @@ vector<vector<double>> MainController::getDecisionWeights(int epoc) {
 }
 
 unsigned int MainController::getIterationCount() {
-    return this->history->getHistory().size();
+    return this->history->getIterationCount();
 }
 
 /*Iteration MainController::getIteration(uint iter) {

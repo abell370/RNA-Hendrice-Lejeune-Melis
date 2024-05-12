@@ -129,7 +129,6 @@ void MainWindow::updateDataSetPlot() {
             QScatterSeries* classSerie = new QScatterSeries();
             classSerie->setName(QString("%1").arg(dataClass));
             classSerie->setColor(colors[dataClass % colors.size()]);
-            //dataSeries.emplace(dataClass, classSerie);
             dataSeries[dataClass] = classSerie;
             chart->addSeries(classSerie);
         }
@@ -149,7 +148,6 @@ void MainWindow::updateLMGraph() {
     vector<vector<double>> decisionWeights = mainController->getDecisionWeights(selectedIteration);
     DataSet* dataSet = mainController->getDataSet();
     vector<double> x1 = { dataSet->findMin(0) - 0.5, dataSet->findMax( 0) + 0.5 };
-    vector<vector<double>> decisionLines;
 
     for (auto modelSerie : this->modelSeries) {
         chart->removeSeries(modelSerie);
@@ -158,33 +156,39 @@ void MainWindow::updateLMGraph() {
 
     if (decisionWeights.size() > 0) {
 
-        for (vector<double> weights : decisionWeights) {
-            vector<double> x2 = this->calcDecisionLine(weights, x1);
+        for (int i = 0; i < decisionWeights.size(); ++i) {
+            vector<double> x2 = this->calcDecisionLine(decisionWeights[i], x1);
             QLineSeries* modelSerie = new QLineSeries();
+            modelSerie->setName(QString("Neuron %1").arg(i + 1));
 
-            for (int i = 0; i < x2.size(); ++i) {
-                modelSerie->append(QPointF(x1[i], x2[i]));
+            for (int j = 0; j < x2.size(); ++j) {
+                //QPoint point = QPoint(x1[j], x2[j]);
+                modelSerie->append(x1[j],x2[j]);
             }
-
             chart->addSeries(modelSerie);
             modelSeries.push_back(modelSerie);
         }
-
-        chart->update();
     }
+    chart->createDefaultAxes();
+    chart->axisX()->setRange(dataSet->findMin(0) - 0.5, dataSet->findMax(0) + 0.5);
+    chart->axisY()->setRange(dataSet->findMin(1) - 0.5, dataSet->findMax(1) + 0.5);
+    chart->update();
 }
 
 vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<double> x1) {
     vector<double> line;
+    double x2_i;
     for (double x1_i : x1) {
         switch (weights.size()) {
             case 2://regression
-                line.push_back(-(weights[0] * x1_i) / weights[1]);
+                x2_i = -(weights[0] * x1_i) / weights[1];
+                line.push_back(x2_i);
                 break;
             case 3://classification
-                line.push_back(-(weights[0] + weights[1] * x1_i) / weights[2]);
+                x2_i = -(weights[0] + weights[1] * x1_i) / weights[2];
+                line.push_back(x2_i);
                 break;
-            default:
+            default:// + de 2 dimensions pas supporté
                 break;
         }
     }
@@ -197,55 +201,7 @@ void MainWindow::updateIteration() {
     if(0 < iterCount && (0 <= selectedIteration && selectedIteration < iterCount)){
         ui->iterationInput->setText(QString::number(selectedIteration));
         this->updateLMGraph();
-        this->updateIterationValues();
     }
-}
-
-void MainWindow::updateIterationValues() {
-    /*
-    Iteration iteration = mainController->getIteration(this->selectedLM, this->selectedIteration);
-    std::vector<Step> steps = iteration.getSteps();
-    Step *step;
-
-    if(steps.size() == 0){
-        return;
-    }
-
-    step = &steps[0];
-
-    this->model = new QStandardItemModel(0, 4 + (2 * steps[0].weights.size()));// 4 (k,y,d,e) + 2 * size of weight|entries (w0*x0, w1*x1,...)
-
-    QStringList headerLabels = {"k"};
-    for(unsigned int i = 0; i < step->weights.size(); ++i){
-        headerLabels.append(QString("w%1").arg(i));
-    }
-    for(unsigned int i = 0; i < step->entries.size() - 1; ++i){//-1 as the expected output (d), is at the end of the entries and shouldn't be displayed twice
-        headerLabels.append(QString("x%1").arg(i));
-    }
-    headerLabels.append({"y","d","e"});
-    this->model->setHorizontalHeaderLabels(headerLabels);
-
-    for(unsigned int i = 0; i < steps.size(); i++){
-        step = &steps[i];
-        QList<QStandardItem*> row;
-        row.append(new QStandardItem(QString::number(step->k)));
-        for(unsigned int w = 0; w < step->weights.size(); w++){
-            QStandardItem* weight = new QStandardItem(QString::number(step->weights[w]));
-            row.append(weight);
-        }
-        for(unsigned int x = 0; x < step->entries.size() - 1; x++){
-            QStandardItem* entry = new QStandardItem(QString::number(step->entries[x]));
-            row.append(entry);
-        }
-        row.append(new QStandardItem(QString::number(step->y)));
-        row.append(new QStandardItem(QString::number(step->d)));
-        row.append(new QStandardItem(QString::number(step->e)));
-        this->model->insertRow(i, row);
-    }
-
-    ui->iterationErrorLabel->setText(QString("%1 errors").arg(iteration.getErrorNb()));
-    ui->iterationSteps->setModel(this->model);
-*/
 }
 
 void MainWindow::on_startValidationBtn_clicked()
@@ -362,11 +318,9 @@ void MainWindow::on_startBtn_clicked()
         ui->iterationMaxLabel->setText(QString("of %1").arg(mainController->getIterationCount() - 1));
         // TODO wait until end learning
         ui->startValidationBtn->setEnabled(true);
-        selectedIteration = 0;
 
         updateDataSetPlot();
-        updateLMGraph();
-        //updateIteration();
+        on_firstStepBtn_clicked();
     }catch(...){
         ui->learningModelStatus->setText("Error");
         ui->learningModelStatus->setStyleSheet("QLabel {color: red;}");
@@ -420,60 +374,3 @@ void MainWindow::on_iterationInput_textChanged(const QString& arg1)
     }
     updateIteration();
 }
-
-
-void MainWindow::on_dataSetComboBox_currentIndexChanged(int index)
-{
-    /*
-    if(selectedDataSet != index){
-        selectedDataSet = index;
-        this->updateDataSetPlot();
-
-        mainController->reset(selectedLM);
-        this->resetWindow();
-        this->updateLMGraph();
-    }
-*/
-}
-
-
-void MainWindow::on_learningModelComboBox_currentIndexChanged(int index)
-{
-    /*
-    selectedLM = index;
-    this->updateLMGraph();
-
-    if(mainController->hasIterations(selectedLM)){
-        ui->learningModelStatus->setText("Ready");
-        ui->learningModelStatus->setStyleSheet("QLabel {color: green;}");
-        this->updateIterationValues();
-        ui->iterationMaxLabel->setText(QString("of %1").arg(mainController->iterationsSize(selectedLM) - 1));
-    }else{
-        this->resetWindow();
-    }
-*/
-}
-
-
-void MainWindow::on_resetBtn_clicked()
-{
-    /*
-    mainController->reset(selectedLM);
-    this->resetWindow();
-*/
-}
-
-void MainWindow::resetWindow() {
-    /*
-    ui->learningModelStatus->setText("Not Ready");
-    ui->learningModelStatus->setStyleSheet("QLabel {}");
-
-    this->model->clear();
-    ui->iterationErrorLabel->setText("0 errors");
-    ui->iterationMaxLabel->setText("of 0");
-
-    this->updateDataSetPlot();
-    this->updateLMGraph();
-*/
-}
-
