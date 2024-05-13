@@ -92,3 +92,8 @@ vector<vector<double>> MonoLayer::getDecisionWeights() {
 }
 
 
+
+vector<double> MonoLayer::predict(vector<double> input) {
+    return {};
+}
+

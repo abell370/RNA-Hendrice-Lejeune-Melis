@@ -40,7 +40,7 @@ History* MultiLayer::train(double stopError, int maxEpoc, int maxClassificationE
 	bool thresholdReached = false;
 	do {
 		double mse = executeOneEpoc(stopError, true);
-		Iteration* iter = new Iteration(this->classificationErrors, mse, this->weightsOutput);
+		Iteration* iter = new Iteration(this->classificationErrors, mse, nbTags == 1 ? this->weightsOutput : this->weightsHidden);//si régression, poids en output
 		iter->setLabel("deepL");
 		history->addEpoc(iter);
 		if (mse < stopError) thresholdReached = true;
@@ -207,3 +207,25 @@ void MultiLayer::shuffleDataset()
 	shuffle(dataset.begin(), dataset.end(),default_random_engine());
 }
 void MultiLayer::reset() {};
+
+vector<double> MultiLayer::predict(vector<double> input) {
+	vector<double> predictedValues;
+	// Etape 1
+		// sous vecteur contenant les données sans les étiquettes (+ 1 pour prendre en compte le biais)
+	vector<double> example = input;
+	// Potentiel des neurones cachés
+	vector<double> kC = calculatePotentials(example, amountOfHiddenNeuron, &this->weightsHidden);
+	// Sortie des neurones cachés
+	vector<double> y = calculateOutputs(kC, amountOfHiddenNeuron, this->aFunction[0]);
+	// Potentiel des neurones de sortie
+	vector<double> outputs = calculatePotentials(y, nbTags, &this->weightsOutput);
+	// Sortie des neurones de sortie
+	vector<double> zOutputs = calculateOutputs(outputs, nbTags, this->aFunction[1]);
+
+	for (int x = 0; x < nbTags; x++)
+	{
+		double thresholdedPredicted = this->aFunction[1]->compute(zOutputs[x]);
+		predictedValues.push_back(thresholdedPredicted);
+	}
+	return predictedValues;
+}

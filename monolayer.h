@@ -24,6 +24,7 @@ public:
     void reset();
 
     vector<vector<double>> getDecisionWeights();
+    vector<double> predict(vector<double> input);
 
 private:
     double learningRate = 0.;

@@ -41,6 +41,7 @@ public:
     vector<vector<double>> getDecisionWeights(int epoc);
     vector<double> getLoss();
     unsigned int getIterationCount();
+    vector<double> predict(vector<double> input);
 
 
     /*

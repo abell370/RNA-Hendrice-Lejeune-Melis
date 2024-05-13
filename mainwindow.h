@@ -61,5 +61,6 @@ private:
     void updateLMGraph();
     void updateLossGraph();
     vector<double> calcDecisionLine(vector<double> weights, vector<double> x);
+    vector<double> predictPoints(vector<double> &x1);
 };
 #endif // MAINWINDOW_H

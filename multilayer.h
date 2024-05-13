@@ -22,6 +22,7 @@ public:
 	void reset();
 
 	vector<vector<double>> getDecisionWeights();
+	vector<double> predict(vector<double> input);
 
 private:
 	int amountOfHiddenNeuron = 0, nbTags = 0, classificationErrors = 0, nbEpoc = 0;

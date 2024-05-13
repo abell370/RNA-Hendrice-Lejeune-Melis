@@ -78,15 +78,15 @@ Monolayer - Gradient ou Adaline / Sigmoide [0,1]
 
 ### XOR 
 
-TODO
+![Multi xor](xormulti.png)
 
 ### Classification à 2 classes non linéairement séparables  (4.12)
 
-TODO
+![Multi 4-12](4-12multi.png)
 
 ### Classification à 3 classes non linéairement séparables  (4.14)
 
-TODO
+![Multi 4-14](4-14multi.png)
 
 ### Régression non-linéaire (4.17)
 

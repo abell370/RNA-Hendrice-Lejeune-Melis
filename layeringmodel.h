@@ -19,6 +19,7 @@ public:
 	virtual History* train(double stopThreadshold, int maxEpoc, int maxClassificationError) = 0;
 	virtual map<string, double> checkAccuracy(vector<vector<double>> validationDataset) = 0;
 	virtual void reset() = 0;
+	virtual vector<double> predict(vector<double> input) = 0;
 
 protected:
 	vector<vector<double>> dataset;

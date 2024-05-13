@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "maincontroller.h"
 
+#include <QApplication>
 #include <QtGlobal>
 #include <QVector>
 #include <qlineseries.h>
@@ -147,6 +148,7 @@ void MainWindow::updateDataSetPlot() {
 void MainWindow::updateLMGraph() {
     vector<vector<double>> decisionWeights = mainController->getDecisionWeights(selectedIteration);
     DataSet* dataSet = mainController->getDataSet();
+    int nbClass = ui->amountOfClassesInput->text().toInt();
     vector<double> x1 = { dataSet->findMin(0) - 0.5, dataSet->findMax( 0) + 0.5 };
 
     for (auto modelSerie : this->modelSeries) {
@@ -154,28 +156,33 @@ void MainWindow::updateLMGraph() {
     }
     modelSeries.clear();
 
-    if (decisionWeights.size() > 0) {
-
-        for (int i = 0; i < decisionWeights.size(); ++i) {
-            vector<double> x2 = this->calcDecisionLine(decisionWeights[i], x1);
-            QLineSeries* modelSerie = new QLineSeries();
-            modelSerie->setName(QString("Neuron %1").arg(i + 1));
-
-            for (int j = 0; j < x2.size(); ++j) {
-                //QPoint point = QPoint(x1[j], x2[j]);
-                modelSerie->append(x1[j],x2[j]);
-            }
-            modelChart->addSeries(modelSerie);
-            modelSeries.push_back(modelSerie);
+    for (int i = 0; i < decisionWeights.size(); ++i) {
+        vector<double> x2;
+        if (ui->multiLayerCheckButton->isChecked() && nbClass == 1) {//Si régression non-linéaire
+            x2 = this->predictPoints(x1);
         }
+        else {
+            x2 = this->calcDecisionLine(decisionWeights[i], x1);
+        }
+        QLineSeries* modelSerie = new QLineSeries();
+        modelSerie->setName(QString("Neuron %1").arg(i + 1));
+
+        for (int j = 0; j < x1.size(); ++j) {
+            //QPoint point = QPoint(x1[j], x2[j]);
+            modelSerie->append(x1[j],x2[j]);
+        }
+        modelChart->addSeries(modelSerie);
+        modelSeries.push_back(modelSerie);
     }
+
     modelChart->createDefaultAxes();
-    modelChart->axisX()->setRange(dataSet->findMin(0) - 0.5, dataSet->findMax(0) + 0.5);
-    modelChart->axisY()->setRange(dataSet->findMin(1) - 0.5, dataSet->findMax(1) + 0.5);
+    //modelChart->axisX()->setRange(dataSet->findMin(0) - 0.5, dataSet->findMax(0) + 0.5);
+    //modelChart->axisY()->setRange(dataSet->findMin(1) - 0.5, dataSet->findMax(1) + 0.5);
     modelChart->update();
 }
 
 vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<double> x1) {
+    int nbClass = ui->amountOfClassesInput->text().toInt();
     vector<double> line;
     double x2_i;
     for (double x1_i : x1) {
@@ -193,6 +200,18 @@ vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<doubl
         }
     }
     return line;
+}
+
+vector<double> MainWindow::predictPoints(vector<double> &x1) {
+    vector<double> x1Copy = vector<double>(x1);
+    x1.clear();
+    vector<double> x2;
+    for (float i = x1Copy[0]; i < x1Copy[1]; i += 0.01) {
+        vector<double> values = mainController->predict({ i });
+        x1.push_back(i);
+        x2.push_back(values[0]);
+    }
+    return x2;
 }
 
 void MainWindow::updateLossGraph(){
@@ -288,6 +307,9 @@ void MainWindow::on_startBtn_clicked()
 
         ui->learningModelStatus->setText("Learning...");
         ui->learningModelStatus->setStyleSheet("QLabel {color: orange;}");
+
+        qApp->processEvents();
+
         vector<int> aFunctions = {};
         if (this->ui->multiLayerCheckButton->isChecked() )
         {

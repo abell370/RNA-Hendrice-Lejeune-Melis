@@ -116,3 +116,8 @@ unsigned int MainController::getIterationCount() {
 vector<double> MainController::getLoss() {
     return this->history->getMSEEvolution();
 }
+
+
+vector<double> MainController::predict(vector<double> input) {
+    return this->model->predict(input);
+}
