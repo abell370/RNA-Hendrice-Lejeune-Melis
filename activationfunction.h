@@ -1,4 +1,7 @@
 #pragma once
+/*
+	Classe de base permettant l'utilisation de différentes fonction d'activation
+*/
 class ActivationFunction
 {
 public:

@@ -6,7 +6,9 @@
 
 using namespace std;
 
-
+/*
+    Classe représentant une époch lors de l'apprentissage
+*/
 class Iteration
 {
 private:

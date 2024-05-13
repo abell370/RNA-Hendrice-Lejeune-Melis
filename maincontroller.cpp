@@ -1,18 +1,12 @@
 #include "maincontroller.h"
 #include "csvreader.h"
-#include "layer.h"
+#include "monolayer.h"
 #include "activationfunction.h"
 #include "sigmoidactivation.h"
-#include "deeplearning.h"
+#include "multilayer.h"
 #include "tanhactivation.h"
 
 MainController::MainController(vector<string> pathToDataSets, vector<string> pathToValidationDatasets, vector<string> learningModelsList, DataSetReader* dataSetReader) : pathToDataSets(pathToDataSets), pathToValidationDatasets(pathToValidationDatasets), learningModelsList(learningModelsList), dataSetReader(dataSetReader) {};
-
-/*
-QVector<double> MainController::calcGraph(uint iterationIndex, std::vector<double> x1){
-    return learningModel->calcGraph(iterationIndex, x1);
-}
-*/
 
 
 void MainController::setupModel(int modelIndex, string pathToData, double learningRate, int nbClass, bool deeplearning, int hiddenLayerSize, vector<int> activationFct, bool randomNormalWeights)
@@ -54,7 +48,6 @@ void MainController::setupModel(int modelIndex, string pathToData, double learni
         }
         else
         {
-            // TODO heritage a ameliorer....
             MonoLayer* layer = new MonoLayer(data->getEntries(), aFunctions);
             layer->setup(nbClass, modelIndex, learningRate, randomNormalWeights);
             this->model = layer;

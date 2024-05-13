@@ -1,4 +1,4 @@
-#include "deeplearning.h"
+#include "multilayer.h"
 #include <iostream>
 #include <random>
 #include "iteration.h"
@@ -49,7 +49,10 @@ History* MultiLayer::train(double stopError, int maxEpoc, int maxClassificationE
 	return history;
 }
 
-// Adaline is used 
+/*
+	Implémentation de l'algorithme d'apprentissage multi-couche. La stratégie d'apprentissage est le Gradient stohastique. 
+	Les données sont donc mélangées à chaque époch et les poids sont mis à jour après chaque exemple.
+*/
 double MultiLayer::executeOneEpoc(double stopThreadshold, bool updateWeights)
 {
 	this->classificationErrors = 0;

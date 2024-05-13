@@ -3,6 +3,10 @@
 #include "iteration.h"
 #include <vector>
 
+/*
+	Classe stockant toutes les données récupérées pendant un apprentissage. Les données sauvegardées sont utilisées pour afficher 
+	les différents graphes.
+*/
 class History
 {
 public:

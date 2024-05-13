@@ -19,15 +19,14 @@
   <ItemGroup>
     <ClCompile Include="activationfunction.cpp" />
     <ClCompile Include="adalineperceptron.cpp" />
-    <ClCompile Include="concretlayerbuilder.cpp" />
     <ClCompile Include="csvreader.cpp" />
     <ClCompile Include="dataset.cpp" />
     <ClCompile Include="DataSetReader.cpp" />
-    <ClCompile Include="deeplearning.cpp" />
+    <ClCompile Include="multilayer.cpp" />
     <ClCompile Include="gradientperceptron.cpp" />
     <ClCompile Include="history.cpp" />
     <ClCompile Include="identityactivation.cpp" />
-    <ClCompile Include="layer.cpp" />
+    <ClCompile Include="monolayer.cpp" />
     <ClCompile Include="layeringmodel.cpp" />
     <ClCompile Include="learningmodel.cpp" />
     <ClCompile Include="main.cpp" />
@@ -41,11 +40,10 @@
   <ItemGroup>
     <ClInclude Include="activationfunction.h" />
     <ClInclude Include="adalineperceptron.h" />
-    <ClInclude Include="concretlayerbuilder.h" />
     <ClInclude Include="csvreader.h" />
     <ClInclude Include="dataset.h" />
     <ClInclude Include="DataSetReader.h" />
-    <ClInclude Include="deeplearning.h" />
+    <ClInclude Include="multilayer.h" />
     <ClInclude Include="gradientperceptron.h" />
     <ClInclude Include="history.h" />
     <ClInclude Include="identityactivation.h" />
@@ -54,10 +52,8 @@
     <ClInclude Include="sigmoidactivation.h" />
     <ClInclude Include="simpleactivation.h" />
     <ClInclude Include="tanhactivation.h" />
-    <ClInclude Include="utils.h" />
     <QtMoc Include="graphwidget.h" />
-    <ClInclude Include="layer.h" />
-    <ClInclude Include="layerbuilder.h" />
+    <ClInclude Include="monolayer.h" />
     <ClInclude Include="learningmodel.h" />
     <ClInclude Include="learningmodelfactory.h" />
     <ClInclude Include="maincontroller.h" />

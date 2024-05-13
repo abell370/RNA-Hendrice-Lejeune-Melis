@@ -1,5 +1,8 @@
 #pragma once
 #include "activationfunction.h"
+/*
+    Fonction d'activation Identité/Linéaire
+*/
 class IdentityActivation :
     public ActivationFunction
 {

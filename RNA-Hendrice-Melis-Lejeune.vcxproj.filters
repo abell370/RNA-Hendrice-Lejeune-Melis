@@ -32,7 +32,7 @@
     <ClCompile Include="gradientperceptron.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="layer.cpp">
+    <ClCompile Include="monolayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="learningmodel.cpp">
@@ -53,9 +53,6 @@
     <ClCompile Include="csvreader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="concretlayerbuilder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="sigmoidactivation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -65,7 +62,7 @@
     <ClCompile Include="activationfunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="deeplearning.cpp">
+    <ClCompile Include="multilayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="layeringmodel.cpp">
@@ -94,7 +91,7 @@
     <ClInclude Include="gradientperceptron.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="layer.h">
+    <ClInclude Include="monolayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="learningmodel.h">
@@ -115,12 +112,6 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="layerbuilder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="concretlayerbuilder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="activationfunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -130,13 +121,10 @@
     <ClInclude Include="identityactivation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="deeplearning.h">
+    <ClInclude Include="multilayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="layeringmodel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DataSetReader.h">

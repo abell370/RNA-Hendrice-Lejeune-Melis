@@ -6,6 +6,9 @@
 
 using namespace std;
 
+/*
+	Classe permettant d'exécuter un modèle multi-couche. La stratégie utilisée est Adaline en mode Gradient stohastique.
+*/
 class MultiLayer : 
 	public LayeringModel
 {

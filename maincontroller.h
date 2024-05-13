@@ -4,7 +4,7 @@
 #include <vector>
 #include "dataset.h"
 #include "iteration.h"
-#include "layer.h"
+#include "monolayer.h"
 #include "identityactivation.h"
 #include "simpleactivation.h"
 #include "layeringmodel.h"
@@ -12,6 +12,9 @@
 
 using namespace std;
 
+/*
+    Classe permettant de faire de lien entre la vue et le modèle (implémentation d'un MVC)
+*/
 class MainController
 {
 private:

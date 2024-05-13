@@ -16,6 +16,9 @@ namespace Ui {
 }
 QT_END_NAMESPACE
 
+/*
+    Code behind de la vue (lien actions->controlleur)
+*/
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

@@ -1,5 +1,9 @@
 #pragma once
 #include "activationfunction.h"
+
+/*
+    Fonction d'activation marche
+*/
 class SimpleActivation :
     public ActivationFunction
 {

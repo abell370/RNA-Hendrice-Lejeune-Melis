@@ -6,7 +6,7 @@
 #include <fstream>
 
 #include <filesystem>
-#include "deeplearning.h"
+#include "multilayer.h"
 #include "sigmoidactivation.h"
 #include "csvreader.h"
 #include "DataSetReader.h"

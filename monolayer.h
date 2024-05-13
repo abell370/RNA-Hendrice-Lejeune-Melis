@@ -9,6 +9,9 @@
 
 using namespace std;
 
+/*
+    Classe représentant la seule couche du modèle mono-couche. Elle contient les différents neurones qui apprennent séparemment les uns des autres.
+*/
 class MonoLayer 
     : public LayeringModel
 {

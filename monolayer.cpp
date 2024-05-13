@@ -1,4 +1,4 @@
-﻿#include "layer.h"
+﻿#include "monolayer.h"
 #include "learningmodelfactory.h"
 #include "activationfunction.h"
 #include "identityactivation.h"

@@ -4,6 +4,9 @@
 
 using namespace std;
 
+/*
+    Implémentation de la Descente de Gradient
+*/
 class GradientPerceptron : public LearningModel
 {
 public:

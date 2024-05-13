@@ -9,6 +9,9 @@
 
 using namespace std;
 
+/*
+    Classe de base permettant d'exécuter Adaline, Gradient et Simple Perceptron pour les modèles mono-couche
+*/
 class LearningModel
 {
 public:

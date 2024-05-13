@@ -7,6 +7,9 @@
 
 using namespace std;
 
+/*
+	Classe de base utilisée pour exécuter les différentes 'architecture' d'apprentissage (mono-couche, multi-couche)
+*/
 class LayeringModel
 {
 public:

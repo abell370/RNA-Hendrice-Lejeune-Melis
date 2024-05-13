@@ -7,6 +7,9 @@
 
 using namespace std;
 
+/*
+    Classe permettant de charger les données d'un fichier csv
+*/
 class CSVReader {
 public:
     CSVReader(const string& filename);

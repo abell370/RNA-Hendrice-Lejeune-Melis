@@ -1,5 +1,9 @@
 #pragma once
 #include "activationfunction.h"
+
+/*
+    Fonction d'activation Sigmoîd
+*/
 class SigmoidActivation :
     public ActivationFunction
 {

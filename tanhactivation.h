@@ -1,5 +1,8 @@
 #pragma once
 #include "activationfunction.h"
+/*
+    Fonction d'activation tangente hyperbolique
+*/
 class TanHActivation :
     public ActivationFunction
 {

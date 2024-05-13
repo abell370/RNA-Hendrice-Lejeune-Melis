@@ -3,7 +3,9 @@
 #include <vector>
 
 using namespace std;
-
+/*
+    Implémentation de Adaline
+*/
 class AdalinePerceptron : public LearningModel
 {
 public:

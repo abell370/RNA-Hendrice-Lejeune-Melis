@@ -6,6 +6,9 @@
 #include "gradientPerceptron.h"
 #include "simpleperceptron.h"
 
+/*
+    Classe permettant de créer les différents perceptron
+*/
 class LearningModelFactory
 {
 public:

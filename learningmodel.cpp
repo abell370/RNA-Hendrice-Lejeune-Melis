@@ -1,5 +1,8 @@
 #include "learningmodel.h"
 
+/*
+	Classe de base permettant d'exécuter soit un modèle mono-couche soit multi-couche.
+*/
 LearningModel::LearningModel(vector<vector<double>> dataset, ActivationFunction* activation, vector<double> weights, double learningRate)
 {
     this->dataset = dataset;

@@ -5,6 +5,9 @@
 
 using namespace std;
 
+/*
+    Implémentation du Perceptron simple
+*/
 class SimplePerceptron : 
     public LearningModel
 {
