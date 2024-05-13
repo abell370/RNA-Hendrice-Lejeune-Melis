@@ -176,8 +176,8 @@ void MainWindow::updateLMGraph() {
     }
 
     modelChart->createDefaultAxes();
-    //modelChart->axisX()->setRange(dataSet->findMin(0) - 0.5, dataSet->findMax(0) + 0.5);
-    //modelChart->axisY()->setRange(dataSet->findMin(1) - 0.5, dataSet->findMax(1) + 0.5);
+    modelChart->axisX()->setRange(dataSet->findMin(0) - 0.5, dataSet->findMax(0) + 0.5);
+    modelChart->axisY()->setRange(dataSet->findMin(1) - 0.5, dataSet->findMax(1) + 0.5);
     modelChart->update();
 }
 
