@@ -42,7 +42,7 @@ Monolayer - Gradient ou Adaline / Sigmoide [0,1]
 
 ![Adaline 2.10](2-10adaline.png)
 
-### Régression (2.11)
+### Régression avec jeux de données au comportement "globalement" linéaire (2.11)
 
 #### Gradient
 
@@ -52,7 +52,7 @@ Monolayer - Gradient ou Adaline / Sigmoide [0,1]
 
 ![Adaline 2.11](2-11adaline.png)
 
-## Perceptron monocouche - +eurs neurones
+## Perceptron monocouche 
 
 ### Classification à 3 classes (3.1)
 
