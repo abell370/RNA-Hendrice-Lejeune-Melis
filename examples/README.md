@@ -32,7 +32,7 @@ Monolayer - Gradient ou Adaline / Sigmoide [0,1]
 
 ![Adaline 2.9](2-9adaline.png)
 
-### Classification de données linéairement séparables (2.10)
+### Classification de données non-linéairement séparables (2.10)
 
 #### Gradient
 
