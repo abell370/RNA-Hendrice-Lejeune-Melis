@@ -42,7 +42,7 @@ Monolayer - Gradient ou Adaline / Sigmoide [0,1]
 
 ![Adaline 2.10](2-10adaline.png)
 
-### Classification de données non linéairement séparables (2.11)
+### Régression (2.11)
 
 #### Gradient
 
