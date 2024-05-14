@@ -207,10 +207,12 @@ vector<double> MainWindow::predictPoints(vector<double> &x1) {
     vector<double> x1Copy = vector<double>(x1);
     x1.clear();
     vector<double> x2;
-    for (float i = x1Copy[0]; i < x1Copy[1]; i += 0.01) {
-        vector<double> values = mainController->predict({ i });
-        x1.push_back(i);
-        x2.push_back(values[0]);
+    if (x1Copy.size() > 0) {
+        for (float i = x1Copy[0]; x1Copy.size() > 1 && i < x1Copy[1]; i += 0.01) {
+            vector<double> values = mainController->predict({ i });
+            x1.push_back(i);
+            x2.push_back(values[0]);
+        }
     }
     return x2;
 }
