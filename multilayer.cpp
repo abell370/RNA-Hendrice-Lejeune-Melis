@@ -40,7 +40,7 @@ History* MultiLayer::train(double stopError, int maxEpoc, int maxClassificationE
 	bool thresholdReached = false;
 	do {
 		double mse = executeOneEpoc(stopError, true);
-		Iteration* iter = new Iteration(this->classificationErrors, mse, nbTags == 1 ? this->weightsOutput : this->weightsHidden);//si régression, poids en output
+		Iteration* iter = new Iteration(this->classificationErrors, mse, this->weightsHidden);//si régression, poids en output
 		iter->setLabel("deepL");
 		history->addEpoc(iter);
 		if (mse < stopError) thresholdReached = true;

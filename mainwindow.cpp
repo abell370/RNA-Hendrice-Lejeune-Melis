@@ -146,39 +146,40 @@ void MainWindow::updateDataSetPlot() {
 }
 
 void MainWindow::updateLMGraph() {
-    vector<vector<double>> decisionWeights = mainController->getDecisionWeights(selectedIteration);
-    DataSet* dataSet = mainController->getDataSet();
-    int nbClass = ui->amountOfClassesInput->text().toInt();
-    vector<double> x1 = { dataSet->findMin(0) - 0.5, dataSet->findMax( 0) + 0.5 };
+        vector<vector<double>> decisionWeights = mainController->getDecisionWeights(selectedIteration);
+        DataSet* dataSet = mainController->getDataSet();
+        int nbClass = ui->amountOfClassesInput->text().toInt();
+        vector<double> x1 = { dataSet->findMin(0) - 0.5, dataSet->findMax(0) + 0.5 };
 
-    for (auto modelSerie : this->modelSeries) {
-        modelChart->removeSeries(modelSerie);
-    }
-    modelSeries.clear();
-
-    for (int i = 0; i < decisionWeights.size(); ++i) {
-        vector<double> x2;
-        if (ui->multiLayerCheckButton->isChecked() && nbClass == 1) {//Si régression non-linéaire
-            x2 = this->predictPoints(x1);
+        for (auto modelSerie : this->modelSeries) {
+            modelChart->removeSeries(modelSerie);
         }
-        else {
-            x2 = this->calcDecisionLine(decisionWeights[i], x1);
-        }
-        QLineSeries* modelSerie = new QLineSeries();
-        modelSerie->setName(QString("Neuron %1").arg(i + 1));
+        modelSeries.clear();
 
-        for (int j = 0; j < x1.size(); ++j) {
-            //QPoint point = QPoint(x1[j], x2[j]);
-            modelSerie->append(x1[j],x2[j]);
-        }
-        modelChart->addSeries(modelSerie);
-        modelSeries.push_back(modelSerie);
-    }
+        for (int i = 0; i < decisionWeights.size(); ++i) {
+            vector<double> x2;
+            if (ui->multiLayerCheckButton->isChecked() && nbClass == 1) {//Si régression non-linéaire
+                x2 = this->predictPoints(x1);
+            }
+            else {
+                x2 = this->calcDecisionLine(decisionWeights[i], x1);
+            }
+            QLineSeries* modelSerie = new QLineSeries();
+            modelSerie->setName(QString("Neuron %1").arg(i + 1));
 
-    modelChart->createDefaultAxes();
-    modelChart->axisX()->setRange(dataSet->findMin(0) - 0.5, dataSet->findMax(0) + 0.5);
-    modelChart->axisY()->setRange(dataSet->findMin(1) - 0.5, dataSet->findMax(1) + 0.5);
-    modelChart->update();
+            for (int j = 0; j < x1.size() && j < x2.size(); ++j) {
+                //QPoint point = QPoint(x1[j], x2[j]);
+                modelSerie->append(x1[j], x2[j]);
+            }
+            modelChart->addSeries(modelSerie);
+            modelSeries.push_back(modelSerie);
+        }
+
+        modelChart->createDefaultAxes();
+        modelChart->axisX()->setRange(dataSet->findMin(0) - 0.5, dataSet->findMax(0) + 0.5);
+        modelChart->axisY()->setRange(dataSet->findMin(1) - 0.5, dataSet->findMax(1) + 0.5);
+        modelChart->update();
+    
 }
 
 vector<double> MainWindow::calcDecisionLine(vector<double> weights, vector<double> x1) {

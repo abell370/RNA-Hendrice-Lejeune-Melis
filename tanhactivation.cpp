@@ -3,7 +3,7 @@
 
 double TanHActivation::compute(double entry) const
 {
-	return 2 / (1 + std::exp(-2*entry)) - 1;
+	return std::exp(entry) - std::exp(-entry) / std::exp(entry) + std::exp(-entry);
 }
 
 double TanHActivation::performThresholding(double entry) const
